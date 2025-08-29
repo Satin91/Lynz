@@ -8,14 +8,12 @@
 import SwiftUI
 
 struct LayeredCircleView: View {
-    
     enum CenterContent: Equatable {
         case title(String)
         case image(name: String)
     }
     
     @State private var circleSize: Double = 0
-    
     private let contentType: CenterContent
     private let maxCircles: Int = 3
     
@@ -23,28 +21,14 @@ struct LayeredCircleView: View {
         self.contentType = contentType
     }
     
-    
-    
     var body: some View {
         circles
             .frame(maxWidth: .infinity, maxHeight: circleSize)
-            .background(
-                GeometryReader { proxy in
-                    Color.clear
-                        .onAppear {
-                            circleSize = proxy.size.width
-                        }
-                        .onChange(of: proxy.size) { oldValue, newValue in
-                            circleSize = newValue.width
-                        }
-
-                }
-            )
+            .readSize { circleSize = $0.width }
             .overlay {
                 circlesOverlay
             }
     }
-    
     
     @ViewBuilder
     var circlesOverlay: some View {
@@ -91,4 +75,3 @@ struct LayeredCircleView: View {
     .background(Color("lzWhite"))
     .padding()
 }
-

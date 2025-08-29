@@ -10,6 +10,7 @@ import SwiftUI
 struct MainView: View {
     @StateObject var coordinator = Coordinator.shared
     
+    
     var body: some View {
         NavigationStack(path: $coordinator.path) {
             content
@@ -21,9 +22,11 @@ struct MainView: View {
     
     
     var content: some View {
-        coordinator.build(page: .allowTrackingView)
-//        TabBarView()
+        TabBarView()
+//        coordinator.build(page: .allowTrackingView)
     }
+    
+    
 }
 
 #Preview {

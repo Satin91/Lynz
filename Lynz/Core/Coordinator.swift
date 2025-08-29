@@ -21,11 +21,6 @@ enum Page: Hashable {
             hasher.combine(UUID())
         }
     }
-    
-//    case chatsList(storage: ChatsStorageInteractorProtocol)
-//    case chat(chat: ChatModelObserver)
-//    case userSettings(appSettings: AppSettingsInteractor)
-//    case cameraController(shotData: (Data) -> Void)
 }
 
 final class Coordinator: ObservableObject {
@@ -44,7 +39,7 @@ final class Coordinator: ObservableObject {
     @ViewBuilder func build(page: Page) -> some View {
         switch page {
         case .allowTrackingView:
-            AllowTrackingViewView()
+            AllowTrackingView()
         default: EmptyView()
         }
     }

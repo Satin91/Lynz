@@ -1,5 +1,5 @@
 //
-//  NotificationAuthorizationView.swift
+//  AllowTrackingView.swift
 //  Lynz
 //
 //  Created by Артур Кулик on 28.08.2025.
@@ -14,6 +14,7 @@ struct AllowTrackingState {
 
 enum AllowTrackingIntent {
     case showPermissions
+    case push
 }
 
 class AllowTrackingViewStore: ViewStore<AllowTrackingState, AllowTrackingIntent> {
@@ -22,14 +23,19 @@ class AllowTrackingViewStore: ViewStore<AllowTrackingState, AllowTrackingIntent>
         
         switch intent {
         case .showPermissions:
+            return .asyncTask {
+                let status = await Executor.attService.requestPermissions()
+                return .action(.push)
+            }
+            
+        case .push:
             push(.allowTrackingView)
         }
-        
         return .none
     }
 }
 
-struct AllowTrackingViewView: View {
+struct AllowTrackingView: View {
     
     @StateObject var store = AllowTrackingViewStore(initialState: .init())
     
@@ -103,5 +109,5 @@ struct AllowTrackingViewView: View {
 }
 
 #Preview {
-    AllowTrackingViewView()
+    AllowTrackingView()
 }
