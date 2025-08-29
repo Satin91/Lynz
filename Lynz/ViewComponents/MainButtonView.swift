@@ -11,33 +11,57 @@ struct MainButtonView: View {
     
     // MARK: - Button Styles
     enum ButtonStyle {
-        case filled(Color)
-        case outlined(Color)
+        case capsule(Color)
+        case capsuleFill(Color)
+        case roundedFill(Color)
+        case roundedStroke(Color)
         
         var backgroundColor: Color {
             switch self {
-            case .filled(let color):
+            case .capsuleFill(let color):
                 return color
-            case .outlined:
+            case .roundedFill(let color):
+                return color
+            case .capsule, .roundedStroke:
                 return .clear
             }
         }
         
         var foregroundColor: Color {
             switch self {
-            case .filled(let color):
+            case .capsuleFill:
+                return .lzWhite
+            case .roundedFill(let color):
                 return color == .lzBlack ? .lzWhite : .lzBlack
-            case .outlined(let color):
+            case .capsule(let color), .roundedStroke(let color):
                 return color
             }
         }
         
         var borderColor: Color {
             switch self {
-            case .filled:
+            case .capsuleFill, .roundedFill:
                 return .clear
-            case .outlined(let color):
+            case .capsule(let color), .roundedStroke(let color):
                 return color
+            }
+        }
+        
+        var cornerRadius: CGFloat {
+            switch self {
+            case .capsule, .capsuleFill:
+                return 28 // Для capsule делаем половину высоты
+            case .roundedFill, .roundedStroke:
+                return 16
+            }
+        }
+        
+        var hasShadow: Bool {
+            switch self {
+            case .roundedFill:
+                return true
+            case .capsule, .capsuleFill, .roundedStroke:
+                return false
             }
         }
     }
@@ -50,7 +74,7 @@ struct MainButtonView: View {
     // MARK: - Initializer
     init(
         title: String,
-        style: ButtonStyle = .filled(.lzAccent),
+        style: ButtonStyle,
         action: @escaping () -> Void
     ) {
         self.title = title
@@ -68,54 +92,35 @@ struct MainButtonView: View {
                 .frame(height: 56)
                 .background(style.backgroundColor)
                 .overlay(
-                    RoundedRectangle(cornerRadius: 16)
+                    RoundedRectangle(cornerRadius: style.cornerRadius)
                         .stroke(style.borderColor, lineWidth: 1)
                 )
-                .clipShape(RoundedRectangle(cornerRadius: 16))
+                .clipShape(RoundedRectangle(cornerRadius: style.cornerRadius))
+                .shadow(
+                    color: style.hasShadow ? .black.opacity(0.1) : .clear,
+                    radius: style.hasShadow ? 8 : 0,
+                    x: 0,
+                    y: style.hasShadow ? 4 : 0
+                )
         }
         .buttonStyle(PlainButtonStyle())
     }
 }
 
-// MARK: - Convenience Initializers
-extension MainButtonView {
-    /// Кнопка с заливкой
-    static func filled(
-        title: String,
-        color: Color = .lzAccent,
-        action: @escaping () -> Void
-    ) -> MainButtonView {
-        MainButtonView(title: title, style: .filled(color), action: action)
-    }
-    
-    /// Кнопка с обводкой
-    static func outlined(
-        title: String,
-        color: Color = .lzAccent,
-        action: @escaping () -> Void
-    ) -> MainButtonView {
-        MainButtonView(title: title, style: .outlined(color), action: action)
-    }
-}
 
-// MARK: - Predefined Styles
-extension MainButtonView {
-    /// Предустановленные стили для быстрого использования
-    static let primary = ButtonStyle.filled(.lzAccent)
-    static let secondary = ButtonStyle.outlined(.lzAccent)
-    static let white = ButtonStyle.filled(.lzWhite)
-    static let black = ButtonStyle.filled(.lzBlack)
-    static let whiteOutlined = ButtonStyle.outlined(.lzWhite)
-    static let blackOutlined = ButtonStyle.outlined(.lzBlack)
-}
 
 // MARK: - Preview
 #Preview {
     VStack(spacing: 20) {
-        MainButtonView.filled(title: "Primary Button") { }
-        MainButtonView.outlined(title: "Secondary Button") { }
-        MainButtonView(title: "Custom Style", style: .filled(.lzBlack)) { }
-        MainButtonView(title: "White Outlined", style: .outlined(.lzWhite)) { }
+        // Capsule стили
+        MainButtonView(title: "Capsule Button", style: .capsule(.lzAccent)) { }
+        MainButtonView(title: "Capsule Fill", style: .capsuleFill(.lzAccent)) { }
+        
+        // Rounded стили
+        MainButtonView(title: "Black Fill", style: .roundedFill(.lzBlack)) { }
+        MainButtonView(title: "White Fill", style: .roundedFill(.lzWhite)) { }
+        MainButtonView(title: "Accent Stroke", style: .roundedStroke(.lzAccent)) { }
+        MainButtonView(title: "White Stroke", style: .roundedStroke(.lzWhite)) { }
     }
     .padding()
     .background(Color.lzBlack.opacity(0.1))
