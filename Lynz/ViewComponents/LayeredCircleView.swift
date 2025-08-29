@@ -34,6 +34,9 @@ struct LayeredCircleView: View {
                         .onAppear {
                             circleSize = proxy.size.width
                         }
+                        .onChange(of: proxy.size) { oldValue, newValue in
+                            circleSize = newValue.width
+                        }
 
                 }
             )

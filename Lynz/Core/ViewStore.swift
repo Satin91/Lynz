@@ -11,15 +11,12 @@ import Combine
 class ViewStore<State, Intent>: ViewStateProtocol {
     @Published private(set) var state: State
     
-    
-    /// Get only state property
-    
-    
     private var cancellables = Set<AnyCancellable>()
     
     init(initialState: State) {
         self.state = initialState
     }
+ 
     
     @MainActor
     func send(_ intent: Intent) {
@@ -100,5 +97,13 @@ extension ViewStore {
         case .none:
             break
         }
+    }
+}
+
+//MARK: - Navigation
+
+extension ViewStore: Navigation {
+    func push(_ to: Page) {
+        coordinator.push(page: to)
     }
 }
