@@ -29,6 +29,10 @@ enum Layout {
         case large = 24
         /// 32
         case extraLarge = 32
+        /// 56
+        case extraLargeExt = 56  // расширенный extraLarge
+        /// 68
+        case huge = 68           // даже больше, чем extraLargeExt
         
         var horizontalSpacing: CGFloat {
             Layout.Padding.medium.rawValue

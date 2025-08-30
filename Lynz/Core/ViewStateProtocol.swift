@@ -16,3 +16,9 @@ protocol ViewStateProtocol: ObservableObject {
     func send(_ intent: Intent )
     func reduce(state: inout State, intent: Intent) -> Effect<Intent>
 }
+
+protocol Navigation { }
+
+extension Navigation {
+    var coordinator: Coordinator { Coordinator.shared }
+}

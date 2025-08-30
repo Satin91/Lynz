@@ -1,5 +1,5 @@
 //
-//  NotificationAuthorizationView.swift
+//  AllowTrackingView.swift
 //  Lynz
 //
 //  Created by Артур Кулик on 28.08.2025.
@@ -7,7 +7,37 @@
 
 import SwiftUI
 
-struct NotificationAuthorizationView: View {
+
+struct AllowTrackingState {
+    var isUserAgreedPermissions: Bool = false
+}
+
+enum AllowTrackingIntent {
+    case showPermissions
+    case push
+}
+
+class AllowTrackingViewStore: ViewStore<AllowTrackingState, AllowTrackingIntent> {
+    
+    override func reduce(state: inout AllowTrackingState, intent: AllowTrackingIntent) -> Effect<AllowTrackingIntent> {
+        
+        switch intent {
+        case .showPermissions:
+            return .asyncTask {
+                let status = await Executor.attService.requestPermissions()
+                return .action(.push)
+            }
+            
+        case .push:
+            push(.allowTrackingView)
+        }
+        return .none
+    }
+}
+
+struct AllowTrackingView: View {
+    
+    @StateObject var store = AllowTrackingViewStore(initialState: .init())
     
     var body: some View {
         content
@@ -15,7 +45,7 @@ struct NotificationAuthorizationView: View {
     
     var content: some View {
         VStack(spacing: .zero) {
-//            Spacer()
+            Spacer()
             cicrles
                 .padding(.horizontal, 38)
                 .padding(.bottom, 76)
@@ -28,7 +58,7 @@ struct NotificationAuthorizationView: View {
             continueButton
                 .padding(.horizontal,.large)
         }
-        .frame(maxHeight: .infinity, alignment: .bottom)
+//        .frame(maxHeight: .infinity, alignment: .bottom)
         .background(Color.lzYellow.ignoresSafeArea(.all, edges: .all))
     }
     
@@ -73,11 +103,11 @@ struct NotificationAuthorizationView: View {
     
     var continueButton: some View {
         MainButtonView(title: "Continue", style: .capsuleFill(.lzBlack)) {
-            
+            store.send(.showPermissions)
         }
     }
 }
 
 #Preview {
-    NotificationAuthorizationView()
+    AllowTrackingView()
 }

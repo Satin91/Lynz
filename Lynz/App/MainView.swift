@@ -8,17 +8,32 @@
 import SwiftUI
 
 struct MainView: View {
-    
+    @StateObject var coordinator = Coordinator.shared
+    @StateObject var appState = AppState.shared
     
     var body: some View {
-        content
+        NavigationStack(path: $coordinator.path) {
+            content
+                .navigationDestination(for: Page.self) { page in
+                    coordinator.build(page: page)
+                }
+        }
     }
     
+    
+    @ViewBuilder
+    var controlsLayer: some View {
+        if appState.isShowLoader {
+            LoaderView()
+        }
+    }
     
     var content: some View {
-        NotificationAuthorizationView()
-//        TabBarView()
+        TabBarView()
+//        coordinator.build(page: .allowTrackingView)
     }
+    
+    
 }
 
 #Preview {

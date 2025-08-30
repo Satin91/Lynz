@@ -18,10 +18,25 @@
 		8E14DC902E60A30C00BB5117 /* Colors.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8E14DC8F2E60A30C00BB5117 /* Colors.xcassets */; };
 		8E14DC932E60A94F00BB5117 /* LynzFonts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E14DC922E60A94F00BB5117 /* LynzFonts.swift */; };
 		8E14DC952E60AAE700BB5117 /* TabBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E14DC942E60AAE700BB5117 /* TabBarView.swift */; };
-		8E2C096E2E60AE3A00DBC90C /* NotificationAuthorizationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E2C096D2E60AE3A00DBC90C /* NotificationAuthorizationView.swift */; };
+		8E2C096E2E60AE3A00DBC90C /* AllowTrackingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E2C096D2E60AE3A00DBC90C /* AllowTrackingView.swift */; };
 		8E2C09712E60B1A400DBC90C /* LayeredCircleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E2C09702E60B1A400DBC90C /* LayeredCircleView.swift */; };
 		8E2C09732E60C66D00DBC90C /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8E2C09722E60C66D00DBC90C /* Images.xcassets */; };
 		8E2C09752E60DFFD00DBC90C /* MainButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E2C09742E60DFFD00DBC90C /* MainButtonView.swift */; };
+		8E39338B2E6224E3003FDE0A /* Coordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E39338A2E6224E3003FDE0A /* Coordinator.swift */; };
+		8E39338E2E622E67003FDE0A /* ReadSize.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E39338D2E622E67003FDE0A /* ReadSize.swift */; };
+		8E3933902E622F44003FDE0A /* DependencyStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E39338F2E622F44003FDE0A /* DependencyStore.swift */; };
+		8E3933932E622F74003FDE0A /* ATTService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E3933922E622F74003FDE0A /* ATTService.swift */; };
+		8E3933952E623104003FDE0A /* Executor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E3933942E623104003FDE0A /* Executor.swift */; };
+		8E3933972E623CEC003FDE0A /* MessagesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E3933962E623CEC003FDE0A /* MessagesView.swift */; };
+		8EC5685B2E63076500414ADD /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = 8EC5685A2E63076500414ADD /* Lottie */; };
+		8EC5685D2E6307D200414ADD /* LottieView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EC5685C2E6307D200414ADD /* LottieView.swift */; };
+		8EC5685F2E630A0500414ADD /* loading.json in Resources */ = {isa = PBXBuildFile; fileRef = 8EC5685E2E630A0500414ADD /* loading.json */; };
+		8EC568612E630CAA00414ADD /* AppState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EC568602E630CAA00414ADD /* AppState.swift */; };
+		8EC568632E630CDD00414ADD /* LoaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EC568622E630CDD00414ADD /* LoaderView.swift */; };
+		8EC568652E63268100414ADD /* LoaderModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EC568642E63268100414ADD /* LoaderModifier.swift */; };
+		8EC568672E63302B00414ADD /* TransparentBackground.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EC568662E63302B00414ADD /* TransparentBackground.swift */; };
+		8EC568692E634ED200414ADD /* CalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EC568682E634ED200414ADD /* CalendarView.swift */; };
+		8EC5686C2E63596300414ADD /* DateExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EC5686B2E63596300414ADD /* DateExtensions.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -37,10 +52,24 @@
 		8E14DC8F2E60A30C00BB5117 /* Colors.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Colors.xcassets; sourceTree = "<group>"; };
 		8E14DC922E60A94F00BB5117 /* LynzFonts.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LynzFonts.swift; sourceTree = "<group>"; };
 		8E14DC942E60AAE700BB5117 /* TabBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarView.swift; sourceTree = "<group>"; };
-		8E2C096D2E60AE3A00DBC90C /* NotificationAuthorizationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationAuthorizationView.swift; sourceTree = "<group>"; };
+		8E2C096D2E60AE3A00DBC90C /* AllowTrackingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AllowTrackingView.swift; sourceTree = "<group>"; };
 		8E2C09702E60B1A400DBC90C /* LayeredCircleView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LayeredCircleView.swift; sourceTree = "<group>"; };
 		8E2C09722E60C66D00DBC90C /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		8E2C09742E60DFFD00DBC90C /* MainButtonView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainButtonView.swift; sourceTree = "<group>"; };
+		8E39338A2E6224E3003FDE0A /* Coordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Coordinator.swift; sourceTree = "<group>"; };
+		8E39338D2E622E67003FDE0A /* ReadSize.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReadSize.swift; sourceTree = "<group>"; };
+		8E39338F2E622F44003FDE0A /* DependencyStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DependencyStore.swift; sourceTree = "<group>"; };
+		8E3933922E622F74003FDE0A /* ATTService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ATTService.swift; sourceTree = "<group>"; };
+		8E3933942E623104003FDE0A /* Executor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Executor.swift; sourceTree = "<group>"; };
+		8E3933962E623CEC003FDE0A /* MessagesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessagesView.swift; sourceTree = "<group>"; };
+		8EC5685C2E6307D200414ADD /* LottieView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LottieView.swift; sourceTree = "<group>"; };
+		8EC5685E2E630A0500414ADD /* loading.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = loading.json; sourceTree = "<group>"; };
+		8EC568602E630CAA00414ADD /* AppState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppState.swift; sourceTree = "<group>"; };
+		8EC568622E630CDD00414ADD /* LoaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoaderView.swift; sourceTree = "<group>"; };
+		8EC568642E63268100414ADD /* LoaderModifier.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoaderModifier.swift; sourceTree = "<group>"; };
+		8EC568662E63302B00414ADD /* TransparentBackground.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransparentBackground.swift; sourceTree = "<group>"; };
+		8EC568682E634ED200414ADD /* CalendarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarView.swift; sourceTree = "<group>"; };
+		8EC5686B2E63596300414ADD /* DateExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateExtensions.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -48,6 +77,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8EC5685B2E63076500414ADD /* Lottie in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -76,8 +106,11 @@
 				8E14DC912E60A62600BB5117 /* App */,
 				8E2C096C2E60AE1500DBC90C /* Screens */,
 				8E14DC892E609FE100BB5117 /* Core */,
+				8E3933912E622F61003FDE0A /* Services */,
 				8E2C096F2E60B12000DBC90C /* ViewComponents */,
 				8E14DC8C2E60A27300BB5117 /* Padding.swift */,
+				8E39338C2E622E00003FDE0A /* ViewModifiers */,
+				8EC5686A2E63594E00414ADD /* Extensions */,
 				8E14DC8E2E60A2F900BB5117 /* Resources */,
 				8E14DC7C2E609F3B00BB5117 /* Preview Content */,
 			);
@@ -95,9 +128,12 @@
 		8E14DC892E609FE100BB5117 /* Core */ = {
 			isa = PBXGroup;
 			children = (
+				8E39338A2E6224E3003FDE0A /* Coordinator.swift */,
 				8E14DC842E609F6700BB5117 /* ViewStateProtocol.swift */,
 				8E14DC862E609F6D00BB5117 /* ViewStore.swift */,
 				8E14DC8A2E60A07100BB5117 /* Effect.swift */,
+				8E39338F2E622F44003FDE0A /* DependencyStore.swift */,
+				8E3933942E623104003FDE0A /* Executor.swift */,
 			);
 			path = Core;
 			sourceTree = "<group>";
@@ -105,6 +141,7 @@
 		8E14DC8E2E60A2F900BB5117 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				8EC5685E2E630A0500414ADD /* loading.json */,
 				8E14DC922E60A94F00BB5117 /* LynzFonts.swift */,
 				8E14DC7A2E609F3B00BB5117 /* Assets.xcassets */,
 				8E2C09722E60C66D00DBC90C /* Images.xcassets */,
@@ -119,6 +156,7 @@
 				8E14DC762E609F3900BB5117 /* LynzApp.swift */,
 				8E14DC782E609F3900BB5117 /* MainView.swift */,
 				8E14DC942E60AAE700BB5117 /* TabBarView.swift */,
+				8EC568602E630CAA00414ADD /* AppState.swift */,
 			);
 			path = App;
 			sourceTree = "<group>";
@@ -126,7 +164,9 @@
 		8E2C096C2E60AE1500DBC90C /* Screens */ = {
 			isa = PBXGroup;
 			children = (
-				8E2C096D2E60AE3A00DBC90C /* NotificationAuthorizationView.swift */,
+				8E2C096D2E60AE3A00DBC90C /* AllowTrackingView.swift */,
+				8E3933962E623CEC003FDE0A /* MessagesView.swift */,
+				8EC568682E634ED200414ADD /* CalendarView.swift */,
 			);
 			name = Screens;
 			path = App/Screens;
@@ -137,8 +177,36 @@
 			children = (
 				8E2C09742E60DFFD00DBC90C /* MainButtonView.swift */,
 				8E2C09702E60B1A400DBC90C /* LayeredCircleView.swift */,
+				8EC5685C2E6307D200414ADD /* LottieView.swift */,
+				8EC568622E630CDD00414ADD /* LoaderView.swift */,
 			);
 			path = ViewComponents;
+			sourceTree = "<group>";
+		};
+		8E39338C2E622E00003FDE0A /* ViewModifiers */ = {
+			isa = PBXGroup;
+			children = (
+				8EC568642E63268100414ADD /* LoaderModifier.swift */,
+				8E39338D2E622E67003FDE0A /* ReadSize.swift */,
+				8EC568662E63302B00414ADD /* TransparentBackground.swift */,
+			);
+			path = ViewModifiers;
+			sourceTree = "<group>";
+		};
+		8E3933912E622F61003FDE0A /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				8E3933922E622F74003FDE0A /* ATTService.swift */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
+		8EC5686A2E63594E00414ADD /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				8EC5686B2E63596300414ADD /* DateExtensions.swift */,
+			);
+			path = Extensions;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -157,6 +225,9 @@
 			dependencies = (
 			);
 			name = Lynz;
+			packageProductDependencies = (
+				8EC5685A2E63076500414ADD /* Lottie */,
+			);
 			productName = Lynz;
 			productReference = 8E14DC732E609F3900BB5117 /* Lynz.app */;
 			productType = "com.apple.product-type.application";
@@ -185,6 +256,9 @@
 				Base,
 			);
 			mainGroup = 8E14DC6A2E609F3900BB5117;
+			packageReferences = (
+				8EC568592E63076400414ADD /* XCRemoteSwiftPackageReference "lottie-spm" */,
+			);
 			productRefGroup = 8E14DC742E609F3900BB5117 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -203,6 +277,7 @@
 				8E2C09732E60C66D00DBC90C /* Images.xcassets in Resources */,
 				8E14DC7E2E609F3B00BB5117 /* Preview Assets.xcassets in Resources */,
 				8E14DC7B2E609F3B00BB5117 /* Assets.xcassets in Resources */,
+				8EC5685F2E630A0500414ADD /* loading.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -214,16 +289,29 @@
 			buildActionMask = 2147483647;
 			files = (
 				8E14DC8B2E60A07100BB5117 /* Effect.swift in Sources */,
+				8E3933932E622F74003FDE0A /* ATTService.swift in Sources */,
+				8EC568692E634ED200414ADD /* CalendarView.swift in Sources */,
+				8EC568612E630CAA00414ADD /* AppState.swift in Sources */,
+				8E3933972E623CEC003FDE0A /* MessagesView.swift in Sources */,
+				8EC5686C2E63596300414ADD /* DateExtensions.swift in Sources */,
 				8E2C09712E60B1A400DBC90C /* LayeredCircleView.swift in Sources */,
+				8EC568652E63268100414ADD /* LoaderModifier.swift in Sources */,
+				8E3933902E622F44003FDE0A /* DependencyStore.swift in Sources */,
 				8E2C09752E60DFFD00DBC90C /* MainButtonView.swift in Sources */,
 				8E14DC852E609F6700BB5117 /* ViewStateProtocol.swift in Sources */,
 				8E14DC952E60AAE700BB5117 /* TabBarView.swift in Sources */,
 				8E14DC792E609F3900BB5117 /* MainView.swift in Sources */,
+				8E3933952E623104003FDE0A /* Executor.swift in Sources */,
 				8E14DC872E609F6D00BB5117 /* ViewStore.swift in Sources */,
+				8EC5685D2E6307D200414ADD /* LottieView.swift in Sources */,
 				8E14DC932E60A94F00BB5117 /* LynzFonts.swift in Sources */,
+				8E39338B2E6224E3003FDE0A /* Coordinator.swift in Sources */,
+				8EC568672E63302B00414ADD /* TransparentBackground.swift in Sources */,
 				8E14DC772E609F3900BB5117 /* LynzApp.swift in Sources */,
 				8E14DC8D2E60A27300BB5117 /* Padding.swift in Sources */,
-				8E2C096E2E60AE3A00DBC90C /* NotificationAuthorizationView.swift in Sources */,
+				8EC568632E630CDD00414ADD /* LoaderView.swift in Sources */,
+				8E2C096E2E60AE3A00DBC90C /* AllowTrackingView.swift in Sources */,
+				8E39338E2E622E67003FDE0A /* ReadSize.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -282,7 +370,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 17.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
@@ -339,7 +427,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 17.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
@@ -353,18 +441,20 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = lzAccent;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Lynz/Preview Content\"";
 				DEVELOPMENT_TEAM = 6TVC5Q5R78;
 				ENABLE_PREVIEWS = YES;
-				GENERATE_INFOPLIST_FILE = YES;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = Lynz/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -382,18 +472,20 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = lzAccent;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Lynz/Preview Content\"";
 				DEVELOPMENT_TEAM = 6TVC5Q5R78;
 				ENABLE_PREVIEWS = YES;
-				GENERATE_INFOPLIST_FILE = YES;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = Lynz/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -429,6 +521,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		8EC568592E63076400414ADD /* XCRemoteSwiftPackageReference "lottie-spm" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/airbnb/lottie-spm.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 4.5.2;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		8EC5685A2E63076500414ADD /* Lottie */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 8EC568592E63076400414ADD /* XCRemoteSwiftPackageReference "lottie-spm" */;
+			productName = Lottie;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 8E14DC6B2E609F3900BB5117 /* Project object */;
 }
