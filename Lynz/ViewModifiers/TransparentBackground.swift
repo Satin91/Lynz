@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-// Вспомогательный View для прозрачного фона fullScreenCover
+/// Вспомогательный View для прозрачного фона fullScreenCover
 struct ClearBackgroundView: UIViewRepresentable {
     func makeUIView(context: Context) -> UIView {
         return InnerView()
@@ -24,8 +24,8 @@ struct ClearBackgroundView: UIViewRepresentable {
     }
 }
 
-
 extension View {
+    /// Делает фон прозрачнм в режиме fullScreenCover
     func transparentBackground() -> some View {
         self.background(ClearBackgroundView())
     }

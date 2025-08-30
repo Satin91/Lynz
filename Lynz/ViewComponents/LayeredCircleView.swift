@@ -10,7 +10,7 @@ import SwiftUI
 struct LayeredCircleView: View {
     enum CenterContent: Equatable {
         case title(String)
-        case image(name: String)
+        case image(ImageResource)
     }
     
     @State private var circleSize: Double = 0
@@ -38,8 +38,8 @@ struct LayeredCircleView: View {
                 .font(.lzHeader)
                 .kerning(-2)
                 .foregroundStyle(.lzYellow)
-        case .image(let imageName):
-            Image(imageName)
+        case .image(let image):
+            Image(image)
         }
     }
     
@@ -70,7 +70,7 @@ struct LayeredCircleView: View {
 #Preview {
     VStack(spacing: 40) {
         LayeredCircleView(contentType: .title("Lynz"))
-        LayeredCircleView(contentType: .image(name: "messages"))
+        LayeredCircleView(contentType: .image(.messages))
     }
     .background(Color("lzWhite"))
     .padding()

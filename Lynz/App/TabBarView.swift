@@ -10,7 +10,7 @@ import SwiftUI
 struct TabBarView: View {
     
     //Можно вынести в Coordinator при необходимост
-    @State private var tabIndex: Int = 1
+    @State private var tabIndex: Int = 0
     
     init() {
         setupUITabBarAppearance()
@@ -29,14 +29,14 @@ struct TabBarView: View {
     
     var nativeTabBar: some View {
         TabView(selection: $tabIndex) {
-            Text("Calendar")
+            CalendarView()
                 .tag(0)
             
             MessagesView()
                 .tag(1)
             
             Text("Tab Content 2")
-                .tag(1)
+                .tag(2)
         }
         .onAppear {
 
@@ -48,24 +48,24 @@ struct TabBarView: View {
             Group {
                 
                 TabBarButton(
-                    icon: "calendarTab",
+                    icon: .calendarTab,
                     isSelected: tabIndex == 0
                 ) {
                     tabIndex = 0
                 }
                 
                 TabBarButton(
-                    icon: "messagestab",
+                    icon: .messagesTab,
                     isSelected: tabIndex == 1
                 ) {
                     tabIndex = 1
                 }
                 
                 TabBarButton(
-                    icon: "userTab",
-                    isSelected: tabIndex == 1
+                    icon: .posesTab,
+                    isSelected: tabIndex == 2
                 ) {
-                    tabIndex = 1
+                    tabIndex = 2
                 }
                 
             }
@@ -79,7 +79,7 @@ struct TabBarView: View {
     private var backgroundBlurRounded: some View {
         Rectangle()
             .fill(.ultraThinMaterial) // Более сильный blur эффект
-            .overlay { Color.lzTabBar.opacity(0.9) }
+            .overlay { Color.lzGray.opacity(0.9) }
             .clipShape(UnevenRoundedRectangle(cornerRadii: .init(topLeading: 30, topTrailing: 30)))
             .ignoresSafeArea(.all, edges: .bottom)
             .shadow(color: .black.opacity(0.1), radius: 20)
@@ -96,30 +96,28 @@ struct TabBarView: View {
 }
 
 struct TabBarButton: View {
-    let icon: String
+    let icon: ImageResource
     let isSelected: Bool
     let selectedColor: Color = Color(.lzYellow)
     let unselectedColor: Color = .lzWhite.opacity(0.3)
     let action: () -> Void
     
-    init(icon: String, isSelected: Bool, action: @escaping () -> Void) {
+    init(icon: ImageResource, isSelected: Bool, action: @escaping () -> Void) {
         self.icon = icon
         self.isSelected = isSelected
         self.action = action
     }
     
     var body: some View {
-        Button(action: action) {
-            Image(icon)
-                .resizable()
-                .renderingMode(.template)
-                .aspectRatio(contentMode: .fit)
-                .frame(width: 36, height: 36)
-                .foregroundStyle(isSelected ? selectedColor : unselectedColor)
-        }
-        .buttonStyle(PlainButtonStyle())
-        .padding(.top, .medium)
-        .padding(.bottom, .small)
+        Image(icon)
+            .resizable()
+            .renderingMode(.template)
+            .aspectRatio(contentMode: .fit)
+            .frame(width: 36, height: 36)
+            .foregroundStyle(isSelected ? selectedColor : unselectedColor)
+            .onTapGesture(perform: action)
+            .padding(.top, .medium)
+            .padding(.bottom, .small)
     }
 }
 
