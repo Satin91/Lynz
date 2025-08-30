@@ -9,67 +9,88 @@ import SwiftUI
 
 struct TabBarView: View {
     
+    //Можно вынести в Coordinator при необходимост
     @State private var tabIndex: Int = 0
+    
+    init() {
+        setupUITabBarAppearance()
+    }
     
     var body: some View {
         content
     }
     
     var content: some View {
-//        ZStack {
-            tabView
+        nativeTabBar
             .overlay(alignment: .bottom) {
-                customTabBar
-//                    .ignoresSafeArea(.all)
+                designedTabBar
             }
     }
     
-    var tabView: some View {
+    var nativeTabBar: some View {
         TabView(selection: $tabIndex) {
             MessagesView()
-                .tabItem { 
-                    // Делаем нативные табы невидимыми
-                    EmptyView()
-                }
                 .tag(0)
+
+            Text("Tab Content 2")
+                .tag(1)
             
             Text("Tab Content 2")
-                .tabItem { 
-                    EmptyView()
-                }
                 .tag(1)
         }
         .onAppear {
-            // Делаем нативный TabBar прозрачным
-            let appearance = UITabBarAppearance()
-            appearance.configureWithTransparentBackground()
-            appearance.backgroundColor = UIColor.clear
-            
-            UITabBar.appearance().standardAppearance = appearance
-            UITabBar.appearance().scrollEdgeAppearance = appearance
+
         }
     }
     
-    var customTabBar: some View {
+    var designedTabBar: some View {
         HStack(spacing: 0) {
-            Spacer()
-            TabBarButton(
-                icon: "messages",
-                isSelected: tabIndex == 0
-            ) {
-                tabIndex = 0
+            Group {
+                TabBarButton(
+                    icon: "messages",
+                    isSelected: tabIndex == 0
+                ) {
+                    tabIndex = 0
+                }
+                
+                TabBarButton(
+                    icon: "users",
+                    isSelected: tabIndex == 1
+                ) {
+                    tabIndex = 1
+                }
+                
+                TabBarButton(
+                    icon: "users",
+                    isSelected: tabIndex == 1
+                ) {
+                    tabIndex = 1
+                }
+                
             }
-            Spacer()
-            TabBarButton(
-                icon: "users",
-                isSelected: tabIndex == 1
-            ) {
-                tabIndex = 1
-            }
-            Spacer()
+            .frame(maxWidth: .infinity)
         }
-        .background(Color.lzTabBar)
-        .clipShape(TopRoundedRectangle(cornerRadius: 20))
+        .background(
+            backgroundBlurRounded
+        )
+    }
+    
+    private var backgroundBlurRounded: some View {
+        Rectangle()
+            .fill(.ultraThinMaterial) // Более сильный blur эффект
+            .overlay { Color.lzTabBar.opacity(0.9) }
+            .clipShape(UnevenRoundedRectangle(cornerRadii: .init(topLeading: 30, topTrailing: 30)))
+            .ignoresSafeArea(.all, edges: .bottom)
+            .shadow(color: .black.opacity(0.1), radius: 20)
+    }
+    
+    private func setupUITabBarAppearance() {
+        let appearance = UITabBarAppearance()
+        appearance.configureWithTransparentBackground()
+        appearance.backgroundColor = UIColor.clear
+        
+        UITabBar.appearance().standardAppearance = appearance
+        UITabBar.appearance().scrollEdgeAppearance = appearance
     }
 }
 
@@ -77,7 +98,7 @@ struct TabBarButton: View {
     let icon: String
     let isSelected: Bool
     let selectedColor: Color = Color(.lzYellow)
-    let unselectedColor: Color = Color(.lzWhite.opacity(0.3))
+    let unselectedColor: Color = .lzWhite.opacity(0.3)
     let action: () -> Void
     
     init(icon: String, isSelected: Bool, action: @escaping () -> Void) {
@@ -90,12 +111,14 @@ struct TabBarButton: View {
         Button(action: action) {
             Image(icon)
                 .resizable()
+                .renderingMode(.template)
                 .aspectRatio(contentMode: .fit)
                 .frame(width: 36, height: 36)
                 .foregroundStyle(isSelected ? selectedColor : unselectedColor)
         }
         .buttonStyle(PlainButtonStyle())
         .padding(.top, .medium)
+        .padding(.bottom, .small)
     }
 }
 
@@ -103,51 +126,12 @@ struct TabBarButton: View {
     TabBarView()
 }
 
-// Кастомная форма для обрезки только верхних углов
-struct TopRoundedRectangle: Shape {
-    let cornerRadius: CGFloat
-    
-    func path(in rect: CGRect) -> Path {
-        var path = Path()
-        
-        let width = rect.size.width
-        let height = rect.size.height
-        
-        // Начинаем с левого нижнего угла
-        path.move(to: CGPoint(x: 0, y: height))
-        
-        // Левая сторона до начала скругления
-        path.addLine(to: CGPoint(x: 0, y: cornerRadius))
-        
-        // Левый верхний скругленный угол
-        path.addArc(center: CGPoint(x: cornerRadius, y: cornerRadius),
-                   radius: cornerRadius,
-                   startAngle: Angle(degrees: 180),
-                   endAngle: Angle(degrees: 270),
-                   clockwise: false)
-        
-        // Верхняя сторона
-        path.addLine(to: CGPoint(x: width - cornerRadius, y: 0))
-        
-        // Правый верхний скругленный угол
-        path.addArc(center: CGPoint(x: width - cornerRadius, y: cornerRadius),
-                   radius: cornerRadius,
-                   startAngle: Angle(degrees: 270),
-                   endAngle: Angle(degrees: 0),
-                   clockwise: false)
-        
-        // Правая сторона
-        path.addLine(to: CGPoint(x: width, y: height))
-        
-        // Нижняя сторона (прямая)
-        path.addLine(to: CGPoint(x: 0, y: height))
-        
-        return path
-    }
-}
-
+// Применение явного размера для TabBar, чтобы у содержащих TabBar'а представлений были правильные нижние отступы.
 extension UITabBar {
      override open func sizeThatFits(_ size: CGSize) -> CGSize {
-         return CGSize(width: UIScreen.main.bounds.width, height: 50)
+         return CGSize(width: UIScreen.main.bounds.width, height: 88)
      }
  }
+
+extension UITabBar {
+}

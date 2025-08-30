@@ -42,7 +42,6 @@ struct MessagesView: View {
     
     var content: some View {
         VStack(spacing: .zero) {
-            
             VStack(spacing: .zero) {
                 LayeredCircleView(contentType: .image(name: "messages"))
                     .font(.lzBody)
@@ -59,7 +58,7 @@ struct MessagesView: View {
                 
             }
             .padding(.horizontal, .large)
-//            .padding(.bottom, .huge)
+            .padding(.bottom, .huge)
         }
         .background(Color.lzYellow.ignoresSafeArea(.all))
     }
