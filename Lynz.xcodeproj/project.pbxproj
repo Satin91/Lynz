@@ -28,6 +28,13 @@
 		8E3933932E622F74003FDE0A /* ATTService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E3933922E622F74003FDE0A /* ATTService.swift */; };
 		8E3933952E623104003FDE0A /* Executor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E3933942E623104003FDE0A /* Executor.swift */; };
 		8E3933972E623CEC003FDE0A /* MessagesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E3933962E623CEC003FDE0A /* MessagesView.swift */; };
+		8EC5685B2E63076500414ADD /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = 8EC5685A2E63076500414ADD /* Lottie */; };
+		8EC5685D2E6307D200414ADD /* LottieView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EC5685C2E6307D200414ADD /* LottieView.swift */; };
+		8EC5685F2E630A0500414ADD /* loading.json in Resources */ = {isa = PBXBuildFile; fileRef = 8EC5685E2E630A0500414ADD /* loading.json */; };
+		8EC568612E630CAA00414ADD /* AppState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EC568602E630CAA00414ADD /* AppState.swift */; };
+		8EC568632E630CDD00414ADD /* LoaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EC568622E630CDD00414ADD /* LoaderView.swift */; };
+		8EC568652E63268100414ADD /* LoaderModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EC568642E63268100414ADD /* LoaderModifier.swift */; };
+		8EC568672E63302B00414ADD /* TransparentBackground.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EC568662E63302B00414ADD /* TransparentBackground.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -53,6 +60,12 @@
 		8E3933922E622F74003FDE0A /* ATTService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ATTService.swift; sourceTree = "<group>"; };
 		8E3933942E623104003FDE0A /* Executor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Executor.swift; sourceTree = "<group>"; };
 		8E3933962E623CEC003FDE0A /* MessagesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessagesView.swift; sourceTree = "<group>"; };
+		8EC5685C2E6307D200414ADD /* LottieView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LottieView.swift; sourceTree = "<group>"; };
+		8EC5685E2E630A0500414ADD /* loading.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = loading.json; sourceTree = "<group>"; };
+		8EC568602E630CAA00414ADD /* AppState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppState.swift; sourceTree = "<group>"; };
+		8EC568622E630CDD00414ADD /* LoaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoaderView.swift; sourceTree = "<group>"; };
+		8EC568642E63268100414ADD /* LoaderModifier.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoaderModifier.swift; sourceTree = "<group>"; };
+		8EC568662E63302B00414ADD /* TransparentBackground.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransparentBackground.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -60,6 +73,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8EC5685B2E63076500414ADD /* Lottie in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -122,6 +136,7 @@
 		8E14DC8E2E60A2F900BB5117 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				8EC5685E2E630A0500414ADD /* loading.json */,
 				8E14DC922E60A94F00BB5117 /* LynzFonts.swift */,
 				8E14DC7A2E609F3B00BB5117 /* Assets.xcassets */,
 				8E2C09722E60C66D00DBC90C /* Images.xcassets */,
@@ -136,6 +151,7 @@
 				8E14DC762E609F3900BB5117 /* LynzApp.swift */,
 				8E14DC782E609F3900BB5117 /* MainView.swift */,
 				8E14DC942E60AAE700BB5117 /* TabBarView.swift */,
+				8EC568602E630CAA00414ADD /* AppState.swift */,
 			);
 			path = App;
 			sourceTree = "<group>";
@@ -155,6 +171,8 @@
 			children = (
 				8E2C09742E60DFFD00DBC90C /* MainButtonView.swift */,
 				8E2C09702E60B1A400DBC90C /* LayeredCircleView.swift */,
+				8EC5685C2E6307D200414ADD /* LottieView.swift */,
+				8EC568622E630CDD00414ADD /* LoaderView.swift */,
 			);
 			path = ViewComponents;
 			sourceTree = "<group>";
@@ -162,7 +180,9 @@
 		8E39338C2E622E00003FDE0A /* ViewModifiers */ = {
 			isa = PBXGroup;
 			children = (
+				8EC568642E63268100414ADD /* LoaderModifier.swift */,
 				8E39338D2E622E67003FDE0A /* ReadSize.swift */,
+				8EC568662E63302B00414ADD /* TransparentBackground.swift */,
 			);
 			path = ViewModifiers;
 			sourceTree = "<group>";
@@ -191,6 +211,9 @@
 			dependencies = (
 			);
 			name = Lynz;
+			packageProductDependencies = (
+				8EC5685A2E63076500414ADD /* Lottie */,
+			);
 			productName = Lynz;
 			productReference = 8E14DC732E609F3900BB5117 /* Lynz.app */;
 			productType = "com.apple.product-type.application";
@@ -219,6 +242,9 @@
 				Base,
 			);
 			mainGroup = 8E14DC6A2E609F3900BB5117;
+			packageReferences = (
+				8EC568592E63076400414ADD /* XCRemoteSwiftPackageReference "lottie-spm" */,
+			);
 			productRefGroup = 8E14DC742E609F3900BB5117 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -237,6 +263,7 @@
 				8E2C09732E60C66D00DBC90C /* Images.xcassets in Resources */,
 				8E14DC7E2E609F3B00BB5117 /* Preview Assets.xcassets in Resources */,
 				8E14DC7B2E609F3B00BB5117 /* Assets.xcassets in Resources */,
+				8EC5685F2E630A0500414ADD /* loading.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -249,8 +276,10 @@
 			files = (
 				8E14DC8B2E60A07100BB5117 /* Effect.swift in Sources */,
 				8E3933932E622F74003FDE0A /* ATTService.swift in Sources */,
+				8EC568612E630CAA00414ADD /* AppState.swift in Sources */,
 				8E3933972E623CEC003FDE0A /* MessagesView.swift in Sources */,
 				8E2C09712E60B1A400DBC90C /* LayeredCircleView.swift in Sources */,
+				8EC568652E63268100414ADD /* LoaderModifier.swift in Sources */,
 				8E3933902E622F44003FDE0A /* DependencyStore.swift in Sources */,
 				8E2C09752E60DFFD00DBC90C /* MainButtonView.swift in Sources */,
 				8E14DC852E609F6700BB5117 /* ViewStateProtocol.swift in Sources */,
@@ -258,10 +287,13 @@
 				8E14DC792E609F3900BB5117 /* MainView.swift in Sources */,
 				8E3933952E623104003FDE0A /* Executor.swift in Sources */,
 				8E14DC872E609F6D00BB5117 /* ViewStore.swift in Sources */,
+				8EC5685D2E6307D200414ADD /* LottieView.swift in Sources */,
 				8E14DC932E60A94F00BB5117 /* LynzFonts.swift in Sources */,
 				8E39338B2E6224E3003FDE0A /* Coordinator.swift in Sources */,
+				8EC568672E63302B00414ADD /* TransparentBackground.swift in Sources */,
 				8E14DC772E609F3900BB5117 /* LynzApp.swift in Sources */,
 				8E14DC8D2E60A27300BB5117 /* Padding.swift in Sources */,
+				8EC568632E630CDD00414ADD /* LoaderView.swift in Sources */,
 				8E2C096E2E60AE3A00DBC90C /* AllowTrackingView.swift in Sources */,
 				8E39338E2E622E67003FDE0A /* ReadSize.swift in Sources */,
 			);
@@ -473,6 +505,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		8EC568592E63076400414ADD /* XCRemoteSwiftPackageReference "lottie-spm" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/airbnb/lottie-spm.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 4.5.2;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		8EC5685A2E63076500414ADD /* Lottie */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 8EC568592E63076400414ADD /* XCRemoteSwiftPackageReference "lottie-spm" */;
+			productName = Lottie;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 8E14DC6B2E609F3900BB5117 /* Project object */;
 }

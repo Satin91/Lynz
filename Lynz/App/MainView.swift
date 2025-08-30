@@ -9,7 +9,7 @@ import SwiftUI
 
 struct MainView: View {
     @StateObject var coordinator = Coordinator.shared
-    
+    @StateObject var appState = AppState.shared
     
     var body: some View {
         NavigationStack(path: $coordinator.path) {
@@ -20,6 +20,13 @@ struct MainView: View {
         }
     }
     
+    
+    @ViewBuilder
+    var controlsLayer: some View {
+        if appState.isShowLoader {
+            LoaderView()
+        }
+    }
     
     var content: some View {
         TabBarView()

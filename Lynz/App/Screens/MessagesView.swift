@@ -6,26 +6,31 @@
 //
 
 import SwiftUI
+import Lottie
 
 struct MessagesViewState {
-    
+    var isLoading: Bool = false
 }
 
 enum MessagesIntent {
     case connect
-    
+    case toggleLoader
 }
 
 final class MessagesViewStore: ViewStore<MessagesViewState, MessagesIntent> {
     
     override func reduce(state: inout MessagesViewState, intent: MessagesIntent) -> Effect<MessagesIntent> {
-        
-        
         switch intent {
         case .connect:
-            break
+            state.isLoading = true
+            // Симуляция загрузки
+            return .asyncTask {
+                try? await Task.sleep(nanoseconds: 3_000_000_000) // 3 секунды
+                return .action(.toggleLoader)
+            }
+        case .toggleLoader:
+            state.isLoading.toggle()
         }
-        
         
         return .none
     }
@@ -34,10 +39,11 @@ final class MessagesViewStore: ViewStore<MessagesViewState, MessagesIntent> {
 struct MessagesView: View {
     
     private let sirclesSize: CGFloat = 258
-    
+    @StateObject private var store = MessagesViewStore(initialState: MessagesViewState())
     
     var body: some View {
         content
+            .loader(isLoading: store.state.isLoading)
     }
     
     var content: some View {
@@ -54,8 +60,21 @@ struct MessagesView: View {
             }
             .frame(maxHeight: .infinity)
             
-            MainButtonView(title: "Go Online", style: .roundedFill(.white)) {
+            VStack(spacing: .medium) {
+                MainButtonView(title: "Go Online", style: .roundedFill(.white)) {
+                    store.send(.connect)
+                }
                 
+                // Кнопка для тестирования лоадера
+                Button("Toggle Loader") {
+                    store.send(.connect)
+                }
+                .font(.lzBody)
+                .foregroundStyle(.lzBlack)
+                .padding(.horizontal, .large)
+                .padding(.vertical, .small)
+                .background(Color.white.opacity(0.3))
+                .clipShape(RoundedRectangle(cornerRadius: 12))
             }
             .padding(.horizontal, .large)
             .padding(.bottom, .huge)
@@ -91,39 +110,3 @@ struct MessagesView: View {
 //  Created by Артур Кулик on 29.08.2025.
 //
 
-import SwiftUI
-
-extension View {
-    /// Устанавливает высоту строки для текста
-    /// - Parameter height: Желаемая высота строки
-    /// - Returns: Модифицированный View с установленной высотой строки
-    func lineHeight(_ height: CGFloat) -> some View {
-        self.lineSpacing(height - UIFont.systemFont(ofSize: 17).lineHeight)
-    }
-    
-    /// Устанавливает высоту строки для текста с учетом размера шрифта
-    /// - Parameters:
-    ///   - height: Желаемая высота строки
-    ///   - fontSize: Размер шрифта для правильного расчета
-    /// - Returns: Модифицированный View с установленной высотой строки
-    func lineHeight(_ height: CGFloat, fontSize: CGFloat) -> some View {
-        let systemFont = UIFont.systemFont(ofSize: fontSize)
-        let spacing = height - systemFont.lineHeight
-        return self.lineSpacing(max(0, spacing))
-    }
-    
-    /// Устанавливает фиксированную высоту строки независимо от размера шрифта
-    /// - Parameter height: Фиксированная высота строки (20pt)
-    /// - Returns: Модифицированный View с фиксированной высотой строки
-    func fixedLineHeight(_ height: CGFloat = 20) -> some View {
-        self.environment(\.lineSpacing, height - 17) // 17 - стандартная высота системного шрифта
-    }
-}
-
-// MARK: - Дополнительные модификаторы для удобства
-extension Text {
-    /// Быстрый способ установить высоту строки 20pt
-    func standardLineHeight() -> some View {
-        self.lineHeight(20, fontSize: 17)
-    }
-}

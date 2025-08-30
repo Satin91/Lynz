@@ -10,7 +10,7 @@ import SwiftUI
 struct TabBarView: View {
     
     //Можно вынести в Coordinator при необходимост
-    @State private var tabIndex: Int = 0
+    @State private var tabIndex: Int = 1
     
     init() {
         setupUITabBarAppearance()
@@ -29,10 +29,10 @@ struct TabBarView: View {
     
     var nativeTabBar: some View {
         TabView(selection: $tabIndex) {
-            MessagesView()
+            Text("Calendar")
                 .tag(0)
-
-            Text("Tab Content 2")
+            
+            MessagesView()
                 .tag(1)
             
             Text("Tab Content 2")
@@ -46,22 +46,23 @@ struct TabBarView: View {
     var designedTabBar: some View {
         HStack(spacing: 0) {
             Group {
+                
                 TabBarButton(
-                    icon: "messages",
+                    icon: "calendarTab",
                     isSelected: tabIndex == 0
                 ) {
                     tabIndex = 0
                 }
                 
                 TabBarButton(
-                    icon: "users",
+                    icon: "messagestab",
                     isSelected: tabIndex == 1
                 ) {
                     tabIndex = 1
                 }
                 
                 TabBarButton(
-                    icon: "users",
+                    icon: "userTab",
                     isSelected: tabIndex == 1
                 ) {
                     tabIndex = 1
