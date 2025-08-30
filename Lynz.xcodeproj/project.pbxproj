@@ -35,8 +35,9 @@
 		8EC568632E630CDD00414ADD /* LoaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EC568622E630CDD00414ADD /* LoaderView.swift */; };
 		8EC568652E63268100414ADD /* LoaderModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EC568642E63268100414ADD /* LoaderModifier.swift */; };
 		8EC568672E63302B00414ADD /* TransparentBackground.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EC568662E63302B00414ADD /* TransparentBackground.swift */; };
-		8EC568692E634ED200414ADD /* CalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EC568682E634ED200414ADD /* CalendarView.swift */; };
+		8EC568692E634ED200414ADD /* DatePickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EC568682E634ED200414ADD /* DatePickerView.swift */; };
 		8EC5686C2E63596300414ADD /* DateExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EC5686B2E63596300414ADD /* DateExtensions.swift */; };
+		8EC568702E637F1500414ADD /* CalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EC5686F2E637F1500414ADD /* CalendarView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -68,8 +69,9 @@
 		8EC568622E630CDD00414ADD /* LoaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoaderView.swift; sourceTree = "<group>"; };
 		8EC568642E63268100414ADD /* LoaderModifier.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoaderModifier.swift; sourceTree = "<group>"; };
 		8EC568662E63302B00414ADD /* TransparentBackground.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransparentBackground.swift; sourceTree = "<group>"; };
-		8EC568682E634ED200414ADD /* CalendarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarView.swift; sourceTree = "<group>"; };
+		8EC568682E634ED200414ADD /* DatePickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatePickerView.swift; sourceTree = "<group>"; };
 		8EC5686B2E63596300414ADD /* DateExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateExtensions.swift; sourceTree = "<group>"; };
+		8EC5686F2E637F1500414ADD /* CalendarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -104,8 +106,8 @@
 			isa = PBXGroup;
 			children = (
 				8E14DC912E60A62600BB5117 /* App */,
-				8E2C096C2E60AE1500DBC90C /* Screens */,
 				8E14DC892E609FE100BB5117 /* Core */,
+				8E2C096C2E60AE1500DBC90C /* Screens */,
 				8E3933912E622F61003FDE0A /* Services */,
 				8E2C096F2E60B12000DBC90C /* ViewComponents */,
 				8E14DC8C2E60A27300BB5117 /* Padding.swift */,
@@ -166,15 +168,15 @@
 			children = (
 				8E2C096D2E60AE3A00DBC90C /* AllowTrackingView.swift */,
 				8E3933962E623CEC003FDE0A /* MessagesView.swift */,
-				8EC568682E634ED200414ADD /* CalendarView.swift */,
+				8EC5686F2E637F1500414ADD /* CalendarView.swift */,
 			);
-			name = Screens;
-			path = App/Screens;
+			path = Screens;
 			sourceTree = "<group>";
 		};
 		8E2C096F2E60B12000DBC90C /* ViewComponents */ = {
 			isa = PBXGroup;
 			children = (
+				8EC568682E634ED200414ADD /* DatePickerView.swift */,
 				8E2C09742E60DFFD00DBC90C /* MainButtonView.swift */,
 				8E2C09702E60B1A400DBC90C /* LayeredCircleView.swift */,
 				8EC5685C2E6307D200414ADD /* LottieView.swift */,
@@ -290,9 +292,10 @@
 			files = (
 				8E14DC8B2E60A07100BB5117 /* Effect.swift in Sources */,
 				8E3933932E622F74003FDE0A /* ATTService.swift in Sources */,
-				8EC568692E634ED200414ADD /* CalendarView.swift in Sources */,
+				8EC568692E634ED200414ADD /* DatePickerView.swift in Sources */,
 				8EC568612E630CAA00414ADD /* AppState.swift in Sources */,
 				8E3933972E623CEC003FDE0A /* MessagesView.swift in Sources */,
+				8EC568702E637F1500414ADD /* CalendarView.swift in Sources */,
 				8EC5686C2E63596300414ADD /* DateExtensions.swift in Sources */,
 				8E2C09712E60B1A400DBC90C /* LayeredCircleView.swift in Sources */,
 				8EC568652E63268100414ADD /* LoaderModifier.swift in Sources */,
