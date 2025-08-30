@@ -7,15 +7,48 @@
 
 import SwiftUI
 
+/// Представляет один день в календарной сетке
+struct CalendarDay {
+    let day: Int           // Номер дня (1-31)
+    let isCurrentMonth: Bool // Принадлежит ли день текущему отображаемому месяцу
+    let date: Date         // Полная дата для точных вычислений
+}
+
 struct CalendarView: View {
+    
     @State private var currentDate = Date()
+    @State private var animationDirection: AnimationDirection = .none
+    @State private var isMovingForward: Bool? = nil // nil = первый раз, true = вперед, false = назад
     
+    // MARK: - Configuration
+    private let animationDuration: Double = 0.3
+    private let itemSize: CGFloat = 46
+    private let gridSpacing: CGFloat = 6
+    private let weeksInCalendar = 6
+    
+    
+    
+    // MARK: - Constants
     private let calendar = Calendar.current
-    private let weekdays = ["Пн", "Вт", "Ср", "Чт", "Пт", "Сб", "Вс"]
-    private let maxCalendarGridHeight: CGFloat = 306 // (6 weeks * 46px) + ( )
+    private let maxCalendarGridHeight: CGFloat = 306
     
+    /// Автоматически получает названия дней недели из текущей локали
+    /// Начинает с понедельника (русская традиция)
+    private var weekdays: [String] {
+        let formatter = DateFormatter()
+        formatter.locale = Locale(identifier: "ru_RU")
+        
+        var weekdaySymbols = formatter.shortWeekdaySymbols!
+        // Перемещаем воскресенье с первой позиции в конец
+        weekdaySymbols = Array(weekdaySymbols[1...]) + [weekdaySymbols[0]]
+        
+        return weekdaySymbols.map { $0.capitalized }
+    }
     
-    // MARK: - Computed Properties
+    enum AnimationDirection {
+        case none, left, right
+    }
+    
     private var currentMonth: String {
         currentDate.monthName()
     }
@@ -36,10 +69,9 @@ struct CalendarView: View {
         VStack(spacing: .zero) {
             // Дни недели
             weekdaysHeader
-//                .padding(.bottom, .regularExt)
+                .padding(.bottom, .regularExt)
             // Сетка дней месяца
             calendarGrid
-//                .padding(.bottom, .large)
             // Навигация по месяцам
             monthNavigation
         }
@@ -54,7 +86,7 @@ struct CalendarView: View {
                 Text(weekday)
                     .font(.lzAccent)
                     .foregroundStyle(.lzWhite.opacity(0.3))
-                    .frame(height: 46)
+                    .frame(height: itemSize)
                     .frame(maxWidth: .infinity)
             }
         }
@@ -65,28 +97,42 @@ struct CalendarView: View {
     private var calendarGrid: some View {
         let days = generateDaysInMonth()
         
-        return LazyVGrid(columns: Array(repeating: GridItem(.flexible()), count: 7), spacing: 6) {
-            ForEach(days, id: \.self) { day in
-                if day == 0 {
-                    // Пустая ячейка для дней предыдущего месяца
-                    Text("")
-                        .frame(width: 46, height: 46)
-                } else {
-                    Text("\(day)")
-                        .font(.lzCaption)
-                        .foregroundStyle(.lzWhite)
-                        .frame(width: 46, height: 46)
-                        .background(
-                            Circle()
-                                .fill(isToday(day: day) ? Color.lzAccent : Color.clear)
-                        )
-                        .onTapGesture {
-                            print("DEBUG: tap day \(day)")
-                        }
-                }
+        return LazyVGrid(columns: Array(repeating: GridItem(.flexible()), count: 7), spacing: gridSpacing) {
+            ForEach(days.indices, id: \.self) { index in
+                let calendarDay = days[index]
+                Text("\(calendarDay.day)")
+                    .font(.lzCaption)
+                    .foregroundStyle(calendarDay.isCurrentMonth ? .lzWhite : .lzWhite.opacity(0.3))
+                    .frame(width: itemSize, height: itemSize)
+                    .background(
+                        Circle()
+                            .fill(isToday(calendarDay: calendarDay) ? Color.lzAccent : Color.clear)
+                    )
+                    .onTapGesture {
+                        print("DEBUG: tap day \(calendarDay.day), isCurrentMonth: \(calendarDay.isCurrentMonth)")
+                    }
             }
         }
         .frame(height: maxCalendarGridHeight, alignment: .top)
+        .id(currentDate.month) // Ключ для анимации
+        .transition(getTransition())
+    }
+    
+    private func getTransition() -> AnyTransition {
+        switch animationDirection {
+        case .left:
+            return .asymmetric(
+                insertion: .move(edge: .trailing).combined(with: .opacity),
+                removal: .move(edge: .leading).combined(with: .opacity)
+            )
+        case .right:
+            return .asymmetric(
+                insertion: .move(edge: .leading).combined(with: .opacity),
+                removal: .move(edge: .trailing).combined(with: .opacity)
+            )
+        case .none:
+            return .opacity
+        }
     }
     
     // MARK: - Month Navigation
@@ -98,9 +144,13 @@ struct CalendarView: View {
                  Text(currentMonth)
                      .font(.lzSectionHeader)
                      .foregroundStyle(.lzWhite)
+                     .id(currentDate.month) // Ключ для анимации заголовка
+                     .transition(getTransition())
                  Text(currentYear)
                      .font(.lzAccent)
                      .foregroundStyle(.lzWhite.opacity(0.6))
+                     .id(currentDate.year) // Ключ для анимации года
+                     .transition(getTransition())
              }
             Spacer()
             makeNavigationbutton(systemImage: "chevron.right", onTap: nextMonth)
@@ -117,50 +167,114 @@ struct CalendarView: View {
         }
     }
     
-    // MARK: - Helper Methods
-    private func generateDaysInMonth() -> [Int] {
-        guard let monthInterval = calendar.dateInterval(of: .month, for: currentDate) else {
+    // MARK: - Calendar Generation
+    private func generateDaysInMonth() -> [CalendarDay] {
+        guard let monthInterval = calendar.dateInterval(of: .month, for: currentDate),
+              let daysInMonth = calendar.range(of: .day, in: .month, for: currentDate)?.count else {
             return []
         }
         
         let firstOfMonth = monthInterval.start
-        let firstWeekday = firstOfMonth.component(.weekday)
-        let numberOfDaysInMonth = calendar.range(of: .day, in: .month, for: currentDate)?.count ?? 0
+        let firstWeekday = adjustWeekdayForMonday(firstOfMonth.component(.weekday))
+        var days: [CalendarDay] = []
         
-        // Корректируем для понедельника как первого дня недели
-        let adjustedFirstWeekday = firstWeekday == 1 ? 7 : firstWeekday - 1
-        
-        var days: [Int] = []
-        
-        // Добавляем пустые дни в начале
-        for _ in 1..<adjustedFirstWeekday {
-            days.append(0)
+        // Дни предыдущего месяца (для заполнения начала недели)
+        if firstWeekday > 1 {
+            let previousMonth = calendar.date(byAdding: .month, value: -1, to: currentDate) ?? currentDate
+            let daysInPreviousMonth = calendar.range(of: .day, in: .month, for: previousMonth)?.count ?? 0
+            
+            for i in 0..<(firstWeekday - 1) {
+                let dayNumber = daysInPreviousMonth - (firstWeekday - 2) + i
+                if let date = calendar.date(byAdding: .day, value: -(firstWeekday - 1 - i), to: firstOfMonth) {
+                    days.append(CalendarDay(day: dayNumber, isCurrentMonth: false, date: date))
+                }
+            }
         }
         
-        // Добавляем дни месяца
-        for day in 1...numberOfDaysInMonth {
-            days.append(day)
+        // Дни текущего месяца
+        for day in 1...daysInMonth {
+            if let date = calendar.date(byAdding: .day, value: day - 1, to: firstOfMonth) {
+                days.append(CalendarDay(day: day, isCurrentMonth: true, date: date))
+            }
+        }
+        
+        // Дни следующего месяца (для завершения последней недели)
+        let remainingDaysInWeek = 7 - (days.count % 7)
+        if remainingDaysInWeek < 7 {
+            for day in 1...remainingDaysInWeek {
+                if let date = calendar.date(byAdding: .day, value: daysInMonth + day - 1, to: firstOfMonth) {
+                    days.append(CalendarDay(day: day, isCurrentMonth: false, date: date))
+                }
+            }
         }
         
         return days
     }
     
-    private func isToday(day: Int) -> Bool {
-        let today = Date()
-        return day == today.day && 
-               currentDate.month == today.month && 
-               currentDate.year == today.year
+    /// Корректирует день недели для начала с понедельника (русская традиция)
+    private func adjustWeekdayForMonday(_ weekday: Int) -> Int {
+        return weekday == 1 ? 7 : weekday - 1
     }
     
+    private func isToday(calendarDay: CalendarDay) -> Bool {
+        let today = Date()
+        return calendarDay.day == today.day && 
+               calendarDay.date.month == today.month && 
+               calendarDay.date.year == today.year
+    }
+    
+    // MARK: - Navigation Actions
     private func previousMonth() {
-        currentDate = calendar.date(byAdding: .month, value: -1, to: currentDate) ?? currentDate
+        navigateToMonth(direction: .right, monthOffset: -1, isForward: false)
     }
     
     private func nextMonth() {
-        currentDate = calendar.date(byAdding: .month, value: 1, to: currentDate) ?? currentDate
+        navigateToMonth(direction: .left, monthOffset: 1, isForward: true)
+    }
+    
+    private func navigateToMonth(direction: AnimationDirection, monthOffset: Int, isForward: Bool) {
+        animationDirection = direction
+        
+        withAnimation(.easeInOut(duration: animationDuration)) {
+            isMovingForward = isForward
+            currentDate = calendar.date(byAdding: .month, value: monthOffset, to: currentDate) ?? currentDate
+        }
     }
 }
 
 #Preview {
     CalendarView()
 }
+
+// MARK: - Date Extension
+//// MARK: - Date Extension
+//extension Date {
+//    private static let calendar = Calendar.current
+//    
+//    func component(_ component: Calendar.Component) -> Int {
+//        return Self.calendar.component(component, from: self)
+//    }
+//    
+//    var day: Int {
+//        component(.day)
+//    }
+//    
+//    var month: Int {
+//        component(.month)
+//    }
+//    
+//    var year: Int {
+//        component(.year)
+//    }
+//    
+//    func monthName(locale: Locale = Locale(identifier: "ru_RU")) -> String {
+//        let formatter = DateFormatter()
+//        formatter.locale = locale
+//        formatter.dateFormat = "LLLL"
+//        return formatter.string(from: self).capitalized
+//    }
+//    
+//    func yearString() -> String {
+//        String(year)
+//    }
+//}
