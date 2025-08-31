@@ -11,15 +11,14 @@ struct ShootPlanState {
     var event: Event
     var editMode: Bool = false
     var isShowConfirmationDialog = false
-//    init(role: Event) {
-//        self.role = role
-//    }
 }
 
 enum ShootPlanIntent {
     case selectPlan(index: Int)
     case toggleEditingMode
     case tapActionButton
+    case confirmDelete(Bool)
+    case showDialog(Bool)
 }
 
 final class ShootPlanViewStore: ViewStore<ShootPlanState, ShootPlanIntent> {
@@ -32,13 +31,19 @@ final class ShootPlanViewStore: ViewStore<ShootPlanState, ShootPlanIntent> {
             state.editMode.toggle()
         case .tapActionButton:
             if state.editMode {
-                state.isShowConfirmationDialog.toggle()
+                return .action(.showDialog(true))
             } else {
                 return .asyncTask {
                     // Save to local database
                     return .none
                 }
             }
+        case .confirmDelete(let isAccept):
+            if isAccept {
+                
+            }
+        case .showDialog(let isShow):
+            state.isShowConfirmationDialog = isShow
         }
         
         return .none
@@ -48,7 +53,6 @@ final class ShootPlanViewStore: ViewStore<ShootPlanState, ShootPlanIntent> {
 struct ShootPlanView: View {
     @StateObject var store: ShootPlanViewStore
     private let navTitle = "Shoot Plan"
-//    @State var editMode: Bool = false
     
     
     //MARK: - UI
@@ -76,8 +80,22 @@ struct ShootPlanView: View {
             .navigationBarTitleDisplayMode(.inline)
             .hideInlineNavigationTitle()
             .background(BackgroundGradient().ignoresSafeArea(.all))
-            .confirmationDialog("", isPresented: .constant(false)) {
-                
+            .confirmationDialog(
+                "Are you sure you want to delete the plan for this day?",
+                isPresented: Binding(
+                    get: { store.state.isShowConfirmationDialog },
+                    set: { store.send(.showDialog($0)) }
+                )
+            ) {
+                Button("Delete", role: .destructive) {
+                    store.send(.confirmDelete(true))
+                }
+                Button("Cancel", role: .cancel) {
+                    store.send(.showDialog(false))
+                }
+            }
+            .onChange(of: store.state.isShowConfirmationDialog) { newValue in
+                print("DEBUG: newValue")
             }
     }
     
@@ -89,6 +107,9 @@ struct ShootPlanView: View {
             planList
         }
         .frame(maxHeight: .infinity, alignment: .top)
+        .overlay(alignment: .bottom) {
+            actionButton
+        }
         .padding(.horizontal, .mediumExt)
     }
     
@@ -117,7 +138,7 @@ struct ShootPlanView: View {
                     image: .pencil,
                     isActive: store.state.editMode,
                     action: {
-                        withAnimation(.bouncy(duration: 0.2)) {
+                        withAnimation(.bouncy(duration: 0.3)) {
                             store.send(.toggleEditingMode)
                         }
                     }
@@ -139,9 +160,9 @@ struct ShootPlanView: View {
     var actionButton: some View {
         MainButtonView(
             title: store.state.editMode ? "Delete Plan" : "Done",
-            style: store.state.editMode ? .roundedFill(.lzAccent) : .capsule(.lzWhite)
+            style: store.state.editMode ? .capsuleFill(.lzAccent) : .capsule(.lzWhite)
         ) {
-            
+            store.send(.showDialog(true))
         }
     }
 }

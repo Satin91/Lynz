@@ -50,7 +50,7 @@ struct MainButtonView: View {
         var cornerRadius: CGFloat {
             switch self {
             case .capsule, .capsuleFill:
-                return 28 // Для capsule делаем половину высоты
+                return 28
             case .roundedFill, .roundedStroke:
                 return 16
             }
@@ -96,6 +96,7 @@ struct MainButtonView: View {
                         .stroke(style.borderColor, lineWidth: 1)
                 )
                 .clipShape(RoundedRectangle(cornerRadius: style.cornerRadius))
+                .contentShape(Rectangle())
                 .shadow(
                     color: style.hasShadow ? .black.opacity(0.1) : .clear,
                     radius: style.hasShadow ? 8 : 0,

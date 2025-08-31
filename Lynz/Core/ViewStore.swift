@@ -115,4 +115,8 @@ extension ViewStore: Navigation {
     func pop(_ to: Page) {
         coordinator.pop()
     }
+    
+    func popToRoot() {
+        coordinator.popToRoot()
+    }
 }

@@ -47,6 +47,10 @@ final class Coordinator: ObservableObject {
         path.removeLast()
     }
     
+    func popToRoot() {
+        path.removeLast(path.count - 1)
+    }
+    
     @ViewBuilder func build(page: Page) -> some View {
         switch page {
         case .root:
