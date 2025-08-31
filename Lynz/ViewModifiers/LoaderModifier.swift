@@ -55,7 +55,6 @@ struct LoaderModifier: ViewModifier {
 
 extension View {
     /// Модификатор для отображения лоадера поверх всего интерфейса
-    /// - Parameter isLoading: Булево значение, определяющее показывать ли лоадер
     func loader(isLoading: Bool) -> some View {
         modifier(LoaderModifier(isLoading: isLoading))
     }

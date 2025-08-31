@@ -11,13 +11,12 @@ struct EventRoleDescription: View {
     var roleName: String? = nil
     let date: Date
     
-    
     var body: some View {
         HStack {
             Text(date.dayMonthYearDots)
             Spacer()
             if let roleName {
-                Text(roleName.uppercased())
+                Text("role:" + " " + roleName.uppercased())
             }
         }
         .font(.lzAccent)

@@ -18,11 +18,9 @@ struct MainView: View {
             content
                 .navigationDestination(for: Page.self) { page in
                     coordinator.build(page: page)
-                        
                 }
         }
     }
-    
     
     @ViewBuilder
     var controlsLayer: some View {
@@ -32,12 +30,9 @@ struct MainView: View {
     }
     
     var content: some View {
-        TabBarView()
-//            .environmentObject(coordinator)
-//        coordinator.build(page: .allowTrackingView)
+        let page = TestEnvironment.forcePage(test: .shootPlan(Event.stub), original: .root)
+        return coordinator.build(page: page)
     }
-    
-    
 }
 
 #Preview {

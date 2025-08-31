@@ -82,14 +82,16 @@ struct Event: Codable, Hashable {
     let id: UUID
     let role: Role
     let date: Date
-    let planCategories: [PlanCategory]
+    var planCategories: [PlanCategory]
     
-    init(role: Role, date: Date, planCategories: [PlanCategory] = []) {
+    init(role: Role, date: Date, planCategories: [PlanCategory]) {
         self.id = UUID()
         self.role = role
         self.date = date
         self.planCategories = planCategories
     }
+    
+    static var stub = Event(role: .model, date: Date(), planCategories: Role.photographer.defaultPlansCategories)
 }
 
 struct PlanCategory: Codable, Hashable {
@@ -97,26 +99,6 @@ struct PlanCategory: Codable, Hashable {
     var isActive: Bool
 }
 
-///// Категории планов для события
-//enum PlanCategory: String, CaseIterable, Codable {
-//    case applyMakeupAndStyleHair
-//    case selectOutfitForShoot
-//    case prepareEquipment
-//    case scoutLocation
-//
-//    var name: String {
-//        switch self {
-//        case .applyMakeupAndStyleHair:
-//            return "Apply makeup and style hair"
-//        case .selectOutfitForShoot:
-//            return "Select outfit for the shoot"
-//        case .prepareEquipment:
-//            return "Prepare equipment"
-//        case .scoutLocation:
-//            return "plan.scout_location"
-//        }
-//    }
-//}
 
 // MARK: - Mock Data for Testing
 extension Event {

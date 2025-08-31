@@ -30,9 +30,6 @@ final class CalendarViewStore: ViewStore<CalendarState, CalendarIntent> {
 }
 
 struct CalendarView: View {
-    
-//    @EnvironmentObject var coordinator: Coordinator
-    
     @StateObject var store = CalendarViewStore(initialState: .init())
     
     var body: some View {
@@ -45,7 +42,7 @@ struct CalendarView: View {
             store.send(.tapCalendar(day: day))
         }
         .frame(maxHeight: .infinity, alignment: .top)
-        .background(Color.gray)
+        .background(BackgroundGradient().ignoresSafeArea(.all))
         
     }
 }

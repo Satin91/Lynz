@@ -22,7 +22,8 @@ final class RoleViewStore: ViewStore<RoleState, RoleIntent> {
         
         switch intent {
         case .tapRole(let role):
-            push(.shootPlan(role))
+            let newEvent = Event(role: role, date: state.day.date, planCategories: role.defaultPlansCategories)
+            push(.shootPlan(newEvent))
         }
         
         return .none
@@ -55,7 +56,7 @@ struct RoleView: View {
             .frame(maxHeight: .infinity)
         }
         .padding(.horizontal, .mediumExt)
-        .background(Color.gray.ignoresSafeArea(.all))
+        .background(BackgroundGradient().ignoresSafeArea(.all))
     }
     
     
