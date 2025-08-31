@@ -19,6 +19,8 @@ struct CalendarDay: Identifiable {
         date.month == today.month &&
         date.year == today.year
     }
+    
+    static var stub = CalendarDay(day: 1, isCurrentMonth: true, date: Date())
 }
 
 // MARK: - Calendar State

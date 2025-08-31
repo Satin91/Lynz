@@ -18,6 +18,7 @@ struct MainView: View {
             content
                 .navigationDestination(for: Page.self) { page in
                     coordinator.build(page: page)
+                        
                 }
         }
     }

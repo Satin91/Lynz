@@ -7,62 +7,78 @@
 
 import SwiftUI
 
+struct RoleState {
+    var day: CalendarDay
+    
+}
 
-// Модель Role проектируется с учетом дальнейшего увеличения ролей: ретушер, визажист или еще кто-нибудь
-enum Role: CaseIterable {
-    case photographer
-    case model
+enum RoleIntent {
+    case tapRole(role: Role)
+}
+
+final class RoleViewStore: ViewStore<RoleState, RoleIntent> {
     
-    // or localizedStringKey
-    var name: String {
-        switch self {
-        case .photographer:
-            return "photographer"
-        case .model:
-            return "model"
+    override func reduce(state: inout RoleState, intent: RoleIntent) -> Effect<RoleIntent> {
+        
+        switch intent {
+        case .tapRole(let role):
+            push(.shootPlan(role))
         }
-    }
-    
-    var image: ImageResource {
-        switch self {
-        case .photographer:
-            return .photographer
-        case .model:
-            return .model
-        }
+        
+        return .none
     }
 }
 
 struct RoleView: View {
     
+    private let navTitle = "Choose you role"
+    
+    @StateObject var store: RoleViewStore
+    
+    init(day: CalendarDay) {
+        _store = StateObject(wrappedValue: RoleViewStore(initialState: .init(day: day)))
+    }
+    
     var body: some View {
         content
-            .navigationTitle("Choose Role")
+            .navigationTitle(navTitle)
             .navigationBarTitleDisplayMode(.inline)
+            .hideInlineNavigationTitle()
     }
     
     var content: some View {
         ScrollView {
-            rolesList
-                .frame(maxHeight: .infinity)
-                
+            VStack {
+                screenHeader
+                rolesList
+            }
+            .frame(maxHeight: .infinity)
         }
+        .padding(.horizontal, .mediumExt)
         .background(Color.gray.ignoresSafeArea(.all))
+    }
+    
+    
+    var screenHeader: some View {
+        VStack(spacing: .regular) {
+            ScreenHeaderView(title: navTitle)
+            EventRoleDescription(date: store.state.day.date)
+        }
     }
     
     var rolesList: some View {
         VStack(spacing: .smallExt) {
             ForEach(Role.allCases, id: \.self) { role in
-                makeRoleItem(role: role)
+                makeRoleCard(role: role)
                     .onTapGesture {
-                        Coordinator.shared.push(page: .role(CalendarDay(day: 7, isCurrentMonth: true, date: Date()) ))
+                        store.send(.tapRole(role: role))
                     }
             }
         }
     }
     
-    func makeRoleItem(role: Role) -> some View {
-        Image(role.image)
+    func makeRoleCard(role: Role) -> some View {
+        Image(role.defaultPhoto)
             .resizable()
             .scaledToFit()
             .overlay(alignment: .bottom) {
@@ -75,11 +91,9 @@ struct RoleView: View {
                     .background(Color.lzWhite)
             }
             .clipShape(RoundedRectangle(cornerRadius: 20))
-            
     }
-    
 }
 
 #Preview {
-    RoleView()
+    RoleView(day: .stub)
 }

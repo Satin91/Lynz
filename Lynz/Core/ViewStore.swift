@@ -8,6 +8,11 @@
 import Foundation
 import Combine
 
+class ViewStoreBase: ObservableObject {
+    @Published var coorinator: Coordinator = Coordinator()
+    @Published var executor = Executor()
+}
+
 class ViewStore<State, Intent>: ViewStateProtocol {
     @Published private(set) var state: State
     
@@ -105,5 +110,9 @@ extension ViewStore {
 extension ViewStore: Navigation {
     func push(_ to: Page) {
         coordinator.push(page: to)
+    }
+    
+    func pop(_ to: Page) {
+        coordinator.pop()
     }
 }

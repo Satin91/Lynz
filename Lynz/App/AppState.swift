@@ -6,10 +6,11 @@
 //
 
 import Foundation
+import SwiftUI
 
 class AppState: ObservableObject {
     static let shared = AppState()
-    
+    @Published var navBarColor: Color = .white
     private init() { }
     
     @Published private(set) var isShowLoader: Bool = false
@@ -20,5 +21,9 @@ class AppState: ObservableObject {
     
     func hideLoader() {
         isShowLoader = false
+    }
+    
+    func setNavvigationBarColor(_ color: Color) {
+        navBarColor = color
     }
 }

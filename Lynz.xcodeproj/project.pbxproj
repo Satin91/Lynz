@@ -29,6 +29,11 @@
 		8E3933952E623104003FDE0A /* Executor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E3933942E623104003FDE0A /* Executor.swift */; };
 		8E3933972E623CEC003FDE0A /* MessagesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E3933962E623CEC003FDE0A /* MessagesView.swift */; };
 		8E7860222E644912000C7CB5 /* RoleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E7860212E644912000C7CB5 /* RoleView.swift */; };
+		8E7860242E64807F000C7CB5 /* NavigationBarExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E7860232E64807F000C7CB5 /* NavigationBarExtensions.swift */; };
+		8E7860262E648592000C7CB5 /* EventRoleDescription.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E7860252E648592000C7CB5 /* EventRoleDescription.swift */; };
+		8E7860282E648BC1000C7CB5 /* ShootPlanView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E7860272E648BC1000C7CB5 /* ShootPlanView.swift */; };
+		8E78602D2E648F45000C7CB5 /* Role.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E78602C2E648F45000C7CB5 /* Role.swift */; };
+		8E7860302E649115000C7CB5 /* RolePresentation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E78602F2E649115000C7CB5 /* RolePresentation.swift */; };
 		8EC5685B2E63076500414ADD /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = 8EC5685A2E63076500414ADD /* Lottie */; };
 		8EC5685D2E6307D200414ADD /* LottieView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EC5685C2E6307D200414ADD /* LottieView.swift */; };
 		8EC5685F2E630A0500414ADD /* loading.json in Resources */ = {isa = PBXBuildFile; fileRef = 8EC5685E2E630A0500414ADD /* loading.json */; };
@@ -66,6 +71,11 @@
 		8E3933942E623104003FDE0A /* Executor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Executor.swift; sourceTree = "<group>"; };
 		8E3933962E623CEC003FDE0A /* MessagesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessagesView.swift; sourceTree = "<group>"; };
 		8E7860212E644912000C7CB5 /* RoleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoleView.swift; sourceTree = "<group>"; };
+		8E7860232E64807F000C7CB5 /* NavigationBarExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationBarExtensions.swift; sourceTree = "<group>"; };
+		8E7860252E648592000C7CB5 /* EventRoleDescription.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventRoleDescription.swift; sourceTree = "<group>"; };
+		8E7860272E648BC1000C7CB5 /* ShootPlanView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShootPlanView.swift; sourceTree = "<group>"; };
+		8E78602C2E648F45000C7CB5 /* Role.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Role.swift; sourceTree = "<group>"; };
+		8E78602F2E649115000C7CB5 /* RolePresentation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RolePresentation.swift; sourceTree = "<group>"; };
 		8EC5685C2E6307D200414ADD /* LottieView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LottieView.swift; sourceTree = "<group>"; };
 		8EC5685E2E630A0500414ADD /* loading.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = loading.json; sourceTree = "<group>"; };
 		8EC568602E630CAA00414ADD /* AppState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppState.swift; sourceTree = "<group>"; };
@@ -109,6 +119,7 @@
 		8E14DC752E609F3900BB5117 /* Lynz */ = {
 			isa = PBXGroup;
 			children = (
+				8E78602E2E648F59000C7CB5 /* Models */,
 				8E14DC912E60A62600BB5117 /* App */,
 				8E14DC892E609FE100BB5117 /* Core */,
 				8E2C096C2E60AE1500DBC90C /* Screens */,
@@ -174,6 +185,7 @@
 				8E3933962E623CEC003FDE0A /* MessagesView.swift */,
 				8EC5686F2E637F1500414ADD /* CalendarView.swift */,
 				8E7860212E644912000C7CB5 /* RoleView.swift */,
+				8E7860272E648BC1000C7CB5 /* ShootPlanView.swift */,
 			);
 			path = Screens;
 			sourceTree = "<group>";
@@ -187,6 +199,7 @@
 				8E2C09702E60B1A400DBC90C /* LayeredCircleView.swift */,
 				8EC5685C2E6307D200414ADD /* LottieView.swift */,
 				8EC568622E630CDD00414ADD /* LoaderView.swift */,
+				8E7860252E648592000C7CB5 /* EventRoleDescription.swift */,
 			);
 			path = ViewComponents;
 			sourceTree = "<group>";
@@ -209,10 +222,20 @@
 			path = Services;
 			sourceTree = "<group>";
 		};
+		8E78602E2E648F59000C7CB5 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				8E78602F2E649115000C7CB5 /* RolePresentation.swift */,
+				8E78602C2E648F45000C7CB5 /* Role.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
 		8EC5686A2E63594E00414ADD /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
 				8EC5686B2E63596300414ADD /* DateExtensions.swift */,
+				8E7860232E64807F000C7CB5 /* NavigationBarExtensions.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -301,12 +324,15 @@
 				8EC568692E634ED200414ADD /* DatePickerView.swift in Sources */,
 				8EC568612E630CAA00414ADD /* AppState.swift in Sources */,
 				8E3933972E623CEC003FDE0A /* MessagesView.swift in Sources */,
+				8E7860282E648BC1000C7CB5 /* ShootPlanView.swift in Sources */,
 				8EC568702E637F1500414ADD /* CalendarView.swift in Sources */,
 				8EC5686C2E63596300414ADD /* DateExtensions.swift in Sources */,
 				8E2C09712E60B1A400DBC90C /* LayeredCircleView.swift in Sources */,
+				8E7860262E648592000C7CB5 /* EventRoleDescription.swift in Sources */,
 				8EC568652E63268100414ADD /* LoaderModifier.swift in Sources */,
 				8E3933902E622F44003FDE0A /* DependencyStore.swift in Sources */,
 				8E2C09752E60DFFD00DBC90C /* MainButtonView.swift in Sources */,
+				8E7860242E64807F000C7CB5 /* NavigationBarExtensions.swift in Sources */,
 				8E14DC852E609F6700BB5117 /* ViewStateProtocol.swift in Sources */,
 				8E14DC952E60AAE700BB5117 /* TabBarView.swift in Sources */,
 				8E14DC792E609F3900BB5117 /* MainView.swift in Sources */,
@@ -318,11 +344,13 @@
 				8EC568672E63302B00414ADD /* TransparentBackground.swift in Sources */,
 				8E14DC772E609F3900BB5117 /* LynzApp.swift in Sources */,
 				8E14DC8D2E60A27300BB5117 /* Padding.swift in Sources */,
+				8E78602D2E648F45000C7CB5 /* Role.swift in Sources */,
 				8EC568632E630CDD00414ADD /* LoaderView.swift in Sources */,
 				8EC568722E6383F800414ADD /* ScreenHeaderView.swift in Sources */,
 				8E2C096E2E60AE3A00DBC90C /* AllowTrackingView.swift in Sources */,
 				8E39338E2E622E67003FDE0A /* ReadSize.swift in Sources */,
 				8E7860222E644912000C7CB5 /* RoleView.swift in Sources */,
+				8E7860302E649115000C7CB5 /* RolePresentation.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

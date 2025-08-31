@@ -50,12 +50,12 @@ struct ScreenHeaderView: View {
     
     // MARK: - Properties
     let title: String
-    let editButtonState: EditButtonState
-    let actionButtonState: ActionButtonState
-    let actionButtonIcon: String
+    let editButtonState: EditButtonState?
+    let actionButtonState: ActionButtonState?
+    let actionButtonIcon: String?
     
-    let onEditButtonTap: () -> Void
-    let onActionButtonTap: () -> Void
+    let onEditButtonTap: (() -> Void)?
+    let onActionButtonTap: (() -> Void)?
     
     // MARK: - Configuration
     private let buttonSize: CGFloat = 44
@@ -70,24 +70,38 @@ struct ScreenHeaderView: View {
             
             Spacer()
             
-            // Кнопки справа
-            HStack(spacing: buttonSpacing) {
-                // Кнопка действия (вторая кнопка)
-                CircleButton(
-                    icon: actionButtonIcon,
-                    isActive: actionButtonState.isActive,
-                    action: onActionButtonTap
-                )
-                
-                // Кнопка редактирования (первая кнопка)
-                CircleButton(
-                    icon: editButtonState.icon,
-                    isActive: editButtonState.isActive,
-                    action: onEditButtonTap
-                )
+            // Кнопки справа (показываем только если они есть)
+            if hasButtons {
+                HStack(spacing: buttonSpacing) {
+                    // Кнопка действия (вторая кнопка)
+                    if let actionButtonIcon = actionButtonIcon,
+                       let actionButtonState = actionButtonState,
+                       let onActionButtonTap = onActionButtonTap {
+                        CircleButton(
+                            icon: actionButtonIcon,
+                            isActive: actionButtonState.isActive,
+                            action: onActionButtonTap
+                        )
+                    }
+                    
+                    // Кнопка редактирования (первая кнопка)
+                    if let editButtonState = editButtonState,
+                       let onEditButtonTap = onEditButtonTap {
+                        CircleButton(
+                            icon: editButtonState.icon,
+                            isActive: editButtonState.isActive,
+                            action: onEditButtonTap
+                        )
+                    }
+                }
             }
         }
-        .padding(.horizontal, .mediumExt)
+    }
+    
+    // Проверяем, есть ли хотя бы одна кнопка
+    private var hasButtons: Bool {
+        return (editButtonState != nil && onEditButtonTap != nil) ||
+               (actionButtonState != nil && actionButtonIcon != nil && onActionButtonTap != nil)
     }
 }
 
@@ -118,14 +132,53 @@ private struct CircleButton: View {
 // MARK: - Convenience Initializers
 extension ScreenHeaderView {
     
-    /// Упрощенный инициализатор для быстрого использования
+    /// Инициализатор только с заголовком (без кнопок)
+    init(title: String) {
+        self.title = title
+        self.editButtonState = nil
+        self.actionButtonState = nil
+        self.actionButtonIcon = nil
+        self.onEditButtonTap = nil
+        self.onActionButtonTap = nil
+    }
+    
+    /// Инициализатор с кнопкой редактирования
+    init(
+        title: String,
+        isEditing: Bool = false,
+        onEdit: @escaping () -> Void
+    ) {
+        self.title = title
+        self.editButtonState = isEditing ? .editing : .waiting
+        self.actionButtonState = nil
+        self.actionButtonIcon = nil
+        self.onEditButtonTap = onEdit
+        self.onActionButtonTap = nil
+    }
+    
+    /// Инициализатор с кнопкой действия
+    init(
+        title: String,
+        actionIcon: String,
+        isActionActive: Bool = false,
+        onAction: @escaping () -> Void
+    ) {
+        self.title = title
+        self.editButtonState = nil
+        self.actionButtonState = isActionActive ? .active : .inactive
+        self.actionButtonIcon = actionIcon
+        self.onEditButtonTap = nil
+        self.onActionButtonTap = onAction
+    }
+    
+    /// Полный инициализатор с обеими кнопками
     init(
         title: String,
         actionIcon: String,
         isEditing: Bool = false,
         isActionActive: Bool = false,
-        onEdit: @escaping () -> Void = {},
-        onAction: @escaping () -> Void = {}
+        onEdit: @escaping () -> Void,
+        onAction: @escaping () -> Void
     ) {
         self.title = title
         self.editButtonState = isEditing ? .editing : .waiting
@@ -139,41 +192,39 @@ extension ScreenHeaderView {
 // MARK: - Preview
 #Preview {
     VStack(spacing: 40) {
-        // Обычное состояние
+        // Только заголовок (без кнопок)
+        ScreenHeaderView(title: "Простой заголовок")
+        
+        // Только кнопка редактирования
         ScreenHeaderView(
-            title: "Заголовок экрана",
-            actionIcon: "plus",
-            isEditing: false,
-            isActionActive: false
+            title: "С редактированием",
+            isEditing: false
         ) {
             print("Edit tapped")
-        } onAction: {
+        }
+        
+        // Только кнопка действия
+        ScreenHeaderView(
+            title: "С действием",
+            actionIcon: "plus",
+            isActionActive: true
+        ) {
             print("Action tapped")
         }
         
-        // Режим редактирования
+        // Обе кнопки
         ScreenHeaderView(
-            title: "Режим редактирования",
-            actionIcon: "plus",
-            isEditing: true,
-            isActionActive: true
-        ) {
-            print("Done tapped")
-        } onAction: {
-            print("Add tapped")
-        }
-        
-        // Только активная кнопка действия
-        ScreenHeaderView(
-            title: "Активная кнопка",
+            title: "Полный заголовок",
             actionIcon: "heart",
-            isEditing: false,
-            isActionActive: true
-        ) {
-            print("Edit tapped")
-        } onAction: {
-            print("Heart tapped")
-        }
+            isEditing: true,
+            isActionActive: true,
+            onEdit: {
+                print("Edit tapped")
+            },
+            onAction: {
+                print("Action tapped")
+            }
+        )
         
         Spacer()
     }

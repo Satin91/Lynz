@@ -28,6 +28,12 @@ extension Date {
         component(.year)
     }
     
+    var dayMonthYearDots: String {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "dd.MM.yyyy"
+        return formatter.string(from: self)
+    }
+    
     func monthName(locale: Locale = Locale(identifier: "ru_RU")) -> String {
         let formatter = DateFormatter()
         formatter.locale = locale
