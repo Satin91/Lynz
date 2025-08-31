@@ -8,7 +8,8 @@
 import SwiftUI
 
 /// Представляет один день в календарной сетке
-struct CalendarDay {
+struct CalendarDay: Identifiable {
+    var id = UUID()
     let day: Int           // Номер дня (1-31)
     let isCurrentMonth: Bool // Принадлежит ли день текущему отображаемому месяцу
     let date: Date         // Полная дата для точных вычислений
@@ -65,13 +66,13 @@ final class DatePickerViewStore: ViewStore<DatePickerState, DatePickerIntent> {
         switch intent {
         case .previousMonth:
             if let newDate = calendar.date(byAdding: .month, value: -1, to: state.currentDate) {
-                    state.currentDate = newDate
+                state.currentDate = newDate
             }
             return .action(.generateCalendar)
             
         case .nextMonth:
             if let newDate = calendar.date(byAdding: .month, value: 1, to: state.currentDate) {
-                    state.currentDate = newDate
+                state.currentDate = newDate
             }
             return .action(.generateCalendar)
             
@@ -135,20 +136,28 @@ final class DatePickerViewStore: ViewStore<DatePickerState, DatePickerIntent> {
     }
 }
 
+
 struct DatePickerView: View {
+    
+    var onTapDay: ((CalendarDay) -> Void)?
     
     // MARK: - Configuration
     private let itemSize: CGFloat = 46
     private let gridSpacing: CGFloat = 6
     private let maxCalendarGridHeight: CGFloat = 306
     
+    private var calendarItems: [GridItem] {
+        Array(repeating: GridItem(.flexible(), spacing: gridSpacing), count: 7)
+    }
+    
     enum AnimationDirection {
         case none, left, right
     }
-    
+    @State var animationDirection: AnimationDirection = .none
+    @State var uuid = UUID()
     // MARK: - Store
     @StateObject private var store = DatePickerViewStore(initialState: DatePickerState())
-    @State var animationDirection: AnimationDirection = .none
+    
     
     var body: some View {
         content
@@ -156,20 +165,14 @@ struct DatePickerView: View {
     
     var content: some View {
         VStack(spacing: .zero) {
-            // Дни недели
             weekdaysHeader
-                .padding(.bottom, .regularExt)
-            // Сетка дней месяца
             calendarGrid
-            // Навигация по месяцам
             monthNavigation
         }
         .padding(.horizontal, .mediumExt)
+
         .onAppear {
             store.send(.generateCalendar)
-        }
-        .onChange(of: store.state.currentDate) { newValue in
-            print("DEBUG: animationDirection \(newValue)")
         }
     }
     
@@ -181,34 +184,42 @@ struct DatePickerView: View {
                     .font(.lzAccent)
                     .foregroundStyle(.lzWhite.opacity(0.3))
                     .frame(height: itemSize)
-                    .frame(maxWidth: .infinity)
+                    .frame(maxWidth: itemSize)
             }
         }
         .padding(.horizontal, .small)
     }
     
-    // MARK: - Calendar Grid
     private var calendarGrid: some View {
-        LazyVGrid(columns: Array(repeating: GridItem(.flexible()), count: 7), spacing: gridSpacing) {
-            ForEach(store.state.calendarDays.indices, id: \.self) { index in
-                let calendarDay = store.state.calendarDays[index]
-                Text("\(calendarDay.day)")
-                    .font(.lzCaption)
-                    .foregroundStyle(calendarDay.isCurrentMonth ? .lzWhite : .lzWhite.opacity(0.3))
-                    .frame(width: itemSize, height: itemSize)
-                    .background(
-                        RoundedRectangle(cornerRadius: 16)
-                            .fill(calendarDay.isToday ? Color.lzWhite.opacity(0.15) : Color.clear)
-                    )
-                    .onTapGesture {
-                        store.send(.selectDay(calendarDay))
-                    }
+        List { // Обернул в List чтобы для Lazy Grid правильно заработала анимация
+            LazyVGrid(columns: calendarItems, spacing: gridSpacing) {
+                ForEach(store.state.calendarDays.indices, id: \.self) { index in
+                    let calendarDay = store.state.calendarDays[index]
+                    Text("\(calendarDay.day)")
+                        .font(.lzCaption)
+                        .foregroundStyle(calendarDay.isCurrentMonth ? .lzWhite : .lzWhite.opacity(0.3))
+                        .frame(width: itemSize, height: itemSize)
+                        .background(
+                            RoundedRectangle(cornerRadius: 16)
+                                .fill(calendarDay.isToday ? Color.lzWhite.opacity(0.15) : Color.clear)
+                        )
+                        .onTapGesture {
+//                            store.send(.selectDay(calendarDay))
+                            onTapDay?(calendarDay)
+                        }
+                }
             }
+            .listRowBackground(Color.clear)
+            .listRowSeparator(.hidden)
+            .listRowInsets(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0))
+            
         }
         .frame(height: maxCalendarGridHeight, alignment: .top)
-        .id(store.state.currentDate.month) // id для аниации месяца
+        .listStyle(.plain)
+        .scrollDisabled(true)
+        .padding(.zero)
         .transition(getTransition())
-        
+        .id(store.state.currentDate.month)
     }
     
     private func getTransition() -> AnyTransition {
@@ -224,17 +235,27 @@ struct DatePickerView: View {
                 removal: .move(edge: .trailing).combined(with: .opacity)
             )
         case .none:
-            return .opacity
+            return .asymmetric(
+                insertion: .move(edge: .leading).combined(with: .opacity),
+                removal: .move(edge: .trailing).combined(with: .opacity))
         }
     }
     
     // MARK: - Month Navigation
     private var monthNavigation: some View {
         HStack {
+            
             makeNavigationButton(systemImage: "chevron.left") {
-                animationDirection = .left
+                // Устанавливаем направление ДО анимации
+                animationDirection = .right  // Предыдущий месяц - движение вправо
+                
                 withAnimation(.easeInOut(duration: 0.3)) {
                     store.send(.previousMonth)
+                }
+                
+                // Сбрасываем направление после анимации
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.35) {
+                    animationDirection = .none
                 }
             }
             Spacer()
@@ -247,14 +268,22 @@ struct DatePickerView: View {
                 Text(store.state.currentYear)
                     .font(.lzAccent)
                     .foregroundStyle(.lzWhite.opacity(0.6))
-                    .id(store.state.currentDate.year) // id для анимации года
+                    .id(store.state.currentDate.year)
                     .transition(getTransition())
             }
             Spacer()
+            
             makeNavigationButton(systemImage: "chevron.right") {
-                animationDirection = .right
+                // Устанавливаем направление ДО анимации
+                animationDirection = .left  // Следующий месяц - движение влево
+                
                 withAnimation(.easeInOut(duration: 0.3)) {
                     store.send(.nextMonth)
+                }
+                
+                // Сбрасываем направление после анимации
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.35) {
+                    animationDirection = .none
                 }
             }
         }
@@ -274,5 +303,6 @@ struct DatePickerView: View {
 }
 
 #Preview {
-    CalendarView()
+    DatePickerView()
+        .background(Color.gray)
 }

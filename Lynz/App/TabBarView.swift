@@ -8,16 +8,27 @@
 import SwiftUI
 
 struct TabBarView: View {
-    
     //Можно вынести в Coordinator при необходимост
     @State private var tabIndex: Int = 0
+    
+    
+    var navigationTitle: String {
+        switch tabIndex {
+        case 0: "Calendar"
+        case 1: "Dialogs"
+        case 2: "Photo Poses"
+        default: ""
+        }
+    }
     
     init() {
         setupUITabBarAppearance()
     }
     
     var body: some View {
-        content
+            content
+                .navigationTitle(navigationTitle)
+//        }
     }
     
     var content: some View {
@@ -29,7 +40,7 @@ struct TabBarView: View {
     
     var nativeTabBar: some View {
         TabView(selection: $tabIndex) {
-            CalendarView()
+            Coordinator.shared.build(page: .calendar)
                 .tag(0)
             
             MessagesView()
@@ -46,7 +57,6 @@ struct TabBarView: View {
     var designedTabBar: some View {
         HStack(spacing: 0) {
             Group {
-                
                 TabBarButton(
                     icon: .calendarTab,
                     isSelected: tabIndex == 0

@@ -144,11 +144,8 @@ struct MessagesView: View {
     @StateObject private var store = MessagesViewStore(initialState: MessagesViewState())
     
     var body: some View {
-        NavigationView {
             content
-                .navigationTitle("Dialogs")
                 .loader(isLoading: store.state.isLoading)
-        }
     }
     
     var content: some View {
@@ -182,7 +179,6 @@ struct MessagesView: View {
                 .foregroundStyle(.lzBlack)
             // Здесь будет список пользователей
         }
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
     
     func makeDefaultContainer(

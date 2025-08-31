@@ -28,6 +28,7 @@
 		8E3933932E622F74003FDE0A /* ATTService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E3933922E622F74003FDE0A /* ATTService.swift */; };
 		8E3933952E623104003FDE0A /* Executor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E3933942E623104003FDE0A /* Executor.swift */; };
 		8E3933972E623CEC003FDE0A /* MessagesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E3933962E623CEC003FDE0A /* MessagesView.swift */; };
+		8E7860222E644912000C7CB5 /* RoleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E7860212E644912000C7CB5 /* RoleView.swift */; };
 		8EC5685B2E63076500414ADD /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = 8EC5685A2E63076500414ADD /* Lottie */; };
 		8EC5685D2E6307D200414ADD /* LottieView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EC5685C2E6307D200414ADD /* LottieView.swift */; };
 		8EC5685F2E630A0500414ADD /* loading.json in Resources */ = {isa = PBXBuildFile; fileRef = 8EC5685E2E630A0500414ADD /* loading.json */; };
@@ -38,6 +39,7 @@
 		8EC568692E634ED200414ADD /* DatePickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EC568682E634ED200414ADD /* DatePickerView.swift */; };
 		8EC5686C2E63596300414ADD /* DateExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EC5686B2E63596300414ADD /* DateExtensions.swift */; };
 		8EC568702E637F1500414ADD /* CalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EC5686F2E637F1500414ADD /* CalendarView.swift */; };
+		8EC568722E6383F800414ADD /* ScreenHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EC568712E6383F800414ADD /* ScreenHeaderView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -63,6 +65,7 @@
 		8E3933922E622F74003FDE0A /* ATTService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ATTService.swift; sourceTree = "<group>"; };
 		8E3933942E623104003FDE0A /* Executor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Executor.swift; sourceTree = "<group>"; };
 		8E3933962E623CEC003FDE0A /* MessagesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessagesView.swift; sourceTree = "<group>"; };
+		8E7860212E644912000C7CB5 /* RoleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoleView.swift; sourceTree = "<group>"; };
 		8EC5685C2E6307D200414ADD /* LottieView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LottieView.swift; sourceTree = "<group>"; };
 		8EC5685E2E630A0500414ADD /* loading.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = loading.json; sourceTree = "<group>"; };
 		8EC568602E630CAA00414ADD /* AppState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppState.swift; sourceTree = "<group>"; };
@@ -72,6 +75,7 @@
 		8EC568682E634ED200414ADD /* DatePickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatePickerView.swift; sourceTree = "<group>"; };
 		8EC5686B2E63596300414ADD /* DateExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateExtensions.swift; sourceTree = "<group>"; };
 		8EC5686F2E637F1500414ADD /* CalendarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarView.swift; sourceTree = "<group>"; };
+		8EC568712E6383F800414ADD /* ScreenHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScreenHeaderView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -169,6 +173,7 @@
 				8E2C096D2E60AE3A00DBC90C /* AllowTrackingView.swift */,
 				8E3933962E623CEC003FDE0A /* MessagesView.swift */,
 				8EC5686F2E637F1500414ADD /* CalendarView.swift */,
+				8E7860212E644912000C7CB5 /* RoleView.swift */,
 			);
 			path = Screens;
 			sourceTree = "<group>";
@@ -176,6 +181,7 @@
 		8E2C096F2E60B12000DBC90C /* ViewComponents */ = {
 			isa = PBXGroup;
 			children = (
+				8EC568712E6383F800414ADD /* ScreenHeaderView.swift */,
 				8EC568682E634ED200414ADD /* DatePickerView.swift */,
 				8E2C09742E60DFFD00DBC90C /* MainButtonView.swift */,
 				8E2C09702E60B1A400DBC90C /* LayeredCircleView.swift */,
@@ -313,8 +319,10 @@
 				8E14DC772E609F3900BB5117 /* LynzApp.swift in Sources */,
 				8E14DC8D2E60A27300BB5117 /* Padding.swift in Sources */,
 				8EC568632E630CDD00414ADD /* LoaderView.swift in Sources */,
+				8EC568722E6383F800414ADD /* ScreenHeaderView.swift in Sources */,
 				8E2C096E2E60AE3A00DBC90C /* AllowTrackingView.swift in Sources */,
 				8E39338E2E622E67003FDE0A /* ReadSize.swift in Sources */,
+				8E7860222E644912000C7CB5 /* RoleView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

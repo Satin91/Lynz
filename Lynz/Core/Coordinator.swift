@@ -8,8 +8,9 @@
 import SwiftUI
 
 enum Page: Hashable {
+    case calendar
     case allowTrackingView
-    
+    case role(CalendarDay)
     
     static func == (lhs: Page, rhs: Page) -> Bool {
         lhs.hashValue == rhs.hashValue
@@ -17,7 +18,11 @@ enum Page: Hashable {
     
     func hash(into hasher: inout Hasher) {
         switch self {
+        case .calendar:
+            hasher.combine(UUID())
         case .allowTrackingView:
+            hasher.combine(UUID())
+        case .role:
             hasher.combine(UUID())
         }
     }
@@ -38,8 +43,12 @@ final class Coordinator: ObservableObject {
     
     @ViewBuilder func build(page: Page) -> some View {
         switch page {
+        case .calendar:
+            CalendarView()
         case .allowTrackingView:
             AllowTrackingView()
+        case .role(let day):
+            RoleView()
         default: EmptyView()
         }
     }
