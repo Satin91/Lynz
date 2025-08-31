@@ -117,3 +117,114 @@ struct PlanCategory: Codable, Hashable {
 //        }
 //    }
 //}
+
+// MARK: - Mock Data for Testing
+extension Event {
+    /// Моковые данные для тестирования календаря
+    static var mockEvents: [Event] {
+        let calendar = Calendar.current
+        let today = Date()
+        
+        // События на сегодня
+        let todayEvent1 = Event(
+            role: .photographer,
+            date: today,
+            planCategories: Role.photographer.defaultPlansCategories
+        )
+        
+        let todayEvent2 = Event(
+            role: .model,
+            date: today,
+            planCategories: Role.model.defaultPlansCategories
+        )
+        
+        // События на завтра
+        let tomorrow = calendar.date(byAdding: .day, value: 1, to: today) ?? today
+        let tomorrowEvent = Event(
+            role: .photographer,
+            date: tomorrow,
+            planCategories: Role.photographer.defaultPlansCategories
+        )
+        
+        // События на послезавтра
+        let dayAfterTomorrow = calendar.date(byAdding: .day, value: 2, to: today) ?? today
+        let dayAfterTomorrowEvent = Event(
+            role: .model,
+            date: dayAfterTomorrow,
+            planCategories: Role.model.defaultPlansCategories
+        )
+        
+        // События на прошлую неделю
+        let lastWeek = calendar.date(byAdding: .day, value: -7, to: today) ?? today
+        let lastWeekEvent = Event(
+            role: .photographer,
+            date: lastWeek,
+            planCategories: Role.photographer.defaultPlansCategories
+        )
+        
+        // События на следующую неделю
+        let nextWeek = calendar.date(byAdding: .day, value: 7, to: today) ?? today
+        let nextWeekEvent = Event(
+            role: .model,
+            date: nextWeek,
+            planCategories: Role.model.defaultPlansCategories
+        )
+        
+        // События на разные дни текущего месяца
+        let currentMonthDay15 = calendar.date(bySetting: .day, value: 15, of: today) ?? today
+        let currentMonthEvent = Event(
+            role: .photographer,
+            date: currentMonthDay15,
+            planCategories: Role.photographer.defaultPlansCategories
+        )
+        
+        let currentMonthDay20 = calendar.date(bySetting: .day, value: 20, of: today) ?? today
+        let currentMonthEvent2 = Event(
+            role: .model,
+            date: currentMonthDay20,
+            planCategories: Role.model.defaultPlansCategories
+        )
+        
+        return [
+            todayEvent1,
+            todayEvent2,
+            tomorrowEvent,
+            dayAfterTomorrowEvent,
+            lastWeekEvent,
+            nextWeekEvent,
+            currentMonthEvent,
+            currentMonthEvent2
+        ]
+    }
+    
+    /// Создает случайное событие для тестирования
+    static func randomEvent(for date: Date) -> Event {
+        let randomRole: Role = Bool.random() ? .photographer : .model
+        let planCategories = randomRole.defaultPlansCategories
+        
+        return Event(
+            role: randomRole,
+            date: date,
+            planCategories: planCategories
+        )
+    }
+    
+    /// Создает несколько случайных событий для указанного месяца
+    static func randomEventsForMonth(_ date: Date, count: Int = 5) -> [Event] {
+        let calendar = Calendar.current
+        guard let monthInterval = calendar.dateInterval(of: .month, for: date) else {
+            return []
+        }
+        
+        var events: [Event] = []
+        let randomDays = (1...28).shuffled().prefix(count)
+        
+        for day in randomDays {
+            if let eventDate = calendar.date(bySetting: .day, value: day, of: date) {
+                events.append(randomEvent(for: eventDate))
+            }
+        }
+        
+        return events
+    }
+}

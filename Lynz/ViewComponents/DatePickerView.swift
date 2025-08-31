@@ -13,6 +13,8 @@ struct CalendarDay: Identifiable {
     let day: Int           // Номер дня (1-31)
     let isCurrentMonth: Bool // Принадлежит ли день текущему отображаемому месяцу
     let date: Date         // Полная дата для точных вычислений
+    var events: [Event] // Добавляем массив событий
+    
     var isToday: Bool {
         let today = Date()
         return day == today.day &&
@@ -20,13 +22,19 @@ struct CalendarDay: Identifiable {
         date.year == today.year
     }
     
-    static var stub = CalendarDay(day: 1, isCurrentMonth: true, date: Date())
+    // Добавляем вычисляемое свойство для проверки наличия событий
+    var hasEvents: Bool {
+        !events.isEmpty
+    }
+    
+    static var stub = CalendarDay(day: 1, isCurrentMonth: true, date: Date(), events: [])
 }
 
 // MARK: - Calendar State
 struct DatePickerState {
     var currentDate = Date()
     var calendarDays: [CalendarDay] = []
+    var events: [Event] // Добавляем массив событий
     
     // MARK: - Computed Properties
     var currentMonth: String {
@@ -82,6 +90,8 @@ final class DatePickerViewStore: ViewStore<DatePickerState, DatePickerIntent> {
             print("DEBUG: tap day \(calendarDay.day), isCurrentMonth: \(calendarDay.isCurrentMonth)")
             
         case .generateCalendar:
+            let mockEvents = Event.mockEvents
+            state.events = mockEvents
             state.calendarDays = generateDaysInMonth(for: state.currentDate)
         }
         
@@ -107,7 +117,7 @@ final class DatePickerViewStore: ViewStore<DatePickerState, DatePickerIntent> {
             for i in 0..<(firstWeekday - 1) {
                 let dayNumber = daysInPreviousMonth - (firstWeekday - 2) + i
                 if let dayDate = calendar.date(byAdding: .day, value: -(firstWeekday - 1 - i), to: firstOfMonth) {
-                    days.append(CalendarDay(day: dayNumber, isCurrentMonth: false, date: dayDate))
+                    days.append(CalendarDay(day: dayNumber, isCurrentMonth: false, date: dayDate, events: []))
                 }
             }
         }
@@ -115,7 +125,7 @@ final class DatePickerViewStore: ViewStore<DatePickerState, DatePickerIntent> {
         // Дни текущего месяца
         for day in 1...daysInMonth {
             if let dayDate = calendar.date(byAdding: .day, value: day - 1, to: firstOfMonth) {
-                days.append(CalendarDay(day: day, isCurrentMonth: true, date: dayDate))
+                days.append(CalendarDay(day: day, isCurrentMonth: true, date: dayDate, events: []))
             }
         }
         
@@ -124,9 +134,18 @@ final class DatePickerViewStore: ViewStore<DatePickerState, DatePickerIntent> {
         if remainingDaysInWeek < 7 {
             for day in 1...remainingDaysInWeek {
                 if let dayDate = calendar.date(byAdding: .day, value: daysInMonth + day - 1, to: firstOfMonth) {
-                    days.append(CalendarDay(day: day, isCurrentMonth: false, date: dayDate))
+                    days.append(CalendarDay(day: day, isCurrentMonth: false, date: dayDate, events: []))
                 }
             }
+        }
+        
+        // После создания всех дней, сопоставляем события
+        for i in 0..<days.count {
+            let dayDate = days[i].date
+            let eventsForDay = state.events.filter { event in
+                calendar.isDate(event.date, inSameDayAs: dayDate)
+            }
+            days[i].events = eventsForDay
         }
         
         return days
@@ -136,6 +155,7 @@ final class DatePickerViewStore: ViewStore<DatePickerState, DatePickerIntent> {
     private func adjustWeekdayForMonday(_ weekday: Int) -> Int {
         return weekday == 1 ? 7 : weekday - 1
     }
+
 }
 
 
@@ -158,8 +178,12 @@ struct DatePickerView: View {
     @State var animationDirection: AnimationDirection = .none
     @State var uuid = UUID()
     // MARK: - Store
-    @StateObject private var store = DatePickerViewStore(initialState: DatePickerState())
+    @StateObject private var store: DatePickerViewStore
     
+    init(events: [Event], onTapDay: ((CalendarDay) -> Void)? = nil) {
+        _store = StateObject(wrappedValue: DatePickerViewStore(initialState: DatePickerState(events: events)))
+        self.onTapDay = onTapDay
+    }
     
     var body: some View {
         content
@@ -174,6 +198,10 @@ struct DatePickerView: View {
         .padding(.horizontal, .mediumExt)
 
         .onAppear {
+            // Загружаем события из памяти устройства
+//            let events = loadEventsFromDevice()
+//            store.updateEvents(events)
+            
             store.send(.generateCalendar)
         }
     }
@@ -197,18 +225,31 @@ struct DatePickerView: View {
             LazyVGrid(columns: calendarItems, spacing: gridSpacing) {
                 ForEach(store.state.calendarDays.indices, id: \.self) { index in
                     let calendarDay = store.state.calendarDays[index]
-                    Text("\(calendarDay.day)")
-                        .font(.lzCaption)
-                        .foregroundStyle(calendarDay.isCurrentMonth ? .lzWhite : .lzWhite.opacity(0.3))
-                        .frame(width: itemSize, height: itemSize)
-                        .background(
-                            RoundedRectangle(cornerRadius: 16)
-                                .fill(calendarDay.isToday ? Color.lzWhite.opacity(0.15) : Color.clear)
-                        )
-                        .onTapGesture {
-//                            store.send(.selectDay(calendarDay))
-                            onTapDay?(calendarDay)
+                    
+                    VStack(spacing: 2) {
+                        Text("\(calendarDay.day)")
+                            .font(.lzCaption)
+                            .foregroundStyle(calendarDay.isCurrentMonth ? .lzWhite : .lzWhite.opacity(0.3))
+                        
+                        // Индикатор событий
+                        if calendarDay.hasEvents {
+                            HStack(spacing: 2) {
+                                ForEach(Array(calendarDay.events.prefix(3)), id: \.id) { event in
+                                    Circle()
+                                        .fill(event.role.tint)
+                                        .frame(width: 6, height: 6)
+                                }
+                            }
                         }
+                    }
+                    .frame(width: itemSize, height: itemSize)
+                    .background(
+                        RoundedRectangle(cornerRadius: 16)
+                            .fill(calendarDay.isToday ? Color.lzWhite.opacity(0.15) : Color.clear)
+                    )
+                    .onTapGesture {
+                        onTapDay?(calendarDay)
+                    }
                 }
             }
             .listRowBackground(Color.clear)
@@ -305,6 +346,6 @@ struct DatePickerView: View {
 }
 
 #Preview {
-    DatePickerView()
+    DatePickerView(events: [])
         .background(Color.gray)
 }
