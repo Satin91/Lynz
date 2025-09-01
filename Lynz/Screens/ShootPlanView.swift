@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct ShootPlanState {
-    var event: Event
+    var plan: Plan
     var editMode: Bool = false
     var isShowConfirmationDialog = false
 }
@@ -19,7 +19,7 @@ enum ShootPlanIntent {
     case toggleEditingMode
     case tapActionButton
     case deleteItem(index: Int)           // Удаление отдельного элемента
-    case deleteEvent                      // Удаление всего события
+    case deletePlan                      // Удаление всего события
     case confirmEventDelete               // Подтверждение удаления события
     case cancelEventDelete                // Отмена удаления события
     case showDialog(Bool)
@@ -30,10 +30,10 @@ final class ShootPlanViewStore: ViewStore<ShootPlanState, ShootPlanIntent> {
     override func reduce(state: inout ShootPlanState, intent: ShootPlanIntent) -> Effect<ShootPlanIntent> {
         switch intent {
         case .selectPlan(let index):
-            state.event.planCategories[index].isActive.toggle()
+            state.plan.tasks[index].isActive.toggle()
             
         case .updateText(index: let index, text: let text):
-            state.event.planCategories[index].name = text
+            state.plan.tasks[index].name = text
             
         case .toggleEditingMode:
             state.editMode.toggle()
@@ -50,11 +50,11 @@ final class ShootPlanViewStore: ViewStore<ShootPlanState, ShootPlanIntent> {
             
         case .deleteItem(let index):
             // Удаляем элемент сразу без диалога
-            if index < state.event.planCategories.count {
-                state.event.planCategories.remove(at: index)
+            if index < state.plan.tasks.count {
+                state.plan.tasks.remove(at: index)
             }
             
-        case .deleteEvent:
+        case .deletePlan:
             // Показываем диалог для подтверждения удаления события
             return .action(.showDialog(true))
             
@@ -82,21 +82,21 @@ struct ShootPlanView: View {
     
     //MARK: - UI
     private var radioButtonColor: Color {
-        switch store.state.event.role {
+        switch store.state.plan.role {
         case .photographer: Color.lzBlue.opacity(store.state.editMode ? 0.4 : 1)
         case .model: Color.lzYellow.opacity(store.state.editMode ? 0.3 : 1)
         }
     }
     
     private var radioButtonStrokeWidth: CGFloat {
-        switch store.state.event.role {
+        switch store.state.plan.role {
         case .photographer: 1
         case .model: 1.4
         }
     }
     
-    init(event: Event) {
-        _store = StateObject(wrappedValue: ShootPlanViewStore(initialState: .init(event: event)))
+    init(plan: Plan) {
+        _store = StateObject(wrappedValue: ShootPlanViewStore(initialState: .init(plan: plan)))
     }
     
     var body: some View {
@@ -143,10 +143,10 @@ struct ShootPlanView: View {
     
     var planList: some View {
         LazyVStack {
-            ForEach(Array(store.state.event.planCategories.enumerated()), id: \.element) { index, category in
+            ForEach(Array(store.state.plan.tasks.enumerated()), id: \.element) { index, task in
                 SelectableListItem(
-                    role: store.state.event.role,
-                    category: category,
+                    role: store.state.plan.role,
+                    task: task,
                     isEditing: store.state.editMode,
                     onTap: { store.send(.selectPlan(index: index)) },
                     onTapDelete: { store.send(.deleteItem(index: index)) },  // Удаление сразу
@@ -160,7 +160,7 @@ struct ShootPlanView: View {
         VStack {
             ScreenHeaderView(title: "Shoot Plan") {
                 HeaderButton(
-                    color: store.state.event.role.tint,
+                    color: store.state.plan.role.tint,
                     image: .pencil,
                     isActive: store.state.editMode,
                     action: {
@@ -170,14 +170,14 @@ struct ShootPlanView: View {
                     }
                 )
                 HeaderButton(
-                    color: store.state.event.role.tint,
+                    color: store.state.plan.role.tint,
                     image: .plus,
                     action: { }
                 )
             }
             EventRoleDescription(
-                roleName: store.state.event.role.name.uppercased(),
-                date: store.state.event.date
+                roleName: store.state.plan.role.name.uppercased(),
+                date: store.state.plan.date
             )
             
         }
@@ -195,5 +195,5 @@ struct ShootPlanView: View {
 }
 
 #Preview {
-    ShootPlanView(event: .stub)
+    ShootPlanView(plan: .stub)
 }

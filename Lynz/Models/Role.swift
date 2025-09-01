@@ -43,8 +43,8 @@ enum Role: String, CaseIterable, Codable, Hashable {
         }
     }
     
-    var defaultPlansCategories: [PlanCategory] {
-        return plansCategoriesString.map { PlanCategory(name: $0, isActive: false) }
+    var defaultPlansCategories: [TaskCategory] {
+        return plansCategoriesString.map { TaskCategory(name: $0, isActive: false) }
     }
 }
  
@@ -77,44 +77,43 @@ extension Role {
     }
 }
 
-/// Модель события с ролью
-struct Event: Codable, Hashable {
+struct Plan: Codable, Hashable {
     let id: UUID
     let role: Role
     let date: Date
-    var planCategories: [PlanCategory]
+    var tasks: [TaskCategory]
     
-    init(role: Role, date: Date, planCategories: [PlanCategory]) {
+    init(role: Role, date: Date, planCategories: [TaskCategory]) {
         self.id = UUID()
         self.role = role
         self.date = date
-        self.planCategories = planCategories
+        self.tasks = planCategories
     }
     
-    static var stub = Event(role: .model, date: Date(), planCategories: Role.photographer.defaultPlansCategories)
+    static var stub = Plan(role: .model, date: Date(), planCategories: Role.photographer.defaultPlansCategories)
 }
 
-struct PlanCategory: Codable, Hashable {
+struct TaskCategory: Codable, Hashable {
     var name: String
     var isActive: Bool
 }
 
 
 // MARK: - Mock Data for Testing
-extension Event {
+extension Plan {
     /// Моковые данные для тестирования календаря
-    static var mockEvents: [Event] {
+    static var mockEvents: [Plan] {
         let calendar = Calendar.current
         let today = Date()
         
         // События на сегодня
-        let todayEvent1 = Event(
+        let todayEvent1 = Plan(
             role: .photographer,
             date: today,
             planCategories: Role.photographer.defaultPlansCategories
         )
         
-        let todayEvent2 = Event(
+        let todayEvent2 = Plan(
             role: .model,
             date: today,
             planCategories: Role.model.defaultPlansCategories
@@ -122,7 +121,7 @@ extension Event {
         
         // События на завтра
         let tomorrow = calendar.date(byAdding: .day, value: 1, to: today) ?? today
-        let tomorrowEvent = Event(
+        let tomorrowEvent = Plan(
             role: .photographer,
             date: tomorrow,
             planCategories: Role.photographer.defaultPlansCategories
@@ -130,7 +129,7 @@ extension Event {
         
         // События на послезавтра
         let dayAfterTomorrow = calendar.date(byAdding: .day, value: 2, to: today) ?? today
-        let dayAfterTomorrowEvent = Event(
+        let dayAfterTomorrowEvent = Plan(
             role: .model,
             date: dayAfterTomorrow,
             planCategories: Role.model.defaultPlansCategories
@@ -138,7 +137,7 @@ extension Event {
         
         // События на прошлую неделю
         let lastWeek = calendar.date(byAdding: .day, value: -7, to: today) ?? today
-        let lastWeekEvent = Event(
+        let lastWeekEvent = Plan(
             role: .photographer,
             date: lastWeek,
             planCategories: Role.photographer.defaultPlansCategories
@@ -146,7 +145,7 @@ extension Event {
         
         // События на следующую неделю
         let nextWeek = calendar.date(byAdding: .day, value: 7, to: today) ?? today
-        let nextWeekEvent = Event(
+        let nextWeekEvent = Plan(
             role: .model,
             date: nextWeek,
             planCategories: Role.model.defaultPlansCategories
@@ -154,14 +153,14 @@ extension Event {
         
         // События на разные дни текущего месяца
         let currentMonthDay15 = calendar.date(bySetting: .day, value: 15, of: today) ?? today
-        let currentMonthEvent = Event(
+        let currentMonthEvent = Plan(
             role: .photographer,
             date: currentMonthDay15,
             planCategories: Role.photographer.defaultPlansCategories
         )
         
         let currentMonthDay20 = calendar.date(bySetting: .day, value: 20, of: today) ?? today
-        let currentMonthEvent2 = Event(
+        let currentMonthEvent2 = Plan(
             role: .model,
             date: currentMonthDay20,
             planCategories: Role.model.defaultPlansCategories
@@ -180,11 +179,11 @@ extension Event {
     }
     
     /// Создает случайное событие для тестирования
-    static func randomEvent(for date: Date) -> Event {
+    static func randomEvent(for date: Date) -> Plan {
         let randomRole: Role = Bool.random() ? .photographer : .model
         let planCategories = randomRole.defaultPlansCategories
         
-        return Event(
+        return Plan(
             role: randomRole,
             date: date,
             planCategories: planCategories
@@ -192,13 +191,13 @@ extension Event {
     }
     
     /// Создает несколько случайных событий для указанного месяца
-    static func randomEventsForMonth(_ date: Date, count: Int = 5) -> [Event] {
+    static func randomEventsForMonth(_ date: Date, count: Int = 5) -> [Plan] {
         let calendar = Calendar.current
         guard let monthInterval = calendar.dateInterval(of: .month, for: date) else {
             return []
         }
         
-        var events: [Event] = []
+        var events: [Plan] = []
         let randomDays = (1...28).shuffled().prefix(count)
         
         for day in randomDays {

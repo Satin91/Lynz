@@ -30,7 +30,7 @@ struct MainView: View {
     }
     
     var content: some View {
-        let page = TestEnvironment.forcePage(test: .shootPlan(Event.stub), original: .root)
+        let page = TestEnvironment.forcePage(test: .shootPlan(Plan.stub), original: .root)
         return coordinator.build(page: page)
     }
 }

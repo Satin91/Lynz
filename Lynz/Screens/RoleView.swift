@@ -22,7 +22,7 @@ final class RoleViewStore: ViewStore<RoleState, RoleIntent> {
         
         switch intent {
         case .tapRole(let role):
-            let newEvent = Event(role: role, date: state.day.date, planCategories: role.defaultPlansCategories)
+            let newEvent = Plan(role: role, date: state.day.date, planCategories: role.defaultPlansCategories)
             push(.shootPlan(newEvent))
         }
         

@@ -11,10 +11,10 @@ import SwiftUI
 
 extension SelectableListItem {
     
-    init(role: Role, category: PlanCategory, isEditing: Bool, onTap: @escaping () -> Void, onTapDelete: @escaping () -> Void, onTextChange: @escaping (String) -> Void) {
-        text = category.name
+    init(role: Role, task: TaskCategory, isEditing: Bool, onTap: @escaping () -> Void, onTapDelete: @escaping () -> Void, onTextChange: @escaping (String) -> Void) {
+        text = task.name
         tintColor = role.tint
-        isSelected = category.isActive
+        isSelected = task.isActive
         self.isEditing = isEditing
         self.onTap = onTap
         self.onTapDelete = onTapDelete
@@ -28,7 +28,7 @@ extension SelectableListItem {
         }
         
         self._editableText = Binding(
-            get: { category.name },
+            get: { task.name },
             set: { text in onTextChange(text) }
         )
     }

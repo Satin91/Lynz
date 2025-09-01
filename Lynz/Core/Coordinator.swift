@@ -12,7 +12,7 @@ enum Page: Hashable {
     case calendar
     case allowTrackingView
     case role(CalendarDay)
-    case shootPlan(_ event: Event)
+    case shootPlan(_ plan: Plan)
     
     static func == (lhs: Page, rhs: Page) -> Bool {
         lhs.hashValue == rhs.hashValue
@@ -62,7 +62,7 @@ final class Coordinator: ObservableObject {
         case .role(let day):
             RoleView(day: day)
         case .shootPlan(let event):
-            ShootPlanView(event: event)
+            ShootPlanView(plan: event)
         }
     }
 }

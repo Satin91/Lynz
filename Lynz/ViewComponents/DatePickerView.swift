@@ -13,7 +13,7 @@ struct CalendarDay: Identifiable {
     let day: Int           // Номер дня (1-31)
     let isCurrentMonth: Bool // Принадлежит ли день текущему отображаемому месяцу
     let date: Date         // Полная дата для точных вычислений
-    var events: [Event] // Добавляем массив событий
+    var events: [Plan] // Добавляем массив событий
     
     var isToday: Bool {
         let today = Date()
@@ -34,7 +34,7 @@ struct CalendarDay: Identifiable {
 struct DatePickerState {
     var currentDate = Date()
     var calendarDays: [CalendarDay] = []
-    var events: [Event] // Добавляем массив событий
+    var events: [Plan] // Добавляем массив событий
     
     // MARK: - Computed Properties
     var currentMonth: String {
@@ -90,7 +90,7 @@ final class DatePickerViewStore: ViewStore<DatePickerState, DatePickerIntent> {
             print("DEBUG: tap day \(calendarDay.day), isCurrentMonth: \(calendarDay.isCurrentMonth)")
             
         case .generateCalendar:
-            let mockEvents = Event.mockEvents
+            let mockEvents = Plan.mockEvents
             state.events = mockEvents
             state.calendarDays = generateDaysInMonth(for: state.currentDate)
         }
@@ -142,8 +142,8 @@ final class DatePickerViewStore: ViewStore<DatePickerState, DatePickerIntent> {
         // После создания всех дней, сопоставляем события
         for i in 0..<days.count {
             let dayDate = days[i].date
-            let eventsForDay = state.events.filter { event in
-                calendar.isDate(event.date, inSameDayAs: dayDate)
+            let eventsForDay = state.events.filter { plan in
+                calendar.isDate(plan.date, inSameDayAs: dayDate)
             }
             days[i].events = eventsForDay
         }
@@ -180,7 +180,7 @@ struct DatePickerView: View {
     // MARK: - Store
     @StateObject private var store: DatePickerViewStore
     
-    init(events: [Event], onTapDay: ((CalendarDay) -> Void)? = nil) {
+    init(events: [Plan], onTapDay: ((CalendarDay) -> Void)? = nil) {
         _store = StateObject(wrappedValue: DatePickerViewStore(initialState: DatePickerState(events: events)))
         self.onTapDay = onTapDay
     }
@@ -234,9 +234,9 @@ struct DatePickerView: View {
                         // Индикатор событий
                         if calendarDay.hasEvents {
                             HStack(spacing: 2) {
-                                ForEach(Array(calendarDay.events.prefix(3)), id: \.id) { event in
+                                ForEach(Array(calendarDay.events.prefix(3)), id: \.id) { plan in
                                     Circle()
-                                        .fill(event.role.tint)
+                                        .fill(plan.role.tint)
                                         .frame(width: 6, height: 6)
                                 }
                             }

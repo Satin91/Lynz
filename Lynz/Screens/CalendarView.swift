@@ -38,7 +38,7 @@ struct CalendarView: View {
     }
     
     var content: some View {
-        DatePickerView(events: Event.mockEvents) { day in
+        DatePickerView(events: Plan.mockEvents) { day in
             store.send(.tapCalendar(day: day))
         }
         .frame(maxHeight: .infinity, alignment: .top)
