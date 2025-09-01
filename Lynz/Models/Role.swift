@@ -77,20 +77,3 @@ extension Role {
     }
 }
 
-struct Plan: Codable, Hashable {
-    let id: UUID
-    let role: Role
-    let date: Date
-    var tasks: [TaskCategory]
-    
-    init(role: Role, date: Date, planCategories: [TaskCategory]) {
-        self.id = UUID()
-        self.role = role
-        self.date = date
-        self.tasks = planCategories
-    }
-    
-    static var stub = Plan(role: .model, date: Date(), planCategories: Role.photographer.defaultPlansCategories)
-}
-
-

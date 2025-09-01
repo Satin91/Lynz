@@ -21,6 +21,7 @@ struct HeaderButton: View {
     let color: Color
     let image: ButtonImage
     var isActive = false
+    var isDisabled: Bool = false
     let action: () -> Void
     
     // MARK: - Configuration
@@ -43,7 +44,8 @@ struct HeaderButton: View {
                 .foregroundStyle(isActive ? .lzBlack : .lzWhite)
         }
         .contentShape(Circle())
-//        .buttonStyle(PlainButtonStyle())
+        .opacity(isDisabled ? 0.2 : 1)
+        .disabled(isDisabled)
     }
 }
 

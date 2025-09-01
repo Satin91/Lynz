@@ -23,7 +23,12 @@ final class CalendarViewStore: ViewStore<CalendarState, CalendarIntent> {
         
         switch intent {
         case .tapCalendar(let day):
-            push(.role(day))
+            if let plan = day.plan {
+                push(.shootPlan(plan))
+            } else {
+                push(.role(day))
+            }
+            
         case .loadPlans:
             do {
                 let plans = try localDataInteractor.getAllPlans()

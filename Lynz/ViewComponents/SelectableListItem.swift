@@ -11,7 +11,7 @@ import SwiftUI
 
 extension SelectableListItem {
     
-    init(role: Role, task: TaskCategory, isEditing: Bool, onTap: @escaping () -> Void, onTapDelete: @escaping () -> Void, onTextChange: @escaping (String) -> Void) {
+    init(role: Role, task: TaskCategory, isEditing: Bool, isSingleFocused: Bool, onTap: @escaping () -> Void, onTapDelete: @escaping () -> Void, onTextChange: @escaping (String) -> Void) {
         text = task.name
         tintColor = role.tint
         isSelected = task.isActive
@@ -31,6 +31,7 @@ extension SelectableListItem {
             get: { task.name },
             set: { text in onTextChange(text) }
         )
+        self.isSingleFocused = isSingleFocused
     }
 }
 
@@ -43,10 +44,9 @@ struct SelectableListItem: View {
     var radioButtonOpacity: CGFloat
     let onTap: () -> Void
     let onTapDelete: () -> Void
-    @FocusState var isFocused
-    
+    var isSingleFocused: Bool
     @Binding var editableText: String
-    
+    @FocusState var isFocused
     private let xMarkSize: CGFloat = 16
     private let radioButtonSize: CGFloat = 30
     
@@ -74,6 +74,7 @@ struct SelectableListItem: View {
             get: { text },
             set: { text in onTextChange?(text) }
         )
+        self.isSingleFocused = false
     }
     
     var itemHeight: CGFloat {
@@ -96,6 +97,9 @@ struct SelectableListItem: View {
             .contentShape(Rectangle())
         }
         .buttonStyle(PlainButtonStyle())
+        .onChange(of: isSingleFocused) { newValue in
+            print("DEBUG: new value \(newValue)")
+        }
     }
     
     var textField: some View {

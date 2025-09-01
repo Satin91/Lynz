@@ -10,4 +10,5 @@ import Foundation
 struct TaskCategory: Codable, Hashable {
     var name: String
     var isActive: Bool
+    var isEditing: Bool = false
 }

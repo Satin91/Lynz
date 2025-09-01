@@ -11,6 +11,7 @@ struct ShootPlanState {
     var plan: Plan
     var editMode: Bool = false
     var isShowConfirmationDialog = false
+    var focusedIndex: Int? = nil
 }
 
 enum ShootPlanIntent {
@@ -18,11 +19,12 @@ enum ShootPlanIntent {
     case updateText(index: Int, text: String)
     case toggleEditingMode
     case tapActionButton
+    case addTask
     case savePlan
     case deleteItem(index: Int)
     case deletePlan
-    case confirmEventDelete
-    case cancelEventDelete
+    case confirmPlanDelete
+    case cancelPlanDelete
     case showDialog(Bool)
 }
 
@@ -46,6 +48,15 @@ final class ShootPlanViewStore: ViewStore<ShootPlanState, ShootPlanIntent> {
             } else {
                 return .action(.savePlan)
             }
+        case .addTask:
+            let newTask = TaskCategory(name: "New Task", isActive: false)
+//            for task in 0..<state.plan.tasks.count -1 {
+//                state.plan.tasks[task].isEditing = false
+//            }
+            
+            
+            state.plan.tasks.append(newTask)
+            state.focusedIndex = state.plan.tasks.count - 1
         case .savePlan:
             let plan = state.plan
             do {
@@ -64,12 +75,12 @@ final class ShootPlanViewStore: ViewStore<ShootPlanState, ShootPlanIntent> {
             // Показываем диалог для подтверждения удаления события
             return .action(.showDialog(true))
             
-        case .confirmEventDelete:
+        case .confirmPlanDelete:
             // Remove Event from
             popToRoot()
             return .action(.showDialog(false))
             
-        case .cancelEventDelete:
+        case .cancelPlanDelete:
             // Отменяем удаление события
             return .action(.showDialog(false))
             
@@ -119,14 +130,15 @@ struct ShootPlanView: View {
                 )
             ) {
                 Button("Delete Event", role: .destructive) {
-                    store.send(.confirmEventDelete)
+                    store.send(.confirmPlanDelete)
                 }
                 Button("Cancel", role: .cancel) {
-                    store.send(.cancelEventDelete)
+                    store.send(.cancelPlanDelete)
                 }
             }
     }
     
+    @FocusState var isFocused
     
     var content: some View {
         ZStack {
@@ -154,6 +166,7 @@ struct ShootPlanView: View {
                     role: store.state.plan.role,
                     task: task,
                     isEditing: store.state.editMode,
+                    isSingleFocused: store.state.focusedIndex ?? nil == index,
                     onTap: { store.send(.selectPlan(index: index)) },
                     onTapDelete: { store.send(.deleteItem(index: index)) },  // Удаление сразу
                     onTextChange: { store.send(.updateText(index: index, text: $0)) }
@@ -178,8 +191,10 @@ struct ShootPlanView: View {
                 HeaderButton(
                     color: store.state.plan.role.tint,
                     image: .plus,
-                    action: { }
+                    isDisabled: store.state.editMode,
+                    action: { store.send(.addTask) }
                 )
+                .disabled(store.state.editMode)
             }
             EventRoleDescription(
                 roleName: store.state.plan.role.name.uppercased(),
