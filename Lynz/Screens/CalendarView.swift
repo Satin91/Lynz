@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct CalendarState {
-    
+    var plans: [Plan] = []
 }
 
 enum CalendarIntent {
@@ -27,6 +27,7 @@ final class CalendarViewStore: ViewStore<CalendarState, CalendarIntent> {
         case .loadPlans:
             do {
                 let plans = try localDataInteractor.getAllPlans()
+                state.plans = plans
                 print("DEBUG: local data plans \(plans)")
             } catch {
                 print("ERROR OF LOAD PLANS \(error.localizedDescription)")
@@ -48,7 +49,8 @@ struct CalendarView: View {
     
     var content: some View {
         VStack {
-            DatePickerView(events: Plan.mockEvents) { day in
+//            DatePickerView(events: Plan.mockEvents) { day in
+            DatePickerView(plans: store.state.plans) { day in
                 store.send(.tapCalendar(day: day))
             }
             testButton

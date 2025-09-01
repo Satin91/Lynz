@@ -19,10 +19,10 @@ enum ShootPlanIntent {
     case toggleEditingMode
     case tapActionButton
     case savePlan
-    case deleteItem(index: Int)           // Удаление отдельного элемента
-    case deletePlan                      // Удаление всего события
-    case confirmEventDelete               // Подтверждение удаления события
-    case cancelEventDelete                // Отмена удаления события
+    case deleteItem(index: Int)
+    case deletePlan
+    case confirmEventDelete
+    case cancelEventDelete
     case showDialog(Bool)
 }
 

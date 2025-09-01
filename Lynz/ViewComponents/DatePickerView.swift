@@ -34,7 +34,7 @@ struct CalendarDay: Identifiable {
 struct DatePickerState {
     var currentDate = Date()
     var calendarDays: [CalendarDay] = []
-    var events: [Plan] // Добавляем массив событий
+    var plans: [Plan] // Добавляем массив событий
     
     // MARK: - Computed Properties
     var currentMonth: String {
@@ -68,8 +68,6 @@ enum DatePickerIntent {
 // MARK: - Calendar Store
 final class DatePickerViewStore: ViewStore<DatePickerState, DatePickerIntent> {
     
-    // MARK: - Configuration
-    private let animationDuration: Double = 0.3
     private let calendar = Calendar.current
     
     override func reduce(state: inout DatePickerState, intent: DatePickerIntent) -> Effect<DatePickerIntent> {
@@ -90,8 +88,6 @@ final class DatePickerViewStore: ViewStore<DatePickerState, DatePickerIntent> {
             print("DEBUG: tap day \(calendarDay.day), isCurrentMonth: \(calendarDay.isCurrentMonth)")
             
         case .generateCalendar:
-            let mockEvents = Plan.mockEvents
-            state.events = mockEvents
             state.calendarDays = generateDaysInMonth(for: state.currentDate)
         }
         
@@ -142,7 +138,8 @@ final class DatePickerViewStore: ViewStore<DatePickerState, DatePickerIntent> {
         // После создания всех дней, сопоставляем события
         for i in 0..<days.count {
             let dayDate = days[i].date
-            let eventsForDay = state.events.filter { plan in
+            
+            let eventsForDay = state.plans.filter { plan in
                 calendar.isDate(plan.date, inSameDayAs: dayDate)
             }
             days[i].events = eventsForDay
@@ -155,9 +152,7 @@ final class DatePickerViewStore: ViewStore<DatePickerState, DatePickerIntent> {
     private func adjustWeekdayForMonday(_ weekday: Int) -> Int {
         return weekday == 1 ? 7 : weekday - 1
     }
-
 }
-
 
 struct DatePickerView: View {
     
@@ -178,10 +173,10 @@ struct DatePickerView: View {
     @State var animationDirection: AnimationDirection = .none
     @State var uuid = UUID()
     // MARK: - Store
-    @StateObject private var store: DatePickerViewStore
+    @ObservedObject private var store: DatePickerViewStore
     
-    init(events: [Plan], onTapDay: ((CalendarDay) -> Void)? = nil) {
-        _store = StateObject(wrappedValue: DatePickerViewStore(initialState: DatePickerState(events: events)))
+    init(plans: [Plan], onTapDay: ((CalendarDay) -> Void)? = nil) {
+        _store = ObservedObject(wrappedValue: DatePickerViewStore(initialState: DatePickerState(plans: plans)))
         self.onTapDay = onTapDay
     }
     
@@ -346,6 +341,6 @@ struct DatePickerView: View {
 }
 
 #Preview {
-    DatePickerView(events: [])
+    DatePickerView(plans: [])
         .background(Color.gray)
 }
