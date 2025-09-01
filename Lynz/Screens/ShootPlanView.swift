@@ -18,7 +18,10 @@ enum ShootPlanIntent {
     case updateText(index: Int, text: String)
     case toggleEditingMode
     case tapActionButton
-    case confirmDelete(Bool)
+    case deleteItem(index: Int)           // Удаление отдельного элемента
+    case deleteEvent                      // Удаление всего события
+    case confirmEventDelete               // Подтверждение удаления события
+    case cancelEventDelete                // Отмена удаления события
     case showDialog(Bool)
 }
 
@@ -28,24 +31,42 @@ final class ShootPlanViewStore: ViewStore<ShootPlanState, ShootPlanIntent> {
         switch intent {
         case .selectPlan(let index):
             state.event.planCategories[index].isActive.toggle()
+            
         case .updateText(index: let index, text: let text):
             state.event.planCategories[index].name = text
+            
         case .toggleEditingMode:
             state.editMode.toggle()
+            
         case .tapActionButton:
             if state.editMode {
-                return .action(.showDialog(true))
+                return .action(.showDialog(true))  // Показываем диалог для удаления события
             } else {
-                
                 return .asyncTask {
                     // Save to local database
                     return .none
                 }
             }
-        case .confirmDelete(let isAccept):
-            if isAccept {
-                
+            
+        case .deleteItem(let index):
+            // Удаляем элемент сразу без диалога
+            if index < state.event.planCategories.count {
+                state.event.planCategories.remove(at: index)
             }
+            
+        case .deleteEvent:
+            // Показываем диалог для подтверждения удаления события
+            return .action(.showDialog(true))
+            
+        case .confirmEventDelete:
+            // Remove Event from
+            popToRoot()
+            return .action(.showDialog(false))
+            
+        case .cancelEventDelete:
+            // Отменяем удаление события
+            return .action(.showDialog(false))
+            
         case .showDialog(let isShow):
             state.isShowConfirmationDialog = isShow
         }
@@ -85,17 +106,17 @@ struct ShootPlanView: View {
             .hideInlineNavigationTitle()
             .background(BackgroundGradient().ignoresSafeArea(.all))
             .confirmationDialog(
-                "Are you sure you want to delete the plan for this day?",
+                "Are you sure you want to delete the plan for this day? ",
                 isPresented: Binding(
                     get: { store.state.isShowConfirmationDialog },
                     set: { store.send(.showDialog($0)) }
                 )
             ) {
-                Button("Delete", role: .destructive) {
-                    store.send(.confirmDelete(true))
+                Button("Delete Event", role: .destructive) {
+                    store.send(.confirmEventDelete)
                 }
                 Button("Cancel", role: .cancel) {
-                    store.send(.showDialog(false))
+                    store.send(.cancelEventDelete)
                 }
             }
     }
@@ -121,17 +142,16 @@ struct ShootPlanView: View {
     }
     
     var planList: some View {
-        VStack {
-            ForEach(Array(store.state.event.planCategories.enumerated()), id: \.offset) { index, category in
-                
+        LazyVStack {
+            ForEach(Array(store.state.event.planCategories.enumerated()), id: \.element) { index, category in
                 SelectableListItem(
                     role: store.state.event.role,
                     category: category,
                     isEditing: store.state.editMode,
                     onTap: { store.send(.selectPlan(index: index)) },
+                    onTapDelete: { store.send(.deleteItem(index: index)) },  // Удаление сразу
                     onTextChange: { store.send(.updateText(index: index, text: $0)) }
                 )
-                .id(index)
             }
         }
     }

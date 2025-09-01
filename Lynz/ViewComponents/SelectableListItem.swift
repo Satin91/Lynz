@@ -11,12 +11,13 @@ import SwiftUI
 
 extension SelectableListItem {
     
-    init(role: Role, category: PlanCategory, isEditing: Bool, onTap: @escaping () -> Void, onTextChange: @escaping (String) -> Void) {
+    init(role: Role, category: PlanCategory, isEditing: Bool, onTap: @escaping () -> Void, onTapDelete: @escaping () -> Void, onTextChange: @escaping (String) -> Void) {
         text = category.name
         tintColor = role.tint
         isSelected = category.isActive
         self.isEditing = isEditing
         self.onTap = onTap
+        self.onTapDelete = onTapDelete
         switch role {
         case .photographer:
             radioButtonOpacity = 0.4
@@ -41,6 +42,7 @@ struct SelectableListItem: View {
     let isSelected: Bool
     var radioButtonOpacity: CGFloat
     let onTap: () -> Void
+    let onTapDelete: () -> Void
     @FocusState var isFocused
     
     @Binding var editableText: String
@@ -50,13 +52,23 @@ struct SelectableListItem: View {
     
     
     // Обший инициализатор для переиспользования
-    init(text: String, radioButtonColor: Color, radioButtonStrokeWidth: CGFloat, isEditing: Bool, isSelected: Bool, onTap: @escaping () -> Void, onTextChange: ((String) -> Void)? = nil) {
+    init(
+        text: String,
+        radioButtonColor: Color,
+        radioButtonStrokeWidth: CGFloat,
+        isEditing: Bool,
+        isSelected: Bool,
+        onTap: @escaping () -> Void,
+        onTapDelete: @escaping () -> Void,
+        onTextChange: ((String) -> Void)? = nil
+    ) {
         self.text = text
         self.tintColor = radioButtonColor
         self.radioButtonStrokeWidth = radioButtonStrokeWidth
         self.isEditing = isEditing
         self.isSelected = isSelected
         self.onTap = onTap
+        self.onTapDelete = onTapDelete
         self.radioButtonOpacity = 0.3
         self._editableText = Binding(
             get: { text },
@@ -120,7 +132,7 @@ struct SelectableListItem: View {
     
     var deleteButton: some View {
         Button {
-            
+            onTapDelete()
         } label: {
             Color.clear
                 .frame(width: xMarkSize, height: xMarkSize)
@@ -137,10 +149,10 @@ struct SelectableListItem: View {
 
 #Preview {
     VStack {
-        SelectableListItem(text: "Some text", radioButtonColor: .accentColor, radioButtonStrokeWidth: 1.4, isEditing: true, isSelected: false, onTap: { }, onTextChange: { newText in
+        SelectableListItem(text: "Some text", radioButtonColor: .accentColor, radioButtonStrokeWidth: 1.4, isEditing: true, isSelected: false, onTap: { }, onTapDelete: { }, onTextChange: { newText in
             print("Text changed to: \(newText)")
         })
-        SelectableListItem(text: "Some text", radioButtonColor: .accentColor, radioButtonStrokeWidth: 1.4, isEditing: false, isSelected: true, onTap: { }, onTextChange: { newText in
+        SelectableListItem(text: "Some text", radioButtonColor: .accentColor, radioButtonStrokeWidth: 1.4, isEditing: false, isSelected: true, onTap: { }, onTapDelete: { }, onTextChange: { newText in
             print("Text changed to: \(newText)")
         })
     }
