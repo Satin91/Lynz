@@ -8,6 +8,7 @@
 import Foundation
 import Combine
 
+@MainActor
 class ViewStoreBase: ObservableObject {
     @Published var coorinator: Coordinator = Coordinator()
     @Published var executor = Executor()
