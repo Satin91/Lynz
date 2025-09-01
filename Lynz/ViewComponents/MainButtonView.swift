@@ -104,7 +104,7 @@ struct MainButtonView: View {
                     y: style.hasShadow ? 4 : 0
                 )
         }
-        .buttonStyle(PlainButtonStyle())
+//        .buttonStyle(PlainButtonStyle())
     }
 }
 

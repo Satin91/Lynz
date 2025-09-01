@@ -11,7 +11,7 @@ import Foundation
 final class TestEnvironment {
     
 #if DEBUG
-    private static var developerMode: Bool = false
+    private static var developerMode: Bool = true
 #else
     private static var developerMode: Bool = false
 #endif

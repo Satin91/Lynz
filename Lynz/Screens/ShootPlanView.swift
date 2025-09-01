@@ -15,6 +15,7 @@ struct ShootPlanState {
 
 enum ShootPlanIntent {
     case selectPlan(index: Int)
+    case updateText(index: Int, text: String)
     case toggleEditingMode
     case tapActionButton
     case confirmDelete(Bool)
@@ -27,12 +28,15 @@ final class ShootPlanViewStore: ViewStore<ShootPlanState, ShootPlanIntent> {
         switch intent {
         case .selectPlan(let index):
             state.event.planCategories[index].isActive.toggle()
+        case .updateText(index: let index, text: let text):
+            state.event.planCategories[index].name = text
         case .toggleEditingMode:
             state.editMode.toggle()
         case .tapActionButton:
             if state.editMode {
                 return .action(.showDialog(true))
             } else {
+                
                 return .asyncTask {
                     // Save to local database
                     return .none
@@ -94,37 +98,39 @@ struct ShootPlanView: View {
                     store.send(.showDialog(false))
                 }
             }
-            .onChange(of: store.state.isShowConfirmationDialog) { newValue in
-                print("DEBUG: newValue")
-            }
     }
     
     
     var content: some View {
-        VStack {
-            screenHeader
-                .padding(.top, .medium)
-            planList
-        }
-        .frame(maxHeight: .infinity, alignment: .top)
-        .overlay(alignment: .bottom) {
+        ZStack {
+            ScrollView {
+                VStack {
+                    screenHeader
+                        .padding(.top, .medium)
+                    planList
+                }
+                .frame(maxHeight: .infinity, alignment: .top)
+                .padding(.horizontal, .mediumExt)
+            }
             actionButton
+                .frame(maxHeight: .infinity, alignment: .bottom)
+                .padding(.bottom, .huge)
+                .padding(.horizontal, .mediumExt)
+                .ignoresSafeArea(edges: .bottom)
         }
-        .padding(.horizontal, .mediumExt)
     }
     
     var planList: some View {
         VStack {
             ForEach(Array(store.state.event.planCategories.enumerated()), id: \.offset) { index, category in
+                
                 SelectableListItem(
-                    text: category.name,
-                    radioButtonColor: radioButtonColor,
-                    radioButtonStrokeWidth: radioButtonStrokeWidth,
+                    role: store.state.event.role,
+                    category: category,
                     isEditing: store.state.editMode,
-                    isSelected: category.isActive
-                ) {
-                    store.send(.selectPlan(index: index))
-                }
+                    onTap: { store.send(.selectPlan(index: index)) },
+                    onTextChange: { store.send(.updateText(index: index, text: $0)) }
+                )
                 .id(index)
             }
         }
@@ -162,7 +168,8 @@ struct ShootPlanView: View {
             title: store.state.editMode ? "Delete Plan" : "Done",
             style: store.state.editMode ? .capsuleFill(.lzAccent) : .capsule(.lzWhite)
         ) {
-            store.send(.showDialog(true))
+            
+            store.send(.tapActionButton)
         }
     }
 }
