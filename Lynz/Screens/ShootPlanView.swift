@@ -76,7 +76,12 @@ final class ShootPlanViewStore: ViewStore<ShootPlanState, ShootPlanIntent> {
             return .action(.showDialog(true))
             
         case .confirmPlanDelete:
-            // Remove Event from
+            do {
+                try localDataInteractor.deletePlan(withId: state.plan.id)
+            } catch {
+                print("DEBUG: cant do this operation \(error.localizedDescription)")
+            }
+            
             popToRoot()
             return .action(.showDialog(false))
             
@@ -126,7 +131,7 @@ struct ShootPlanView: View {
                 "Are you sure you want to delete the plan for this day? ",
                 isPresented: Binding(
                     get: { store.state.isShowConfirmationDialog },
-                    set: { store.send(.showDialog($0)) }
+                    set: { _ in /*store.send(.showDialog($0))*/ }
                 )
             ) {
                 Button("Delete Event", role: .destructive) {

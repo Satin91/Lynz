@@ -38,6 +38,10 @@ extension Font {
     static let lynzSemibold15 = Font.system(size: 15)
         .weight(.semibold)
     
+    /// SF Pro Bold 14 - Emphasized text
+    static let lynzBold14 = Font.system(size: 14)
+        .weight(.bold)
+    
     /// SF Pro Bold 16 - Emphasized text
     static let lynzBold16 = Font.system(size: 16)
         .weight(.bold)
@@ -58,6 +62,9 @@ extension Font {
     
     /// Main text - Medium 17, kerning -0.43
     static let lzBody = lynzMedium17
+    
+    /// Bold text - Bold 14
+    static let lzBodySmall = lynzBold14
     
     /// Additional text - Light 18
     static let lzCaption = lynzLight18

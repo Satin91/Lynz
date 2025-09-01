@@ -26,15 +26,14 @@ struct TabBarView: View {
     }
     
     var body: some View {
-            content
-                .navigationTitle(navigationTitle)
-//        }
+        content
+            .navigationTitle(navigationTitle)
     }
     
     var content: some View {
         nativeTabBar
             .overlay(alignment: .bottom) {
-                designedTabBar
+                designedOverlay
             }
     }
     
@@ -46,15 +45,15 @@ struct TabBarView: View {
             MessagesView()
                 .tag(1)
             
-            Text("Tab Content 2")
+            PhotoPosesView()
                 .tag(2)
         }
         .onAppear {
-
+            
         }
     }
     
-    var designedTabBar: some View {
+    var designedOverlay: some View {
         HStack(spacing: 0) {
             Group {
                 TabBarButton(
@@ -77,7 +76,6 @@ struct TabBarView: View {
                 ) {
                     tabIndex = 2
                 }
-                
             }
             .frame(maxWidth: .infinity)
         }
@@ -90,9 +88,9 @@ struct TabBarView: View {
         Rectangle()
             .fill(.ultraThinMaterial) // Более сильный blur эффект
             .overlay { Color.lzGray.opacity(0.9) }
-            .clipShape(UnevenRoundedRectangle(cornerRadii: .init(topLeading: 30, topTrailing: 30)))
+            .clipShape(.rect(cornerRadii: .init(topLeading: 30, topTrailing: 30)))
             .ignoresSafeArea(.all, edges: .bottom)
-            .shadow(color: .black.opacity(0.1), radius: 20)
+            .shadow(color: .black.opacity(1), radius: 20)
     }
     
     private func setupUITabBarAppearance() {
@@ -137,10 +135,10 @@ struct TabBarButton: View {
 
 // Применение явного размера для TabBar, чтобы у содержащих TabBar'а представлений были правильные нижние отступы.
 extension UITabBar {
-     override open func sizeThatFits(_ size: CGSize) -> CGSize {
-         return CGSize(width: UIScreen.main.bounds.width, height: 88)
-     }
- }
+    override open func sizeThatFits(_ size: CGSize) -> CGSize {
+        return CGSize(width: UIScreen.main.bounds.width, height: 88)
+    }
+}
 
 extension UITabBar {
 }
