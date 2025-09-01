@@ -13,7 +13,7 @@ struct CalendarDay: Identifiable {
     let day: Int           // Номер дня (1-31)
     let isCurrentMonth: Bool // Принадлежит ли день текущему отображаемому месяцу
     let date: Date         // Полная дата для точных вычислений
-    var events: [Plan] // Добавляем массив событий
+    var plan: Plan? // Добавляем массив событий
     
     var isToday: Bool {
         let today = Date()
@@ -23,11 +23,12 @@ struct CalendarDay: Identifiable {
     }
     
     // Добавляем вычисляемое свойство для проверки наличия событий
-    var hasEvents: Bool {
-        !events.isEmpty
+    var hasEvent: Bool {
+//        !plan.isEmpty
+        plan != nil
     }
     
-    static var stub = CalendarDay(day: 1, isCurrentMonth: true, date: Date(), events: [])
+    static var stub = CalendarDay(day: 1, isCurrentMonth: true, date: Date(), plan: nil)
 }
 
 // MARK: - Calendar State
@@ -63,6 +64,7 @@ enum DatePickerIntent {
     case nextMonth
     case selectDay(CalendarDay)
     case generateCalendar
+    case updatePlans([Plan])
 }
 
 // MARK: - Calendar Store
@@ -89,6 +91,10 @@ final class DatePickerViewStore: ViewStore<DatePickerState, DatePickerIntent> {
             
         case .generateCalendar:
             state.calendarDays = generateDaysInMonth(for: state.currentDate)
+            
+        case .updatePlans(let newPlans):
+            state.plans = newPlans
+            return .action(.generateCalendar)
         }
         
         return .none
@@ -113,7 +119,7 @@ final class DatePickerViewStore: ViewStore<DatePickerState, DatePickerIntent> {
             for i in 0..<(firstWeekday - 1) {
                 let dayNumber = daysInPreviousMonth - (firstWeekday - 2) + i
                 if let dayDate = calendar.date(byAdding: .day, value: -(firstWeekday - 1 - i), to: firstOfMonth) {
-                    days.append(CalendarDay(day: dayNumber, isCurrentMonth: false, date: dayDate, events: []))
+                    days.append(CalendarDay(day: dayNumber, isCurrentMonth: false, date: dayDate))
                 }
             }
         }
@@ -121,7 +127,7 @@ final class DatePickerViewStore: ViewStore<DatePickerState, DatePickerIntent> {
         // Дни текущего месяца
         for day in 1...daysInMonth {
             if let dayDate = calendar.date(byAdding: .day, value: day - 1, to: firstOfMonth) {
-                days.append(CalendarDay(day: day, isCurrentMonth: true, date: dayDate, events: []))
+                days.append(CalendarDay(day: day, isCurrentMonth: true, date: dayDate))
             }
         }
         
@@ -130,7 +136,7 @@ final class DatePickerViewStore: ViewStore<DatePickerState, DatePickerIntent> {
         if remainingDaysInWeek < 7 {
             for day in 1...remainingDaysInWeek {
                 if let dayDate = calendar.date(byAdding: .day, value: daysInMonth + day - 1, to: firstOfMonth) {
-                    days.append(CalendarDay(day: day, isCurrentMonth: false, date: dayDate, events: []))
+                    days.append(CalendarDay(day: day, isCurrentMonth: false, date: dayDate))
                 }
             }
         }
@@ -142,7 +148,9 @@ final class DatePickerViewStore: ViewStore<DatePickerState, DatePickerIntent> {
             let eventsForDay = state.plans.filter { plan in
                 calendar.isDate(plan.date, inSameDayAs: dayDate)
             }
-            days[i].events = eventsForDay
+            if let eventForDay = eventsForDay.first {
+                days[i].plan = eventForDay
+            }
         }
         
         return days
@@ -157,6 +165,7 @@ final class DatePickerViewStore: ViewStore<DatePickerState, DatePickerIntent> {
 struct DatePickerView: View {
     
     var onTapDay: ((CalendarDay) -> Void)?
+    private let plans: [Plan]
     
     // MARK: - Configuration
     private let itemSize: CGFloat = 46
@@ -171,17 +180,25 @@ struct DatePickerView: View {
         case none, left, right
     }
     @State var animationDirection: AnimationDirection = .none
-    @State var uuid = UUID()
+    
     // MARK: - Store
-    @ObservedObject private var store: DatePickerViewStore
+    @StateObject private var store: DatePickerViewStore
+    
     
     init(plans: [Plan], onTapDay: ((CalendarDay) -> Void)? = nil) {
-        _store = ObservedObject(wrappedValue: DatePickerViewStore(initialState: DatePickerState(plans: plans)))
         self.onTapDay = onTapDay
+        self.plans = plans
+        _store = StateObject(wrappedValue: DatePickerViewStore(initialState: .init(plans: plans)))
     }
     
-    var body: some View {
+        var body: some View {
         content
+            .onAppear {
+                store.send(.generateCalendar)
+            }
+            .onChange(of: plans) { newPlans in
+                store.send(.updatePlans(newPlans))
+            }
     }
     
     var content: some View {
@@ -192,13 +209,6 @@ struct DatePickerView: View {
         }
         .padding(.horizontal, .mediumExt)
 
-        .onAppear {
-            // Загружаем события из памяти устройства
-//            let events = loadEventsFromDevice()
-//            store.updateEvents(events)
-            
-            store.send(.generateCalendar)
-        }
     }
     
     // MARK: - Weekdays Header
@@ -225,22 +235,19 @@ struct DatePickerView: View {
                         Text("\(calendarDay.day)")
                             .font(.lzCaption)
                             .foregroundStyle(calendarDay.isCurrentMonth ? .lzWhite : .lzWhite.opacity(0.3))
-                        
-                        // Индикатор событий
-                        if calendarDay.hasEvents {
-                            HStack(spacing: 2) {
-                                ForEach(Array(calendarDay.events.prefix(3)), id: \.id) { plan in
-                                    Circle()
-                                        .fill(plan.role.tint)
-                                        .frame(width: 6, height: 6)
-                                }
-                            }
-                        }
                     }
                     .frame(width: itemSize, height: itemSize)
                     .background(
-                        RoundedRectangle(cornerRadius: 16)
-                            .fill(calendarDay.isToday ? Color.lzWhite.opacity(0.15) : Color.clear)
+                        ZStack {
+                            RoundedRectangle(cornerRadius: 16)
+                                .fill(calendarDay.isToday ? Color.lzWhite.opacity(0.15) : Color.clear)
+                            // Индикатор событий
+                            if let plan = calendarDay.plan {
+                                RoundedRectangle(cornerRadius: 16)
+                                    .stroke(plan.role.tint, lineWidth: 1)
+                                    .padding(1)
+                            }
+                        }
                     )
                     .onTapGesture {
                         onTapDay?(calendarDay)

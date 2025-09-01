@@ -49,7 +49,6 @@ struct CalendarView: View {
     
     var content: some View {
         VStack {
-//            DatePickerView(events: Plan.mockEvents) { day in
             DatePickerView(plans: store.state.plans) { day in
                 store.send(.tapCalendar(day: day))
             }
@@ -57,6 +56,9 @@ struct CalendarView: View {
         }
         .frame(maxHeight: .infinity, alignment: .top)
         .background(BackgroundGradient().ignoresSafeArea(.all))
+        .onAppear {
+            store.send(.loadPlans)
+        }
     }
     
     var testButton: some View {
