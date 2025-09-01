@@ -18,6 +18,7 @@ enum ShootPlanIntent {
     case updateText(index: Int, text: String)
     case toggleEditingMode
     case tapActionButton
+    case savePlan
     case deleteItem(index: Int)           // Удаление отдельного элемента
     case deletePlan                      // Удаление всего события
     case confirmEventDelete               // Подтверждение удаления события
@@ -26,6 +27,7 @@ enum ShootPlanIntent {
 }
 
 final class ShootPlanViewStore: ViewStore<ShootPlanState, ShootPlanIntent> {
+    private let localDataInteractor = Executor.localDataInteractor
     
     override func reduce(state: inout ShootPlanState, intent: ShootPlanIntent) -> Effect<ShootPlanIntent> {
         switch intent {
@@ -42,10 +44,14 @@ final class ShootPlanViewStore: ViewStore<ShootPlanState, ShootPlanIntent> {
             if state.editMode {
                 return .action(.showDialog(true))  // Показываем диалог для удаления события
             } else {
-                return .asyncTask {
-                    // Save to local database
-                    return .none
-                }
+                return .action(.savePlan)
+            }
+        case .savePlan:
+            let plan = state.plan
+            do {
+                try self.localDataInteractor.savePlan(plan)
+            } catch {
+                print("DEBUG: error of save plan\(error.localizedDescription)")
             }
             
         case .deleteItem(let index):

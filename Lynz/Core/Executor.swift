@@ -13,4 +13,16 @@ class Executor {
     public static var attService: ATTService {
         dependencyStore.attService
     }
+    
+    public static var coreDataService: CoreDataService {
+        dependencyStore.coreDataService
+    }
+    
+    public static var localDataRepository: LocalDataRepository {
+        dependencyStore.localDataRepository
+    }
+    
+    public static var localDataInteractor: LocalDataInteractor {
+        dependencyStore.localDataInteractor
+    }
 }

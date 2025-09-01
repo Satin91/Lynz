@@ -13,16 +13,24 @@ struct CalendarState {
 
 enum CalendarIntent {
     case tapCalendar(day: CalendarDay)
+    case loadPlans
 }
 
 final class CalendarViewStore: ViewStore<CalendarState, CalendarIntent> {
-    
+    private let localDataInteractor = Executor.localDataInteractor
     
     override func reduce(state: inout CalendarState, intent: CalendarIntent) -> Effect<CalendarIntent> {
         
         switch intent {
         case .tapCalendar(let day):
             push(.role(day))
+        case .loadPlans:
+            do {
+                let plans = try localDataInteractor.getAllPlans()
+                print("DEBUG: local data plans \(plans)")
+            } catch {
+                print("ERROR OF LOAD PLANS \(error.localizedDescription)")
+            }
         }
         
         return .none
@@ -35,15 +43,27 @@ struct CalendarView: View {
     var body: some View {
         content
             .preferredColorScheme(.dark)
+
     }
     
     var content: some View {
-        DatePickerView(events: Plan.mockEvents) { day in
-            store.send(.tapCalendar(day: day))
+        VStack {
+            DatePickerView(events: Plan.mockEvents) { day in
+                store.send(.tapCalendar(day: day))
+            }
+            testButton
         }
         .frame(maxHeight: .infinity, alignment: .top)
         .background(BackgroundGradient().ignoresSafeArea(.all))
-        
+    }
+    
+    var testButton: some View {
+        Button {
+            store.send(.loadPlans)
+        } label: {
+            Text("Load Plans")
+        }
+        .buttonStyle(.bordered)
     }
 }
 

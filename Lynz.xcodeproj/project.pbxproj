@@ -51,6 +51,9 @@
 		8EC568722E6383F800414ADD /* ScreenHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EC568712E6383F800414ADD /* ScreenHeaderView.swift */; };
 		8EE044672E6602620091B7C7 /* TaskCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EE044662E6602620091B7C7 /* TaskCategory.swift */; };
 		8EE044692E66026A0091B7C7 /* Plan.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EE044682E66026A0091B7C7 /* Plan.swift */; };
+		8EE0446D2E6605260091B7C7 /* LocalDataInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EE0446A2E6605260091B7C7 /* LocalDataInteractor.swift */; };
+		8EE0446E2E6605260091B7C7 /* LocalDataRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EE0446B2E6605260091B7C7 /* LocalDataRepository.swift */; };
+		8EE0446F2E6605260091B7C7 /* CoreDataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EE0446C2E6605260091B7C7 /* CoreDataService.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -98,6 +101,9 @@
 		8EC568712E6383F800414ADD /* ScreenHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScreenHeaderView.swift; sourceTree = "<group>"; };
 		8EE044662E6602620091B7C7 /* TaskCategory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskCategory.swift; sourceTree = "<group>"; };
 		8EE044682E66026A0091B7C7 /* Plan.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Plan.swift; sourceTree = "<group>"; };
+		8EE0446A2E6605260091B7C7 /* LocalDataInteractor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocalDataInteractor.swift; sourceTree = "<group>"; };
+		8EE0446B2E6605260091B7C7 /* LocalDataRepository.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocalDataRepository.swift; sourceTree = "<group>"; };
+		8EE0446C2E6605260091B7C7 /* CoreDataService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreDataService.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -234,6 +240,9 @@
 		8E3933912E622F61003FDE0A /* Services */ = {
 			isa = PBXGroup;
 			children = (
+				8EE0446C2E6605260091B7C7 /* CoreDataService.swift */,
+				8EE0446A2E6605260091B7C7 /* LocalDataInteractor.swift */,
+				8EE0446B2E6605260091B7C7 /* LocalDataRepository.swift */,
 				8E3933922E622F74003FDE0A /* ATTService.swift */,
 			);
 			path = Services;
@@ -345,6 +354,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8EE0446D2E6605260091B7C7 /* LocalDataInteractor.swift in Sources */,
 				8E14DC8B2E60A07100BB5117 /* Effect.swift in Sources */,
 				8E3933932E622F74003FDE0A /* ATTService.swift in Sources */,
 				8EC568692E634ED200414ADD /* DatePickerView.swift in Sources */,
@@ -372,11 +382,13 @@
 				8E14DC932E60A94F00BB5117 /* LynzFonts.swift in Sources */,
 				8E39338B2E6224E3003FDE0A /* Coordinator.swift in Sources */,
 				8EC568672E63302B00414ADD /* TransparentBackground.swift in Sources */,
+				8EE0446F2E6605260091B7C7 /* CoreDataService.swift in Sources */,
 				8E14DC772E609F3900BB5117 /* LynzApp.swift in Sources */,
 				8E14DC8D2E60A27300BB5117 /* Padding.swift in Sources */,
 				8E78602D2E648F45000C7CB5 /* Role.swift in Sources */,
 				8EE044692E66026A0091B7C7 /* Plan.swift in Sources */,
 				8EC568632E630CDD00414ADD /* LoaderView.swift in Sources */,
+				8EE0446E2E6605260091B7C7 /* LocalDataRepository.swift in Sources */,
 				8E7860382E64E39D000C7CB5 /* BackgroundGradient.swift in Sources */,
 				8EC568722E6383F800414ADD /* ScreenHeaderView.swift in Sources */,
 				8E7860322E64BC4B000C7CB5 /* SelectableListItem.swift in Sources */,

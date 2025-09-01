@@ -9,5 +9,7 @@ import Foundation
 
 class DependencyStore {
     lazy var attService = ATTService()
-    
+    lazy var coreDataService = CoreDataService.shared
+    lazy var localDataRepository = LocalDataRepository(coreDataService: coreDataService)
+    lazy var localDataInteractor = LocalDataInteractor(repository: localDataRepository)
 }
