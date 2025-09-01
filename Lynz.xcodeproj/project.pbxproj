@@ -33,7 +33,6 @@
 		8E7860262E648592000C7CB5 /* EventRoleDescription.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E7860252E648592000C7CB5 /* EventRoleDescription.swift */; };
 		8E7860282E648BC1000C7CB5 /* ShootPlanView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E7860272E648BC1000C7CB5 /* ShootPlanView.swift */; };
 		8E78602D2E648F45000C7CB5 /* Role.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E78602C2E648F45000C7CB5 /* Role.swift */; };
-		8E7860302E649115000C7CB5 /* RolePresentation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E78602F2E649115000C7CB5 /* RolePresentation.swift */; };
 		8E7860322E64BC4B000C7CB5 /* SelectableListItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E7860312E64BC4B000C7CB5 /* SelectableListItem.swift */; };
 		8E7860342E64BD42000C7CB5 /* TestEnvironment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E7860332E64BD42000C7CB5 /* TestEnvironment.swift */; };
 		8E7860362E64DA9D000C7CB5 /* SeparatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E7860352E64DA9D000C7CB5 /* SeparatorView.swift */; };
@@ -50,6 +49,8 @@
 		8EC5686C2E63596300414ADD /* DateExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EC5686B2E63596300414ADD /* DateExtensions.swift */; };
 		8EC568702E637F1500414ADD /* CalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EC5686F2E637F1500414ADD /* CalendarView.swift */; };
 		8EC568722E6383F800414ADD /* ScreenHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EC568712E6383F800414ADD /* ScreenHeaderView.swift */; };
+		8EE044672E6602620091B7C7 /* TaskCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EE044662E6602620091B7C7 /* TaskCategory.swift */; };
+		8EE044692E66026A0091B7C7 /* Plan.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EE044682E66026A0091B7C7 /* Plan.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -80,7 +81,6 @@
 		8E7860252E648592000C7CB5 /* EventRoleDescription.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventRoleDescription.swift; sourceTree = "<group>"; };
 		8E7860272E648BC1000C7CB5 /* ShootPlanView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShootPlanView.swift; sourceTree = "<group>"; };
 		8E78602C2E648F45000C7CB5 /* Role.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Role.swift; sourceTree = "<group>"; };
-		8E78602F2E649115000C7CB5 /* RolePresentation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RolePresentation.swift; sourceTree = "<group>"; };
 		8E7860312E64BC4B000C7CB5 /* SelectableListItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelectableListItem.swift; sourceTree = "<group>"; };
 		8E7860332E64BD42000C7CB5 /* TestEnvironment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestEnvironment.swift; sourceTree = "<group>"; };
 		8E7860352E64DA9D000C7CB5 /* SeparatorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SeparatorView.swift; sourceTree = "<group>"; };
@@ -96,6 +96,8 @@
 		8EC5686B2E63596300414ADD /* DateExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateExtensions.swift; sourceTree = "<group>"; };
 		8EC5686F2E637F1500414ADD /* CalendarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarView.swift; sourceTree = "<group>"; };
 		8EC568712E6383F800414ADD /* ScreenHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScreenHeaderView.swift; sourceTree = "<group>"; };
+		8EE044662E6602620091B7C7 /* TaskCategory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskCategory.swift; sourceTree = "<group>"; };
+		8EE044682E66026A0091B7C7 /* Plan.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Plan.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -240,8 +242,9 @@
 		8E78602E2E648F59000C7CB5 /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				8E78602F2E649115000C7CB5 /* RolePresentation.swift */,
 				8E78602C2E648F45000C7CB5 /* Role.swift */,
+				8EE044682E66026A0091B7C7 /* Plan.swift */,
+				8EE044662E6602620091B7C7 /* TaskCategory.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -357,6 +360,7 @@
 				8E7860342E64BD42000C7CB5 /* TestEnvironment.swift in Sources */,
 				8E3933902E622F44003FDE0A /* DependencyStore.swift in Sources */,
 				8E2C09752E60DFFD00DBC90C /* MainButtonView.swift in Sources */,
+				8EE044672E6602620091B7C7 /* TaskCategory.swift in Sources */,
 				8E7860242E64807F000C7CB5 /* NavigationBarExtensions.swift in Sources */,
 				8E14DC852E609F6700BB5117 /* ViewStateProtocol.swift in Sources */,
 				8E14DC952E60AAE700BB5117 /* TabBarView.swift in Sources */,
@@ -371,6 +375,7 @@
 				8E14DC772E609F3900BB5117 /* LynzApp.swift in Sources */,
 				8E14DC8D2E60A27300BB5117 /* Padding.swift in Sources */,
 				8E78602D2E648F45000C7CB5 /* Role.swift in Sources */,
+				8EE044692E66026A0091B7C7 /* Plan.swift in Sources */,
 				8EC568632E630CDD00414ADD /* LoaderView.swift in Sources */,
 				8E7860382E64E39D000C7CB5 /* BackgroundGradient.swift in Sources */,
 				8EC568722E6383F800414ADD /* ScreenHeaderView.swift in Sources */,
@@ -378,7 +383,6 @@
 				8E2C096E2E60AE3A00DBC90C /* AllowTrackingView.swift in Sources */,
 				8E39338E2E622E67003FDE0A /* ReadSize.swift in Sources */,
 				8E7860222E644912000C7CB5 /* RoleView.swift in Sources */,
-				8E7860302E649115000C7CB5 /* RolePresentation.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
