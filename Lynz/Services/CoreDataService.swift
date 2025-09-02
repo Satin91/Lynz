@@ -1,5 +1,5 @@
 //
-//  LocalDataInteractor.swift
+//  CoreDataService.swift
 //  Lynz
 //
 //  Created by Артур Кулик on 31.08.2025.

@@ -33,7 +33,6 @@ final class CalendarViewStore: ViewStore<CalendarState, CalendarIntent> {
             do {
                 let plans = try localDataInteractor.getAllPlans()
                 state.plans = plans
-                print("DEBUG: local data plans \(plans)")
             } catch {
                 print("ERROR OF LOAD PLANS \(error.localizedDescription)")
             }

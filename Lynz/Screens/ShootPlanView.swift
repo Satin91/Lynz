@@ -170,7 +170,7 @@ struct ShootPlanView: View {
                     isEditing: store.state.editMode,
                     isSingleFocused: store.state.focusedIndex == index,
                     onTap: { store.send(.selectPlan(index: index)) },
-                    onTapDelete: { store.send(.deleteItem(index: index)) },  // Удаление сразу
+                    onTapDelete: { store.send(.deleteItem(index: index)) },
                     onTextChange: { store.send(.updateText(index: index, text: $0)) }
                 )
             }

@@ -31,7 +31,7 @@ extension SelectableListItem {
             get: { task.name },
             set: { text in onTextChange(text) }
         )
-//        self.isSingleFocused = isSingleFocused
+        self.isSingleFocused = isSingleFocused
     }
 }
 
@@ -46,7 +46,7 @@ struct SelectableListItem: View {
     let onTapDelete: () -> Void
     var isSingleFocused: Bool = false
     @Binding var editableText: String
-    @FocusState var isFocused
+    @FocusState private var isFocused: Bool
     private let xMarkSize: CGFloat = 16
     private let radioButtonSize: CGFloat = 30
     
@@ -74,7 +74,7 @@ struct SelectableListItem: View {
             get: { text },
             set: { text in onTextChange?(text) }
         )
-//        self.isSingleFocused = false
+        self.isSingleFocused = false
     }
     
     var itemHeight: CGFloat {
@@ -102,6 +102,14 @@ struct SelectableListItem: View {
                 isFocused = true
             }
         }
+        .onAppear {
+            if isSingleFocused {
+                isFocused = true
+            }
+        }
+//        .onChange(of: isFocused) { newValue in
+//            print("DEBUG: Setting isFocused to true on onchange is focused \(newValue) ")
+//        }
     }
     
     var textField: some View {
@@ -114,7 +122,7 @@ struct SelectableListItem: View {
             .lineLimit(nil)
             .fixedSize(horizontal: false, vertical: true)
             .frame(maxWidth: .infinity, alignment: .leading)
-            .disabled(!isEditing)
+            .allowsHitTesting(isEditing || isSingleFocused)
             .overlay(alignment: .bottom) {
                 SeparatorView(color: isFocused ? tintColor : .lzGray)
                     .opacity(isEditing ? 1 : 0)

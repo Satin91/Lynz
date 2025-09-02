@@ -44,8 +44,8 @@ struct NavigationTitleStyleModifier: ViewModifier {
             .font: UIFont.systemFont(ofSize: fontSize, weight: .ultraLight)
         ]
         
-        navigationController.navigationBar.standardAppearance = appearance
-        navigationController.navigationBar.compactAppearance = appearance
+//        navigationController.navigationBar.standardAppearance = appearance
+//        navigationController.navigationBar.compactAppearance = appearance
         navigationController.navigationBar.scrollEdgeAppearance = appearance
     }
     
