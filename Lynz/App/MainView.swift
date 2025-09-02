@@ -14,21 +14,31 @@ struct MainView: View {
     
     
     var body: some View {
+        switch appState.viewState {
+        case .splash:
+            Text("Splash")
+                .onAppear {
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 2, execute: {
+                        appState.setAppViewState(.onboarding)
+                    })
+                }
+        case .onboarding:
+            AllowTrackingView()
+        case .main:
+            mainContent
+        }
+    }
+    
+    
+    var mainContent: some View {
         NavigationStack(path: $coordinator.path) {
-            TabBarView()
+            content
                 .navigationDestination(for: Page.self) { page in
                     coordinator.build(page: page)
                 }
         }
         .fullScreenCover(item: $coordinator.presentedPage) { page in
             coordinator.build(page: page)
-        }
-    }
-    
-    @ViewBuilder
-    var controlsLayer: some View {
-        if appState.isShowLoader {
-            LoaderView()
         }
     }
     

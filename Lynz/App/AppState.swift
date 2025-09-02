@@ -8,22 +8,27 @@
 import Foundation
 import SwiftUI
 
+/// Объект который хранит состояния приложения: тему, количество запусков и др.
 class AppState: ObservableObject {
+    
     static let shared = AppState()
-    @Published var navBarColor: Color = .white
+    @Published private(set) var isOnboardingShown = false
+    @Published private(set) var viewState: AppViewState = .splash
+    
+    enum AppViewState {
+        case splash
+        case onboarding
+        case main
+    }
+    
     private init() { }
     
-    @Published private(set) var isShowLoader: Bool = false
-    
-    func showLoader() {
-        isShowLoader = true
+    // Метот который может вернуть пользователя в начало приложения ( например пр выходе SignOut )
+    func setOnboardingShown(isShown: Bool) {
+        isOnboardingShown = isShown
     }
     
-    func hideLoader() {
-        isShowLoader = false
-    }
-    
-    func setNavvigationBarColor(_ color: Color) {
-        navBarColor = color
+    func setAppViewState(_ state: AppViewState) {
+        self.viewState = state
     }
 }

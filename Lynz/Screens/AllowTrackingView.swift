@@ -14,7 +14,7 @@ struct AllowTrackingState {
 
 enum AllowTrackingIntent {
     case showPermissions
-    case push
+    case toRootView
 }
 
 class AllowTrackingViewStore: ViewStore<AllowTrackingState, AllowTrackingIntent> {
@@ -25,11 +25,14 @@ class AllowTrackingViewStore: ViewStore<AllowTrackingState, AllowTrackingIntent>
         case .showPermissions:
             return .asyncTask {
                 let status = await Executor.attService.requestPermissions()
-                return .action(.push)
+                try! await Task.sleep(nanoseconds: 500_000_000) // чтобы была небольшая задержка для скрытия alert'a
+                return .action(.toRootView)
             }
             
-        case .push:
-            push(.allowTrackingView)
+        case .toRootView:
+            // AppState так же как и Coordinator может переехать во ViewStore
+            AppState.shared.setOnboardingShown(isShown: true)
+            AppState.shared.setAppViewState(.main)
         }
         return .none
     }
@@ -41,6 +44,8 @@ struct AllowTrackingView: View {
     
     var body: some View {
         content
+            .navigationBarBackButtonHidden(true)
+            .interactiveDismissDisabled()
     }
     
     var content: some View {
