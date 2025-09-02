@@ -15,7 +15,7 @@ struct MainView: View {
     
     var body: some View {
         NavigationStack(path: $coordinator.path) {
-            content
+            TabBarView()
                 .navigationDestination(for: Page.self) { page in
                     coordinator.build(page: page)
                 }

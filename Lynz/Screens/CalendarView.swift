@@ -49,30 +49,17 @@ struct CalendarView: View {
     var body: some View {
         content
             .preferredColorScheme(.dark)
-
     }
     
     var content: some View {
-        VStack {
-            DatePickerView(plans: store.state.plans) { day in
-                store.send(.tapCalendar(day: day))
-            }
-            testButton
+        DatePickerView(plans: store.state.plans) { day in
+            store.send(.tapCalendar(day: day))
         }
         .frame(maxHeight: .infinity, alignment: .top)
         .background(BackgroundGradient().ignoresSafeArea(.all))
         .onAppear {
             store.send(.loadPlans)
         }
-    }
-    
-    var testButton: some View {
-        Button {
-            store.send(.loadPlans)
-        } label: {
-            Text("Load Plans")
-        }
-        .buttonStyle(.bordered)
     }
 }
 

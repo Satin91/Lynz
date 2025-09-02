@@ -146,6 +146,8 @@ struct MessagesView: View {
     var body: some View {
             content
                 .loader(isLoading: store.state.isLoading)
+//                .preferredColorScheme(.light)
+//                .navigationTitle("Dialogs")
     }
     
     var content: some View {

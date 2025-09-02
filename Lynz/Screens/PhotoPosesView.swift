@@ -97,16 +97,15 @@ struct PosesState {
 }
 
 enum PosesIntent {
-    case tapCategory
+    case tapPose(category: PoseCategory)
 }
 
 final class PosesViewStore: ViewStore<PosesState, PosesIntent> {
     
     override func reduce(state: inout PosesState, intent: PosesIntent) -> Effect<PosesIntent> {
         switch intent {
-        case .tapCategory:
-            push(.allowTrackingView)
-            
+        case .tapPose(let category):
+            return .push(.poseLibrary(pose: category))
         }
         return .none
     }
@@ -115,27 +114,27 @@ final class PosesViewStore: ViewStore<PosesState, PosesIntent> {
 
 struct PhotoPosesView: View {
     var poses = PoseCategory.closeUp
-    
     private let navigationTitle = "Photo Poses"
+    
+    @StateObject var store = PosesViewStore(initialState: .init())
+    
     
     var body: some View {
         content
-            .navigationBarTitleDisplayMode(.inline)
-            .navigationTitle(navigationTitle)
             .hideInlineNavigationTitle()
     }
     
     
-    
     @ViewBuilder
     var content: some View {
-        VStack {
-            ScreenHeaderView(title: navigationTitle)
-                .padding(.horizontal, .mediumExt)
-            itemsGrid
+        ScrollView {
+            VStack {
+                itemsGrid
+            }
         }
-        .frame(maxHeight: .infinity)
-        .background(BackgroundGradient())
+        .padding(.top, 1) // Временный костыль, который отделяет панель навигации от скрола, Т.К. в таб баре панель не накладывает блюр, решается.
+        .background(BackgroundGradient().ignoresSafeArea(.all))
+        .scrollIndicators(.hidden)
     }
     
     var itemsGrid: some View {
@@ -144,7 +143,9 @@ struct PhotoPosesView: View {
             GridItem(.flexible(), spacing: 4)
         ], spacing: 4) {
             ForEach(PoseCategory.allCases) { pose in
-                PoseCardView(title: pose.name, image: pose.mainPhoto, onButtonTap: { })
+                PoseCardView(title: pose.name, image: pose.mainPhoto, onButtonTap: {
+                    store.send(.tapPose(category: pose))
+                })
             }
         }
         .padding(.horizontal, .smallExt)
@@ -176,7 +177,7 @@ struct PoseCardView: View {
             }
         
             .clipShape(.rect(cornerRadius: 20))
-            
+        
     }
     
     var text: some View {

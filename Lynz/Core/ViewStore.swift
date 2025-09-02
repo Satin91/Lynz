@@ -101,6 +101,8 @@ extension ViewStore {
             
         case .none:
             break
+        case .push(let screen):
+            coordinator.push(page: screen)
         }
     }
 }

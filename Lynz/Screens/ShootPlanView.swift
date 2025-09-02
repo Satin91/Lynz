@@ -184,7 +184,8 @@ struct ShootPlanView: View {
         VStack {
             ScreenHeaderView(title: "Shoot Plan") {
                 HeaderButton(
-                    color: store.state.plan.role.tint,
+                    color: .lzWhite,
+                    activeColor: store.state.plan.role.tint,
                     image: .pencil,
                     isActive: store.state.editMode,
                     action: {
@@ -194,7 +195,7 @@ struct ShootPlanView: View {
                     }
                 )
                 HeaderButton(
-                    color: store.state.plan.role.tint,
+                    color: .lzWhite,
                     image: .plus,
                     isDisabled: store.state.editMode,
                     action: { store.send(.addTask) }

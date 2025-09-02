@@ -9,8 +9,7 @@ import SwiftUI
 
 struct TabBarView: View {
     //Можно вынести в Coordinator при необходимост
-    @State private var tabIndex: Int = 0
-    
+    @State private var tabIndex: Int = 2
     
     var navigationTitle: String {
         switch tabIndex {
@@ -24,10 +23,10 @@ struct TabBarView: View {
     init() {
         setupUITabBarAppearance()
     }
-    
     var body: some View {
-        content
+            content
             .navigationTitle(navigationTitle)
+            .navigationBarTitleDisplayMode(tabIndex == 2 ? .inline : .large)
     }
     
     var content: some View {
@@ -39,17 +38,12 @@ struct TabBarView: View {
     
     var nativeTabBar: some View {
         TabView(selection: $tabIndex) {
-            Coordinator.shared.build(page: .calendar)
+            CalendarView()
                 .tag(0)
-            
             MessagesView()
                 .tag(1)
-            
             PhotoPosesView()
                 .tag(2)
-        }
-        .onAppear {
-            
         }
     }
     
@@ -82,6 +76,7 @@ struct TabBarView: View {
         .background(
             backgroundBlurRounded
         )
+        
     }
     
     private var backgroundBlurRounded: some View {
@@ -89,7 +84,7 @@ struct TabBarView: View {
             .fill(.ultraThinMaterial) // Более сильный blur эффект
             .overlay { Color.lzGray.opacity(0.9) }
             .clipShape(.rect(cornerRadii: .init(topLeading: 30, topTrailing: 30)))
-            .ignoresSafeArea(.all, edges: .bottom)
+            .ignoresSafeArea(edges: .bottom)
             .shadow(color: .black.opacity(1), radius: 20)
     }
     
