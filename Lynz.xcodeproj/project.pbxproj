@@ -29,6 +29,7 @@
 		8E3933952E623104003FDE0A /* Executor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E3933942E623104003FDE0A /* Executor.swift */; };
 		8E3933972E623CEC003FDE0A /* MessagesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E3933962E623CEC003FDE0A /* MessagesView.swift */; };
 		8E776A132E67834600D1D2DB /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8E776A122E67834600D1D2DB /* LaunchScreen.storyboard */; };
+		8E776A152E67BB0900D1D2DB /* NavigationAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E776A142E67BB0900D1D2DB /* NavigationAction.swift */; };
 		8E7860222E644912000C7CB5 /* RoleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E7860212E644912000C7CB5 /* RoleView.swift */; };
 		8E7860242E64807F000C7CB5 /* NavigationBarExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E7860232E64807F000C7CB5 /* NavigationBarExtensions.swift */; };
 		8E7860262E648592000C7CB5 /* EventRoleDescription.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E7860252E648592000C7CB5 /* EventRoleDescription.swift */; };
@@ -87,6 +88,7 @@
 		8E3933942E623104003FDE0A /* Executor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Executor.swift; sourceTree = "<group>"; };
 		8E3933962E623CEC003FDE0A /* MessagesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessagesView.swift; sourceTree = "<group>"; };
 		8E776A122E67834600D1D2DB /* LaunchScreen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
+		8E776A142E67BB0900D1D2DB /* NavigationAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationAction.swift; sourceTree = "<group>"; };
 		8E7860212E644912000C7CB5 /* RoleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoleView.swift; sourceTree = "<group>"; };
 		8E7860232E64807F000C7CB5 /* NavigationBarExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationBarExtensions.swift; sourceTree = "<group>"; };
 		8E7860252E648592000C7CB5 /* EventRoleDescription.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventRoleDescription.swift; sourceTree = "<group>"; };
@@ -181,6 +183,7 @@
 				8E39338A2E6224E3003FDE0A /* Coordinator.swift */,
 				8E14DC842E609F6700BB5117 /* ViewStateProtocol.swift */,
 				8E14DC862E609F6D00BB5117 /* ViewStore.swift */,
+				8E776A142E67BB0900D1D2DB /* NavigationAction.swift */,
 				8E14DC8A2E60A07100BB5117 /* Effect.swift */,
 				8E39338F2E622F44003FDE0A /* DependencyStore.swift */,
 				8E3933942E623104003FDE0A /* Executor.swift */,
@@ -391,6 +394,7 @@
 				8E2C09712E60B1A400DBC90C /* LayeredCircleView.swift in Sources */,
 				8E7860262E648592000C7CB5 /* EventRoleDescription.swift in Sources */,
 				8EC568652E63268100414ADD /* LoaderModifier.swift in Sources */,
+				8E776A152E67BB0900D1D2DB /* NavigationAction.swift in Sources */,
 				8E7860342E64BD42000C7CB5 /* TestEnvironment.swift in Sources */,
 				8E3933902E622F44003FDE0A /* DependencyStore.swift in Sources */,
 				8E96F8642E66454000D50801 /* PhotoPosesView.swift in Sources */,

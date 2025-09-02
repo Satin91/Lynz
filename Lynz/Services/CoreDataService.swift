@@ -8,7 +8,7 @@
 import Foundation
 import CoreData
 
-// Core data полностью создаётся программно
+// Core data создаётся программно
 class CoreDataService {
     
     // MARK: - Properties

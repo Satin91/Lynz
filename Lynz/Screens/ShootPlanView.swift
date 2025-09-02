@@ -25,6 +25,7 @@ enum ShootPlanIntent {
     case showDialog(Bool)
     case confirmPlanDelete
     case cancelPlanDelete
+    case endTaskCreate
 }
 
 final class ShootPlanViewStore: ViewStore<ShootPlanState, ShootPlanIntent> {
@@ -37,14 +38,12 @@ final class ShootPlanViewStore: ViewStore<ShootPlanState, ShootPlanIntent> {
             
         case .updateText(index: let index, text: let text):
             state.plan.tasks[index].name = text
-            // Сбрасываем фокус после изменения текста
-            if state.focusedIndex == index {
-                state.focusedIndex = nil
-            }
             
         case .toggleEditingMode:
             state.editMode.toggle()
             state.focusedIndex = nil
+            if !state.editMode { resignFirstResponder() }
+            return .intent(.endTaskCreate)
             
         case .tapActionButton:
             if state.editMode {
@@ -52,24 +51,30 @@ final class ShootPlanViewStore: ViewStore<ShootPlanState, ShootPlanIntent> {
             } else {
                 return .intent(.savePlan)
             }
+            
         case .addTask:
             let newTask = TaskCategory(name: "New Task", isActive: false)
-            
             state.plan.tasks.append(newTask)
             state.focusedIndex = state.plan.tasks.count - 1
+            
+        case .endTaskCreate:
+            state.focusedIndex = nil
+            
         case .savePlan:
             let plan = state.plan
             do {
                 try self.localDataInteractor.savePlan(plan)
-                return .popToRoot
+                return .navigate(.popToRoot)
             } catch {
                 print("DEBUG: error of save plan\(error.localizedDescription)")
             }
+            
         case .deleteItem(let index):
             // Удаляем элемент сразу без диалога
             if index < state.plan.tasks.count {
                 state.plan.tasks.remove(at: index)
             }
+            
         case .confirmPlanDelete:
             do {
                 try localDataInteractor.deletePlan(withId: state.plan.id)
@@ -79,7 +84,8 @@ final class ShootPlanViewStore: ViewStore<ShootPlanState, ShootPlanIntent> {
                 print("DEBUG: cant do this operation \(error.localizedDescription)")
                 state.isShowConfirmationDialog = false
             }
-            return .popToRoot
+            return .navigate(.popToRoot)
+            
         case .cancelPlanDelete:
             // Отменяем удаление события
             return .intent(.showDialog(false))
@@ -91,11 +97,16 @@ final class ShootPlanViewStore: ViewStore<ShootPlanState, ShootPlanIntent> {
         
         return .none
     }
+    
+    private func resignFirstResponder() {
+        
+    }
 }
 
 struct ShootPlanView: View {
     @StateObject var store: ShootPlanViewStore
-    private let navTitle = "Shoot Plan"
+    @FocusState private var focusedIndex: Int?
+    private let navigationTitle = "Shoot Plan"
     
     
     //MARK: - UI
@@ -119,7 +130,7 @@ struct ShootPlanView: View {
     
     var body: some View {
         content
-            .navigationTitle(navTitle) // На случай если в будущем будет переход из этого экрана
+            .navigationTitle(navigationTitle) // На случай если в будущем будет переход из этого экрана для названия BackButton
             .navigationBarTitleDisplayMode(.inline)
             .hideInlineNavigationTitle()
             .background(BackgroundGradient().ignoresSafeArea(.all))
@@ -136,9 +147,6 @@ struct ShootPlanView: View {
                 Button("Cancel", role: .cancel) {
                     store.send(.cancelPlanDelete)
                 }
-            }
-            .onChange(of: store.state.isShowConfirmationDialog) { newValue in
-                print("DEBUG: new value dialog \(newValue)")
             }
     }
     
@@ -168,13 +176,17 @@ struct ShootPlanView: View {
                     role: store.state.plan.role,
                     task: task,
                     isEditing: store.state.editMode,
-                    isSingleFocused: store.state.focusedIndex == index,
                     onTap: { store.send(.selectPlan(index: index)) },
                     onTapDelete: { store.send(.deleteItem(index: index)) },
                     onTextChange: { store.send(.updateText(index: index, text: $0)) }
                 )
+                .focused($focusedIndex, equals: index) // Фокус для только что созданной задачи
+                .onChange(of: store.state.focusedIndex) { newValue in
+                    focusedIndex = newValue
+                }
             }
         }
+
     }
     
     var screenHeader: some View {

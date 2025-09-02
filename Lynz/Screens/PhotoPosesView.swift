@@ -106,9 +106,9 @@ final class PosesViewStore: ViewStore<PosesState, PosesIntent> {
     override func reduce(state: inout PosesState, intent: PosesIntent) -> Effect<PosesIntent> {
         switch intent {
         case .tapPose(let category):
-            return .push(.poseLibrary(pose: category))
+            return .navigate(.push(.poseLibrary(pose: category)))
         case .tapSettings:
-            return .fullScreenCover(.settings)
+            return .navigate(.fullScreenCover(.settings))
         }
     }
 }

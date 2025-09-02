@@ -21,10 +21,9 @@ class ViewStore<State, Intent>: ViewStateProtocol {
     init(initialState: State) {
         self.state = initialState
     }
- 
     
     @MainActor
-    func send(_ intent: Intent) {
+    public final func send(_ intent: Intent) {
         var newState = state
         let effect = reduce(state: &newState, intent: intent)
         updateState(newState)
@@ -45,7 +44,6 @@ class ViewStore<State, Intent>: ViewStateProtocol {
         cancellables.forEach { $0.cancel() }
     }
 }
-
 
 //MARK: - Handle Effect
 extension ViewStore {
@@ -99,15 +97,17 @@ extension ViewStore {
                 send(action)
             }
             
-
-            
-            //NAVIGATION
-        case .popToRoot:
-            coordinator.popToRoot()
-        case .push(let screen):
-            coordinator.push(page: screen)
-        case .fullScreenCover(let screen):
-            coordinator.fullScreenCover(page: screen)
+        case .navigate(let navAction):
+            switch navAction {
+            case .push(let screen):
+                coordinator.push(page: screen)
+            case .fullScreenCover(let screen):
+                coordinator.fullScreenCover(page: screen)
+            case .popToRoot:
+                coordinator.popToRoot()
+            case .pop:
+                coordinator.pop()
+            }
         case .none:
             break
         }
@@ -115,19 +115,4 @@ extension ViewStore {
 }
 
 //MARK: - Navigation
-
-extension ViewStore: Navigation {
-    func push(_ to: Page) {
-        coordinator.push(page: to)
-    }
-    
-    func pop(_ to: Page) {
-        coordinator.pop()
-    }
-    
-    func popToRoot() {
-        coordinator.popToRoot()
-    }
-    
-    
-}
+extension ViewStore: Navigation { }

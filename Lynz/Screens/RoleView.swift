@@ -23,10 +23,8 @@ final class RoleViewStore: ViewStore<RoleState, RoleIntent> {
         switch intent {
         case .tapRole(let role):
             let newEvent = Plan(role: role, date: state.day.date, planCategories: role.defaultPlansCategories)
-            push(.shootPlan(newEvent))
+            return .navigate(.push(.shootPlan(newEvent)))
         }
-        
-        return .none
     }
 }
 

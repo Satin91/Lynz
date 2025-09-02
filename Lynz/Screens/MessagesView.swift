@@ -145,15 +145,13 @@ final class MessagesViewStore: ViewStore<MessagesViewState, MessagesIntent> {
         case .setViewState(let viewState):
             state.viewState = viewState
         case .tapSettings:
-            return .fullScreenCover(.settings)
+            return .navigate(.fullScreenCover(.settings))
         case .showNotificationPermission:
             return .asyncTask { [weak self] in
                 let result = await self?.permissionInteractor.requestNotificationPermissions()
                 return .none
             }
         }
-        
-        
         return .none
     }
 }

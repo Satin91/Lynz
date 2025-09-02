@@ -11,7 +11,7 @@ import SwiftUI
 
 extension SelectableListItem {
     
-    init(role: Role, task: TaskCategory, isEditing: Bool, isSingleFocused: Bool, onTap: @escaping () -> Void, onTapDelete: @escaping () -> Void, onTextChange: @escaping (String) -> Void) {
+    init(role: Role, task: TaskCategory, isEditing: Bool, onTap: @escaping () -> Void, onTapDelete: @escaping () -> Void, onTextChange: @escaping (String) -> Void) {
         text = task.name
         tintColor = role.tint
         isSelected = task.isActive
@@ -31,7 +31,6 @@ extension SelectableListItem {
             get: { task.name },
             set: { text in onTextChange(text) }
         )
-        self.isSingleFocused = isSingleFocused
     }
 }
 
@@ -44,7 +43,6 @@ struct SelectableListItem: View {
     var radioButtonOpacity: CGFloat
     let onTap: () -> Void
     let onTapDelete: () -> Void
-    var isSingleFocused: Bool = false
     @Binding var editableText: String
     @FocusState private var isFocused: Bool
     private let xMarkSize: CGFloat = 16
@@ -74,15 +72,14 @@ struct SelectableListItem: View {
             get: { text },
             set: { text in onTextChange?(text) }
         )
-        self.isSingleFocused = false
     }
     
     var itemHeight: CGFloat {
-        isEditing ? 50 : 30
+        isEditing || isFocused ? 50 : 30
     }
     
     var body: some View {
-        Button(action: !isEditing ? onTap : {}) {
+        Button(action: !isEditing && !isFocused ? onTap : { }) { // Отправлять нажатие толко вне режима редактирования
             HStack(spacing: .zero) {
                 // Radio Button
                 radioButton
@@ -97,19 +94,6 @@ struct SelectableListItem: View {
             .contentShape(Rectangle())
         }
         .buttonStyle(PlainButtonStyle())
-        .onChange(of: isSingleFocused) { newValue in
-            if newValue {
-                isFocused = true
-            }
-        }
-        .onAppear {
-            if isSingleFocused {
-                isFocused = true
-            }
-        }
-//        .onChange(of: isFocused) { newValue in
-//            print("DEBUG: Setting isFocused to true on onchange is focused \(newValue) ")
-//        }
     }
     
     var textField: some View {
@@ -122,10 +106,10 @@ struct SelectableListItem: View {
             .lineLimit(nil)
             .fixedSize(horizontal: false, vertical: true)
             .frame(maxWidth: .infinity, alignment: .leading)
-            .allowsHitTesting(isEditing || isSingleFocused)
+            .allowsHitTesting(isEditing || isFocused)
             .overlay(alignment: .bottom) {
                 SeparatorView(color: isFocused ? tintColor : .lzGray)
-                    .opacity(isEditing ? 1 : 0)
+                    .opacity(isEditing || isFocused ? 1 : 0)
                     .offset(y: 8)
             }
     }

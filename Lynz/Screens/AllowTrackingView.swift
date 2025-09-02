@@ -25,7 +25,7 @@ class AllowTrackingViewStore: ViewStore<AllowTrackingState, AllowTrackingIntent>
         case .showPermissions:
             return .asyncTask {
                 let status = await Executor.attService.requestPermissions()
-                try! await Task.sleep(nanoseconds: 500_000_000) // чтобы была небольшая задержка для скрытия alert'a
+                try! await Task.sleep(nanoseconds: 500_000_000) // чтобы была небольшая задержка для скрытия alert'a 
                 return .intent(.toRootView)
             }
             
@@ -46,7 +46,6 @@ struct AllowTrackingView: View {
     
     var body: some View {
         content
-//        splashAnimation
             .navigationBarBackButtonHidden(true)
             .interactiveDismissDisabled()
             .onAppear {

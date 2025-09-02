@@ -21,9 +21,7 @@ enum Effect<Intent>: ExpressibleByNilLiteral {
     case sequence(_ actions: [Intent])
     case parallel(_ actions: [Intent])
     case delayed(_ action: Intent, delay: Double)
-    case push(_ screen: Page)
-    case popToRoot
-    case fullScreenCover(_ screen: Page)
+    case navigate(_ navAction: NavigationCases)
 }
 
 extension Effect: CaseIterable where Intent: CaseIterable {
@@ -58,11 +56,7 @@ extension Effect: Sequence {
             return AnyIterator(CollectionOfOne(action).makeIterator())
         case .closure(let actionClosure):
             return AnyIterator(CollectionOfOne(actionClosure()).makeIterator())
-        case .push:
-            return AnyIterator { nil }
-        case .popToRoot:
-            return AnyIterator { nil }
-        case .fullScreenCover:
+        case .navigate:
             return AnyIterator { nil }
         }
     }
