@@ -41,30 +41,60 @@ class AllowTrackingViewStore: ViewStore<AllowTrackingState, AllowTrackingIntent>
 struct AllowTrackingView: View {
     
     @StateObject var store = AllowTrackingViewStore(initialState: .init())
+    @State var circlesOffset: CGFloat = 139
+    @State var showContent: Bool = false
     
     var body: some View {
         content
+//        splashAnimation
             .navigationBarBackButtonHidden(true)
             .interactiveDismissDisabled()
+            .onAppear {
+                startCirclesAnimation()
+            }
+    }
+    
+    private func startCirclesAnimation() {
+        withAnimation(.timingCurve(0.8, 0.0, 0.2, 1.0, duration: 0.8)) {
+            circlesOffset = 0
+        }
+        
+        // Показываем остальной контент после завершения анимации кругов
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.85) {
+            withAnimation(.easeOut(duration: 0.4)) {
+                showContent = true
+            }
+        }
+    }
+    
+    
+    var splashAnimation: some View {
+        LayeredCircleView(contentType: .title("Lync"))
+            .padding(.horizontal, 38)
     }
     
     var content: some View {
         VStack(spacing: .zero) {
             Spacer()
             cicrles
+                .offset(y: circlesOffset)
                 .padding(.horizontal, 38)
                 .padding(.bottom, 76)
-            title
-                .padding(.horizontal, .large)
-                .padding(.bottom, .medium)
-            description
-                .padding(.horizontal, .large)
-                .padding(.bottom, .extraLarge)
-            continueButton
-                .padding(.horizontal,.large)
+            Group {
+                
+                title
+                    .padding(.horizontal, .large)
+                    .padding(.bottom, .medium)
+                description
+                    .padding(.horizontal, .large)
+                    .padding(.bottom, .extraLarge)
+                continueButton
+                    .padding(.horizontal,.large)
+                
+            }
+            .opacity(showContent ? 1.0 : 0.0)
         }
-//        .frame(maxHeight: .infinity, alignment: .bottom)
-        .background(Color.lzYellow.ignoresSafeArea(.all, edges: .all))
+        .background(Color.lzYellow.ignoresSafeArea(.all))
     }
     
     var cicrles: some View {

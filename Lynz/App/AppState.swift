@@ -13,7 +13,7 @@ class AppState: ObservableObject {
     
     static let shared = AppState()
     @Published private(set) var isOnboardingShown = false
-    @Published private(set) var viewState: AppViewState = .splash
+    @Published private(set) var viewState: AppViewState = .onboarding
     
     enum AppViewState {
         case splash
@@ -23,12 +23,13 @@ class AppState: ObservableObject {
     
     private init() { }
     
-    // Метот который может вернуть пользователя в начало приложения ( например пр выходе SignOut )
     func setOnboardingShown(isShown: Bool) {
         isOnboardingShown = isShown
     }
     
     func setAppViewState(_ state: AppViewState) {
-        self.viewState = state
+        withAnimation(.easeInOut(duration: 0.2)) {
+            self.viewState = state
+        }
     }
 }
