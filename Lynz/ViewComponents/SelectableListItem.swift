@@ -31,7 +31,7 @@ extension SelectableListItem {
             get: { task.name },
             set: { text in onTextChange(text) }
         )
-        self.isSingleFocused = isSingleFocused
+//        self.isSingleFocused = isSingleFocused
     }
 }
 
@@ -44,7 +44,7 @@ struct SelectableListItem: View {
     var radioButtonOpacity: CGFloat
     let onTap: () -> Void
     let onTapDelete: () -> Void
-    var isSingleFocused: Bool
+    var isSingleFocused: Bool = false
     @Binding var editableText: String
     @FocusState var isFocused
     private let xMarkSize: CGFloat = 16
@@ -74,7 +74,7 @@ struct SelectableListItem: View {
             get: { text },
             set: { text in onTextChange?(text) }
         )
-        self.isSingleFocused = false
+//        self.isSingleFocused = false
     }
     
     var itemHeight: CGFloat {
@@ -98,7 +98,9 @@ struct SelectableListItem: View {
         }
         .buttonStyle(PlainButtonStyle())
         .onChange(of: isSingleFocused) { newValue in
-            print("DEBUG: new value \(newValue)")
+            if newValue {
+                isFocused = true
+            }
         }
     }
     

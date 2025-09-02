@@ -1,7 +1,14 @@
+//
+//  LocalDataInteractor.swift
+//  Lynz
+//
+//  Created by Артур Кулик on 31.08.2025.
+//
+
 import Foundation
 import CoreData
 
-// MARK: - Core Data Stack
+// Core data полностью создаётся программно
 class CoreDataService {
     
     // MARK: - Properties
@@ -13,7 +20,6 @@ class CoreDataService {
         // Создаем модель программно
         let model = NSManagedObjectModel()
         
-        // Создаем сущности программно
         let entityDescription = NSEntityDescription()
         entityDescription.name = "ManagedObject"
         entityDescription.managedObjectClassName = "NSManagedObject"
@@ -44,7 +50,7 @@ class CoreDataService {
         updatedAtAttribute.attributeType = .dateAttributeType
         updatedAtAttribute.isOptional = false
         
-        // Добавляем атрибуты к сущности
+        // Добавляем атрибуты к энтити
         entityDescription.properties = [idAttribute, dataAttribute, typeAttribute, createdAtAttribute, updatedAtAttribute]
         
         // Добавляем сущность к модели
@@ -65,8 +71,6 @@ class CoreDataService {
     var context: NSManagedObjectContext {
         return persistentContainer.viewContext
     }
-    
-    // MARK: - CRUD Operations
     
     //MARK: - Create
     func create<T: Codable>(_ object: T, withId id: String, type: String) throws {
@@ -197,13 +201,13 @@ enum CoreDataError: Error, LocalizedError {
     var errorDescription: String? {
         switch self {
         case .objectNotFound:
-            return "Объект не найден в Core Data"
+            return "Objct not found in Core Data"
         case .encodingError:
-            return "Ошибка кодирования объекта"
+            return "Object encoding error"
         case .decodingError:
-            return "Ошибка декодирования объекта"
+            return "Object decoding Error"
         case .saveError:
-            return "Ошибка сохранения в Core Data"
+            return "Save to Core Data error"
         }
     }
 }

@@ -78,13 +78,13 @@ final class DatePickerViewStore: ViewStore<DatePickerState, DatePickerIntent> {
             if let newDate = calendar.date(byAdding: .month, value: -1, to: state.currentDate) {
                 state.currentDate = newDate
             }
-            return .action(.generateCalendar)
+            return .intent(.generateCalendar)
             
         case .nextMonth:
             if let newDate = calendar.date(byAdding: .month, value: 1, to: state.currentDate) {
                 state.currentDate = newDate
             }
-            return .action(.generateCalendar)
+            return .intent(.generateCalendar)
             
         case .selectDay(let calendarDay):
             print("DEBUG: tap day \(calendarDay.day), isCurrentMonth: \(calendarDay.isCurrentMonth)")
@@ -94,7 +94,7 @@ final class DatePickerViewStore: ViewStore<DatePickerState, DatePickerIntent> {
             
         case .updatePlans(let newPlans):
             state.plans = newPlans
-            return .action(.generateCalendar)
+            return .intent(.generateCalendar)
         }
         
         return .none

@@ -14,7 +14,7 @@ enum Effect<Intent>: ExpressibleByNilLiteral {
     }
     
     case none
-    case action(Intent)
+    case intent(Intent)
     case closure(() -> Intent)
     case asyncTask(() async -> Effect<Intent>)
     case publisher(AnyPublisher<Intent, Never>)
@@ -22,6 +22,7 @@ enum Effect<Intent>: ExpressibleByNilLiteral {
     case parallel(_ actions: [Intent])
     case delayed(_ action: Intent, delay: Double)
     case push(_ screen: Page)
+    case popToRoot
     case fullScreenCover(_ screen: Page)
 }
 
@@ -30,7 +31,7 @@ extension Effect: CaseIterable where Intent: CaseIterable {
         var cases: [Effect<Intent>] = [.none]
         
         // Кейсы с Intent - перебираем все варианты Action
-        cases += Intent.allCases.map { Effect.action($0) }
+        cases += Intent.allCases.map { Effect.intent($0) }
         cases += Intent.allCases.map { Effect.sequence([$0]) }
         cases += Intent.allCases.map { Effect.parallel([$0]) }
         
@@ -43,7 +44,7 @@ extension Effect: Sequence {
         switch self {
         case .none:
             return AnyIterator { nil }
-        case .action(let action):
+        case .intent(let action):
             return AnyIterator(CollectionOfOne(action).makeIterator())
         case .asyncTask:
             return AnyIterator { nil } // Асинхронные задачи обрабатываются отдельно
@@ -58,6 +59,8 @@ extension Effect: Sequence {
         case .closure(let actionClosure):
             return AnyIterator(CollectionOfOne(actionClosure()).makeIterator())
         case .push:
+            return AnyIterator { nil }
+        case .popToRoot:
             return AnyIterator { nil }
         case .fullScreenCover:
             return AnyIterator { nil }

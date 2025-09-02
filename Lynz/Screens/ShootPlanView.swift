@@ -22,10 +22,9 @@ enum ShootPlanIntent {
     case addTask
     case savePlan
     case deleteItem(index: Int)
-    case deletePlan
+    case showDialog(Bool)
     case confirmPlanDelete
     case cancelPlanDelete
-    case showDialog(Bool)
 }
 
 final class ShootPlanViewStore: ViewStore<ShootPlanState, ShootPlanIntent> {
@@ -38,22 +37,23 @@ final class ShootPlanViewStore: ViewStore<ShootPlanState, ShootPlanIntent> {
             
         case .updateText(index: let index, text: let text):
             state.plan.tasks[index].name = text
+            // Сбрасываем фокус после изменения текста
+            if state.focusedIndex == index {
+                state.focusedIndex = nil
+            }
             
         case .toggleEditingMode:
             state.editMode.toggle()
+            state.focusedIndex = nil
             
         case .tapActionButton:
             if state.editMode {
-                return .action(.showDialog(true))  // Показываем диалог для удаления события
+                return .intent(.showDialog(true))  // Показываем диалог для удаления события
             } else {
-                return .action(.savePlan)
+                return .intent(.savePlan)
             }
         case .addTask:
             let newTask = TaskCategory(name: "New Task", isActive: false)
-//            for task in 0..<state.plan.tasks.count -1 {
-//                state.plan.tasks[task].isEditing = false
-//            }
-            
             
             state.plan.tasks.append(newTask)
             state.focusedIndex = state.plan.tasks.count - 1
@@ -61,37 +61,33 @@ final class ShootPlanViewStore: ViewStore<ShootPlanState, ShootPlanIntent> {
             let plan = state.plan
             do {
                 try self.localDataInteractor.savePlan(plan)
+                return .popToRoot
             } catch {
                 print("DEBUG: error of save plan\(error.localizedDescription)")
             }
-            
         case .deleteItem(let index):
             // Удаляем элемент сразу без диалога
             if index < state.plan.tasks.count {
                 state.plan.tasks.remove(at: index)
             }
-            
-        case .deletePlan:
-            // Показываем диалог для подтверждения удаления события
-            return .action(.showDialog(true))
-            
         case .confirmPlanDelete:
             do {
                 try localDataInteractor.deletePlan(withId: state.plan.id)
+                state.isShowConfirmationDialog = false
+                
             } catch {
                 print("DEBUG: cant do this operation \(error.localizedDescription)")
+                state.isShowConfirmationDialog = false
             }
-            
-            popToRoot()
-            return .action(.showDialog(false))
-            
+            return .popToRoot
         case .cancelPlanDelete:
             // Отменяем удаление события
-            return .action(.showDialog(false))
+            return .intent(.showDialog(false))
             
         case .showDialog(let isShow):
             state.isShowConfirmationDialog = isShow
         }
+        
         
         return .none
     }
@@ -134,16 +130,17 @@ struct ShootPlanView: View {
                     set: { _ in /*store.send(.showDialog($0))*/ }
                 )
             ) {
-                Button("Delete Event", role: .destructive) {
+                Button("Delete Plan", role: .destructive) {
                     store.send(.confirmPlanDelete)
                 }
                 Button("Cancel", role: .cancel) {
                     store.send(.cancelPlanDelete)
                 }
             }
+            .onChange(of: store.state.isShowConfirmationDialog) { newValue in
+                print("DEBUG: new value dialog \(newValue)")
+            }
     }
-    
-    @FocusState var isFocused
     
     var content: some View {
         ZStack {
@@ -166,12 +163,12 @@ struct ShootPlanView: View {
     
     var planList: some View {
         LazyVStack {
-            ForEach(Array(store.state.plan.tasks.enumerated()), id: \.element) { index, task in
+            ForEach(Array(store.state.plan.tasks.enumerated()), id: \.offset) { index, task in
                 SelectableListItem(
                     role: store.state.plan.role,
                     task: task,
                     isEditing: store.state.editMode,
-                    isSingleFocused: store.state.focusedIndex ?? nil == index,
+                    isSingleFocused: store.state.focusedIndex == index,
                     onTap: { store.send(.selectPlan(index: index)) },
                     onTapDelete: { store.send(.deleteItem(index: index)) },  // Удаление сразу
                     onTextChange: { store.send(.updateText(index: index, text: $0)) }
@@ -213,7 +210,7 @@ struct ShootPlanView: View {
     var actionButton: some View {
         MainButtonView(
             title: store.state.editMode ? "Delete Plan" : "Done",
-            style: store.state.editMode ? .capsuleFill(.lzAccent) : .capsule(.lzWhite)
+            style: store.state.editMode ? .capsuleFill(.lzRaspberry) : .capsule(.lzWhite)
         ) {
             
             store.send(.tapActionButton)

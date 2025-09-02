@@ -18,6 +18,38 @@
             endingLineNumber = "101"
             landmarkName = "body"
             landmarkType = "24">
+            <Locations>
+               <Location
+                  uuid = "F0923D01-6394-4E03-8B76-04B230BBBE32 - 2fce20ead8b28602"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #3 (Swift.Bool) -&gt; () in Lynz.SelectableListItem.body.getter : some"
+                  moduleName = "Lynz"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/arthur/Xcode/Createx/Lynz/Lynz/ViewComponents/SelectableListItem.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "101"
+                  endingLineNumber = "101"
+                  offsetFromSymbolStart = "108">
+               </Location>
+               <Location
+                  uuid = "F0923D01-6394-4E03-8B76-04B230BBBE32 - 2fce20ead8b28602"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #3 (Swift.Bool) -&gt; () in Lynz.SelectableListItem.body.getter : some"
+                  moduleName = "Lynz"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/arthur/Xcode/Createx/Lynz/Lynz/ViewComponents/SelectableListItem.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "101"
+                  endingLineNumber = "101"
+                  offsetFromSymbolStart = "40">
+               </Location>
+            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

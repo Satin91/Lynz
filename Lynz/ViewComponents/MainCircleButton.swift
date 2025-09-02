@@ -79,7 +79,7 @@ struct MainCircleButton: View {
                 print("White button tapped")
             }
             
-            MainCircleButton(color: .lzAccent, image: .plus) {
+            MainCircleButton(color: .lzRaspberry, image: .plus) {
                 print("Accent button tapped")
             }
             

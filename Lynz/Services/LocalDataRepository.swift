@@ -1,3 +1,10 @@
+//
+//  LocalDataRepository.swift
+//  Lynz
+//
+//  Created by Артур Кулик on 31.08.2025.
+//
+
 import Foundation
 import CoreData
 
@@ -13,9 +20,16 @@ class LocalDataRepository {
     
     // MARK: - Plan Operations
     
-    /// Сохраняет план в локальное хранилище
+    /// Сохраняет план в локальное хранилище (создает новый или обновляет существующий)
     func savePlan(_ plan: Plan) throws {
-        try coreDataService.create(plan, withId: plan.id.uuidString, type: "Plan")
+        // Проверяем, существует ли план с таким ID
+        if try getPlan(withId: plan.id) != nil {
+            // План существует - обновляем его
+            try coreDataService.update(plan, withId: plan.id.uuidString)
+        } else {
+            // План не существует - создаем новый
+            try coreDataService.create(plan, withId: plan.id.uuidString, type: "Plan")
+        }
     }
     
     /// Получает все планы
@@ -40,7 +54,7 @@ class LocalDataRepository {
         }
     }
     
-    /// Получает план по ID (внутренний метод для deletePlan)
+    
     private func getPlan(withId id: UUID) throws -> Plan? {
         return try coreDataService.fetch(Plan.self, withId: id.uuidString)
     }
@@ -59,7 +73,7 @@ enum RepositoryError: Error, LocalizedError {
     var errorDescription: String? {
         switch self {
         case .planNotFound:
-            return "План не найден"
+            return "Plan not found"
         }
     }
 }

@@ -98,9 +98,12 @@ enum MessagesIntent {
     case refreshUsers
     case setViewState(MessagesViewState.ViewState)
     case tapSettings
+    case showNotificationPermission
 }
 
 final class MessagesViewStore: ViewStore<MessagesViewState, MessagesIntent> {
+    
+    private let permissionInteractor = Executor.perissionInteractor
     
     override func reduce(state: inout MessagesViewState, intent: MessagesIntent) -> Effect<MessagesIntent> {
         switch intent {
@@ -143,6 +146,11 @@ final class MessagesViewStore: ViewStore<MessagesViewState, MessagesIntent> {
             state.viewState = viewState
         case .tapSettings:
             return .fullScreenCover(.settings)
+        case .showNotificationPermission:
+            return .asyncTask { [weak self] in
+                let result = await self?.permissionInteractor.requestNotificationPermissions()
+                return .none
+            }
         }
         
         
@@ -160,6 +168,9 @@ struct MessagesView: View {
             .preferredColorScheme(.light)
             .loader(isLoading: store.state.isLoading)
             .hideInlineNavigationTitle()
+            .onAppear {
+                store.send(.showNotificationPermission)
+            }
     }
     
     var content: some View {

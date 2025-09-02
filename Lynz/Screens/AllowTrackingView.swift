@@ -26,7 +26,7 @@ class AllowTrackingViewStore: ViewStore<AllowTrackingState, AllowTrackingIntent>
             return .asyncTask {
                 let status = await Executor.attService.requestPermissions()
                 try! await Task.sleep(nanoseconds: 500_000_000) // чтобы была небольшая задержка для скрытия alert'a
-                return .action(.toRootView)
+                return .intent(.toRootView)
             }
             
         case .toRootView:

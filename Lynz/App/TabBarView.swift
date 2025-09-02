@@ -82,10 +82,10 @@ struct TabBarView: View {
     private var backgroundBlurRounded: some View {
         Rectangle()
             .fill(.ultraThinMaterial) // Более сильный blur эффект
-            .overlay { Color.lzGray.opacity(0.9) }
+            .overlay { Color.lzGray.opacity(0.95) }
             .clipShape(.rect(cornerRadii: .init(topLeading: 30, topTrailing: 30)))
             .ignoresSafeArea(edges: .bottom)
-            .shadow(color: .black.opacity(1), radius: 20)
+            .shadow(color: .black.opacity(0.3), radius: 20)
     }
     
     private func setupUITabBarAppearance() {

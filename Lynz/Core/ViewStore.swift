@@ -53,9 +53,9 @@ extension ViewStore {
     @MainActor
     private func handleEffect(_ effect: Effect<Intent>) {
         switch effect {
-        case .action(let action):
+        case .intent(let intent):
             Task { @MainActor in
-                send(action)
+                send(intent)
             }
             
         case .asyncTask(let task):
@@ -99,12 +99,17 @@ extension ViewStore {
                 send(action)
             }
             
-        case .none:
-            break
+
+            
+            //NAVIGATION
+        case .popToRoot:
+            coordinator.popToRoot()
         case .push(let screen):
             coordinator.push(page: screen)
         case .fullScreenCover(let screen):
             coordinator.fullScreenCover(page: screen)
+        case .none:
+            break
         }
     }
 }

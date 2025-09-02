@@ -114,13 +114,13 @@ struct MainButtonView: View {
 #Preview {
     VStack(spacing: 20) {
         // Capsule стили
-        MainButtonView(title: "Capsule Button", style: .capsule(.lzAccent)) { }
-        MainButtonView(title: "Capsule Fill", style: .capsuleFill(.lzAccent)) { }
+        MainButtonView(title: "Capsule Button", style: .capsule(.lzRaspberry)) { }
+        MainButtonView(title: "Capsule Fill", style: .capsuleFill(.lzRaspberry)) { }
         
         // Rounded стили
         MainButtonView(title: "Black Fill", style: .roundedFill(.lzBlack)) { }
         MainButtonView(title: "White Fill", style: .roundedFill(.lzWhite)) { }
-        MainButtonView(title: "Accent Stroke", style: .roundedStroke(.lzAccent)) { }
+        MainButtonView(title: "Accent Stroke", style: .roundedStroke(.lzRaspberry)) { }
         MainButtonView(title: "White Stroke", style: .roundedStroke(.lzWhite)) { }
     }
     .padding()
