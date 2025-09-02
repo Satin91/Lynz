@@ -20,6 +20,9 @@ struct MainView: View {
                     coordinator.build(page: page)
                 }
         }
+        .fullScreenCover(item: $coordinator.presentedPage) { page in
+            coordinator.build(page: page)
+        }
     }
     
     @ViewBuilder

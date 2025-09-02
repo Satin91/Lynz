@@ -13,19 +13,18 @@ struct ScreenHeaderView<Content: View>: View {
     // MARK: - Properties
     let title: String
     let content: Content
+    var color: Color
     
     // MARK: - Configuration
     private let buttonSpacing: CGFloat = 12
     
     var body: some View {
         HStack {
-            // Заголовок
             Text(title)
                 .font(.lzTitle)
-                .foregroundStyle(.lzWhite)
+                .foregroundStyle(color)
             
             Spacer()
-            
             // Content блок для кнопок
             content
         }
@@ -36,17 +35,20 @@ struct ScreenHeaderView<Content: View>: View {
 extension ScreenHeaderView {
     
     /// Инициализатор только с заголовком (без кнопок)
-    init(title: String) where Content == EmptyView {
+    init(title: String, color: Color = .lzWhite) where Content == EmptyView {
         self.title = title
+        self.color = color
         self.content = EmptyView()
     }
     
     /// Инициализатор с заголовком и content блоком для кнопок
     init(
         title: String,
+        color: Color = .lzWhite,
         @ViewBuilder content: () -> Content
     ) {
         self.title = title
+        self.color = color
         self.content = content()
     }
 }

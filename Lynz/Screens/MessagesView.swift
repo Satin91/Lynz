@@ -77,6 +77,14 @@ struct MessagesViewState {
                 return false
             }
         }
+        
+        var showNavigaionBar: Bool {
+            switch self {
+            case .notOnline:
+                return false
+            default: return true
+            }
+        }
     }
     
     var isLoading: Bool = false
@@ -89,6 +97,7 @@ enum MessagesIntent {
     case endSession
     case refreshUsers
     case setViewState(MessagesViewState.ViewState)
+    case tapSettings
 }
 
 final class MessagesViewStore: ViewStore<MessagesViewState, MessagesIntent> {
@@ -132,7 +141,10 @@ final class MessagesViewStore: ViewStore<MessagesViewState, MessagesIntent> {
             
         case .setViewState(let viewState):
             state.viewState = viewState
+        case .tapSettings:
+            return .fullScreenCover(.settings)
         }
+        
         
         return .none
     }
@@ -144,17 +156,22 @@ struct MessagesView: View {
     @StateObject private var store = MessagesViewStore(initialState: MessagesViewState())
     
     var body: some View {
-            content
-                .loader(isLoading: store.state.isLoading)
-//                .preferredColorScheme(.light)
-//                .navigationTitle("Dialogs")
+        content
+            .preferredColorScheme(.light)
+            .loader(isLoading: store.state.isLoading)
+            .hideInlineNavigationTitle()
     }
     
     var content: some View {
-        makeViewStateContainer()
-            .background(Color.lzYellow.ignoresSafeArea(.all))
+        VStack {
+            screenHeader
+                .opacity(store.state.viewState.showNavigaionBar ? 1 : 0)
+                .padding(.horizontal, .mediumExt)
+            makeViewStateContainer()
+        }
+        .background(Color.lzYellow.ignoresSafeArea(.all))
     }
-
+    
     
     
     @ViewBuilder
@@ -162,7 +179,7 @@ struct MessagesView: View {
         let currentState = store.state.viewState
         
         if currentState.showDefaultContainer {
-            makeDefaultContainer(
+            makeStubContainer(
                 title: currentState.title,
                 description: currentState.description,
                 image: currentState.image,
@@ -183,7 +200,7 @@ struct MessagesView: View {
         }
     }
     
-    func makeDefaultContainer(
+    func makeStubContainer(
         title: String,
         description: String,
         image: ImageResource,
@@ -213,6 +230,13 @@ struct MessagesView: View {
         }
     }
     
+    var screenHeader: some View {
+        ScreenHeaderView(title: "Dialogs", color: .lzBlack) {
+            NavigationButton(imageName: .gearShape, color: .lzBlack.opacity(0.6)) {
+                store.send(.tapSettings)
+            }
+        }
+    }
     
     struct TextColumn: View {
         let title: String
@@ -229,16 +253,9 @@ struct MessagesView: View {
             .foregroundStyle(.lzBlack)
         }
     }
+    
 }
 
 #Preview {
     MessagesView()
 }
-
-//
-//  LineHeight.swift
-//  Lynz
-//
-//  Created by Артур Кулик on 29.08.2025.
-//
-

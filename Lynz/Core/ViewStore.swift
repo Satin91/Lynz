@@ -103,6 +103,8 @@ extension ViewStore {
             break
         case .push(let screen):
             coordinator.push(page: screen)
+        case .fullScreenCover(let screen):
+            coordinator.fullScreenCover(page: screen)
         }
     }
 }
@@ -121,4 +123,6 @@ extension ViewStore: Navigation {
     func popToRoot() {
         coordinator.popToRoot()
     }
+    
+    
 }

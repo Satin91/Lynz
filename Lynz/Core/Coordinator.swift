@@ -7,13 +7,34 @@
 
 import SwiftUI
 
-enum Page: Hashable {
+enum Page: Hashable, Identifiable {
+    
     case root
     case calendar
     case allowTrackingView
     case role(CalendarDay)
     case shootPlan(_ plan: Plan)
     case poseLibrary(pose: PoseCategory)
+    case settings
+    
+    var id: String {
+        switch self {
+        case .root:
+            return "root"
+        case .calendar:
+            return "calendar"
+        case .allowTrackingView:
+            return "allowTrackingView"
+        case .role(let day):
+            return "role_\(day.id)"
+        case .shootPlan(let plan):
+            return "shootPlan_\(plan.id)"
+        case .poseLibrary(let pose):
+            return "poseLibrary_\(pose.id)"
+        case .settings:
+            return "settings"
+        }
+    }
     
     static func == (lhs: Page, rhs: Page) -> Bool {
         lhs.hashValue == rhs.hashValue
@@ -33,14 +54,16 @@ enum Page: Hashable {
             hasher.combine(UUID())
         case .shootPlan(_):
             hasher.combine(UUID())
+        case .settings:
+            hasher.combine(UUID())
         }
     }
 }
 
 final class Coordinator: ObservableObject {
     @Published var path = NavigationPath()
+    @Published var presentedPage: Page? = nil
     static let shared = Coordinator()
-    
 
     func push(page: Page) {
         path.append(page)
@@ -52,6 +75,14 @@ final class Coordinator: ObservableObject {
     
     func popToRoot() {
         path.removeLast(path.count)
+    }
+    
+    func fullScreenCover(page: Page) {
+        presentedPage = page
+    }
+    
+    func dismissFullScreenCover() {
+        presentedPage = nil
     }
     
     @ViewBuilder func build(page: Page) -> some View {
@@ -68,6 +99,8 @@ final class Coordinator: ObservableObject {
             ShootPlanView(plan: event)
         case .poseLibrary(pose: let pose):
             PoseLibraryView(pose: pose)
+        case .settings:
+            SettingsView()
         }
     }
 }

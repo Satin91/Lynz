@@ -9,7 +9,7 @@ import SwiftUI
 
 struct TabBarView: View {
     //Можно вынести в Coordinator при необходимост
-    @State private var tabIndex: Int = 2
+    @State private var tabIndex: Int = 0
     
     var navigationTitle: String {
         switch tabIndex {
@@ -20,22 +20,19 @@ struct TabBarView: View {
         }
     }
     
-//    init() {
-//        setupUITabBarAppearance()
-//    }
+    init() {
+        setupUITabBarAppearance()
+    }
     var body: some View {
             content
             .navigationTitle(navigationTitle)
-            .navigationBarTitleDisplayMode(tabIndex == 2 ? .inline : .large)
+            .navigationBarTitleDisplayMode(tabIndex == 0 ? .large : .inline)
     }
     
     var content: some View {
         nativeTabBar
             .overlay(alignment: .bottom) {
                 designedOverlay
-            }
-            .onAppear {
-                setupUITabBarAppearance()
             }
     }
     

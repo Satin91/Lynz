@@ -98,6 +98,7 @@ struct PosesState {
 
 enum PosesIntent {
     case tapPose(category: PoseCategory)
+    case tapSettings
 }
 
 final class PosesViewStore: ViewStore<PosesState, PosesIntent> {
@@ -106,6 +107,8 @@ final class PosesViewStore: ViewStore<PosesState, PosesIntent> {
         switch intent {
         case .tapPose(let category):
             return .push(.poseLibrary(pose: category))
+        case .tapSettings:
+            return .fullScreenCover(.settings)
         }
     }
 }
@@ -156,9 +159,9 @@ struct PhotoPosesView: View {
     
     var screenHeader: some View {
         ScreenHeaderView(title: "Photo Poses") {
-            Image(systemName: "gearshape")
-                .font(.system(size: 19))
-                .foregroundStyle(.lzWhite.opacity(0.6))
+            NavigationButton(imageName: .gearShape, color: .lzWhite.opacity(0.6)) {
+                store.send(.tapSettings)
+            }
         }
     }
 }
