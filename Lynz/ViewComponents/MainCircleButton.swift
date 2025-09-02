@@ -8,7 +8,7 @@
 import SwiftUI
 
 /// Кнопка для использования в заголовке экрана
-struct HeaderButton: View {
+struct MainCircleButton: View {
     
     enum ButtonImage: String { // sf symbols names
         case pencil
@@ -65,7 +65,7 @@ struct HeaderButton: View {
         .foregroundStyle(isActive ? activeColor : color)
         .frame(width: buttonSize, height: buttonSize)
    
-        .contentShape(Circle())
+        .contentShape(Rectangle())
         .opacity(isDisabled ? 0.2 : 1)
         .disabled(isDisabled)
     }
@@ -75,15 +75,15 @@ struct HeaderButton: View {
 #Preview {
     VStack(spacing: 20) {
         HStack(spacing: 12) {
-            HeaderButton(color: .lzWhite, image: .pencil) {
+            MainCircleButton(color: .lzWhite, image: .pencil) {
                 print("White button tapped")
             }
             
-            HeaderButton(color: .lzAccent, image: .plus) {
+            MainCircleButton(color: .lzAccent, image: .plus) {
                 print("Accent button tapped")
             }
             
-            HeaderButton(color: .lzBlue, image: .checkmark) {
+            MainCircleButton(color: .lzBlue, image: .checkmark) {
                 print("Blue button tapped")
             }
         }

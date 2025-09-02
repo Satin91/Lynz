@@ -60,10 +60,10 @@ extension ScreenHeaderView {
         // С пользовательскими кнопками
         ScreenHeaderView(title: "С кнопками") {
             HStack(spacing: 8) {
-                HeaderButton(color: .lzGray, image: .checkmark) {
+                MainCircleButton(color: .lzGray, image: .checkmark) {
                     print("Gray button tapped")
                 }
-                HeaderButton(color: .lzWhite, image: .pencil) {
+                MainCircleButton(color: .lzWhite, image: .pencil) {
                     print("White button tapped")
                 }
             }

@@ -291,7 +291,7 @@ struct DatePickerView: View {
         HStack {
             
 //            makeNavigationButton(systemImage: "chevron.left") {
-            HeaderButton(color: .lzYellow, image: .chevronLeft) {
+            MainCircleButton(color: .lzYellow, image: .chevronLeft) {
                 // Устанавливаем направление ДО анимации
                 animationDirection = .right  // Предыдущий месяц - движение вправо
                 
@@ -319,7 +319,7 @@ struct DatePickerView: View {
             }
             Spacer()
             
-            HeaderButton(color: .lzYellow, image: .chevronRight) {
+            MainCircleButton(color: .lzYellow, image: .chevronRight) {
 //            makeNavigationButton(systemImage: "chevron.right") {
                 // Устанавливаем направление ДО анимации
                 animationDirection = .left  // Следующий месяц - движение влево

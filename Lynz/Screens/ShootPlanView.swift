@@ -183,7 +183,7 @@ struct ShootPlanView: View {
     var screenHeader: some View {
         VStack {
             ScreenHeaderView(title: "Shoot Plan") {
-                HeaderButton(
+                MainCircleButton(
                     color: .lzWhite,
                     activeColor: store.state.plan.role.tint,
                     image: .pencil,
@@ -194,7 +194,7 @@ struct ShootPlanView: View {
                         }
                     }
                 )
-                HeaderButton(
+                MainCircleButton(
                     color: .lzWhite,
                     image: .plus,
                     isDisabled: store.state.editMode,

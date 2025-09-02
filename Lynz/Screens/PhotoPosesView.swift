@@ -107,7 +107,6 @@ final class PosesViewStore: ViewStore<PosesState, PosesIntent> {
         case .tapPose(let category):
             return .push(.poseLibrary(pose: category))
         }
-        return .none
     }
 }
 
@@ -128,10 +127,14 @@ struct PhotoPosesView: View {
     @ViewBuilder
     var content: some View {
         ScrollView {
-            VStack {
+            VStack(spacing: .medium) {
+                screenHeader
+                    .padding(.horizontal, .mediumExt)
                 itemsGrid
             }
+            .padding(.bottom, .medium)
         }
+        .frame(maxHeight: .infinity, alignment: .top)
         .padding(.top, 1) // Временный костыль, который отделяет панель навигации от скрола, Т.К. в таб баре панель не накладывает блюр, решается.
         .background(BackgroundGradient().ignoresSafeArea(.all))
         .scrollIndicators(.hidden)
@@ -149,6 +152,14 @@ struct PhotoPosesView: View {
             }
         }
         .padding(.horizontal, .smallExt)
+    }
+    
+    var screenHeader: some View {
+        ScreenHeaderView(title: "Photo Poses") {
+            Image(systemName: "gearshape")
+                .font(.system(size: 19))
+                .foregroundStyle(.lzWhite.opacity(0.6))
+        }
     }
 }
 

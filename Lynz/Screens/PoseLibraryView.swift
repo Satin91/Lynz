@@ -18,12 +18,31 @@ struct PoseLibraryView: View {
     }
     
     var content: some View {
-        VStack {
+        VStack(spacing: .zero) {
+            screenHeader
+                .padding(.top, .regular)
+                .padding(.horizontal, .mediumExt)
+                .padding(.bottom, .medium)
             photoLibrary
-                .frame(height: 480)
+                .frame(height: 480) // высота фотографии в дизайне
+                .padding(.bottom, .mediumExt)
+            navigationPanel
         }
         .frame(maxHeight: .infinity, alignment: .top)
         .background(BackgroundGradient().ignoresSafeArea())
+    }
+    
+    var screenHeader: some View {
+        ScreenHeaderView(title: pose.name) {
+                HStack(spacing: 0) {
+                    Text("\(currentIndex + 1)")
+                    Text("/\(pose.photosExmples.count)")
+                        .opacity(0.3)
+                }
+                .font(.lzTitle)
+                .foregroundStyle(.lzWhite)
+                .animation(nil, value: currentIndex)
+            }
     }
     
     var photoLibrary: some View {
@@ -37,14 +56,12 @@ struct PoseLibraryView: View {
                             index: index,
                             currentIndex: currentIndex,
                             dragOffset: dragOffset,
-                            screenWidth: geometry.size.width - 8, // padding 4
+                            screenWidth: geometry.size.width - 8, // padding -= 4(в дизайне) * 2 стороны
                             screenHeight: geometry.size.height,
                             isDragging: isDragging
                         )
-                        .padding(.horizontal, 4) // Добавляем отступы по горизонтали
+                        .padding(.horizontal, 4)
                         .frame(width: geometry.size.width)
-//                        .padding(.vertical, 20) // Добавляем отступы сверху и снизу
-                        
                     }
                 }
                 .offset(x: -CGFloat(currentIndex) * geometry.size.width + dragOffset)
@@ -75,8 +92,16 @@ struct PoseLibraryView: View {
         }
     }
     
-    var photoNavigation: some View {
-        EmptyView()
+    var navigationPanel: some View {
+        HStack(spacing: .medium) {
+            MainCircleButton(color: .lzYellow, image: .chevronLeft) {
+                currentIndex = max(currentIndex - 1, 0)
+            }
+            MainCircleButton(color: .lzYellow, image: .chevronRight) {
+                
+                currentIndex = min(pose.photosExmples.count - 1, currentIndex + 1)
+            }
+        }
     }
 }
 

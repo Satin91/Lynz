@@ -20,9 +20,9 @@ struct TabBarView: View {
         }
     }
     
-    init() {
-        setupUITabBarAppearance()
-    }
+//    init() {
+//        setupUITabBarAppearance()
+//    }
     var body: some View {
             content
             .navigationTitle(navigationTitle)
@@ -33,6 +33,9 @@ struct TabBarView: View {
         nativeTabBar
             .overlay(alignment: .bottom) {
                 designedOverlay
+            }
+            .onAppear {
+                setupUITabBarAppearance()
             }
     }
     
@@ -115,12 +118,12 @@ struct TabBarButton: View {
         Image(icon)
             .resizable()
             .renderingMode(.template)
-            .aspectRatio(contentMode: .fit)
+            .aspectRatio(contentMode: .fill)
             .frame(width: 36, height: 36)
             .foregroundStyle(isSelected ? selectedColor : unselectedColor)
             .onTapGesture(perform: action)
             .padding(.top, .medium)
-            .padding(.bottom, .small)
+            .padding(.bottom, .regular)
     }
 }
 
@@ -131,7 +134,7 @@ struct TabBarButton: View {
 // Применение явного размера для TabBar, чтобы у содержащих TabBar'а представлений были правильные нижние отступы.
 extension UITabBar {
     override open func sizeThatFits(_ size: CGSize) -> CGSize {
-        return CGSize(width: UIScreen.main.bounds.width, height: 88)
+        return CGSize(width: UIScreen.main.bounds.width, height: 60)
     }
 }
 
