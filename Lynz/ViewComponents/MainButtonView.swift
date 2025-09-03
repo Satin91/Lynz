@@ -50,7 +50,7 @@ struct MainButtonView: View {
         var cornerRadius: CGFloat {
             switch self {
             case .capsule, .capsuleFill:
-                return 28 // Для capsule делаем половину высоты
+                return 28
             case .roundedFill, .roundedStroke:
                 return 16
             }
@@ -96,6 +96,7 @@ struct MainButtonView: View {
                         .stroke(style.borderColor, lineWidth: 1)
                 )
                 .clipShape(RoundedRectangle(cornerRadius: style.cornerRadius))
+                .contentShape(Rectangle())
                 .shadow(
                     color: style.hasShadow ? .black.opacity(0.1) : .clear,
                     radius: style.hasShadow ? 8 : 0,
@@ -103,7 +104,7 @@ struct MainButtonView: View {
                     y: style.hasShadow ? 4 : 0
                 )
         }
-        .buttonStyle(PlainButtonStyle())
+//        .buttonStyle(PlainButtonStyle())
     }
 }
 
@@ -113,13 +114,13 @@ struct MainButtonView: View {
 #Preview {
     VStack(spacing: 20) {
         // Capsule стили
-        MainButtonView(title: "Capsule Button", style: .capsule(.lzAccent)) { }
-        MainButtonView(title: "Capsule Fill", style: .capsuleFill(.lzAccent)) { }
+        MainButtonView(title: "Capsule Button", style: .capsule(.lzRaspberry)) { }
+        MainButtonView(title: "Capsule Fill", style: .capsuleFill(.lzRaspberry)) { }
         
         // Rounded стили
         MainButtonView(title: "Black Fill", style: .roundedFill(.lzBlack)) { }
         MainButtonView(title: "White Fill", style: .roundedFill(.lzWhite)) { }
-        MainButtonView(title: "Accent Stroke", style: .roundedStroke(.lzAccent)) { }
+        MainButtonView(title: "Accent Stroke", style: .roundedStroke(.lzRaspberry)) { }
         MainButtonView(title: "White Stroke", style: .roundedStroke(.lzWhite)) { }
     }
     .padding()

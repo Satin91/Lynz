@@ -38,6 +38,10 @@ extension Font {
     static let lynzSemibold15 = Font.system(size: 15)
         .weight(.semibold)
     
+    /// SF Pro Bold 14 - Emphasized text
+    static let lynzBold14 = Font.system(size: 14)
+        .weight(.bold)
+    
     /// SF Pro Bold 16 - Emphasized text
     static let lynzBold16 = Font.system(size: 16)
         .weight(.bold)
@@ -59,6 +63,9 @@ extension Font {
     /// Main text - Medium 17, kerning -0.43
     static let lzBody = lynzMedium17
     
+    /// Bold text - Bold 14
+    static let lzBodySmall = lynzBold14
+    
     /// Additional text - Light 18
     static let lzCaption = lynzLight18
     
@@ -70,6 +77,103 @@ extension Font {
     
     /// Small text - Regular 14, kerning -0.43
     static let lzSmall = lynzRegular14
+    
+    private static func convertFontWithLineHeight(_ font: Font, lineHeight: CGFloat) -> Font {
+            // Конвертируем Font в UIFont
+            let uiFont = UIFont.from(font: font)
+            
+            // Создаем новый UIFont с заданной высотой строки
+            let fontWithLineHeight = uiFont.withLineHeight(lineHeight)
+            
+            // Конвертируем обратно в Font
+            return Font(fontWithLineHeight)
+        }
+        
+        /// Инициализатор Font с поддержкой lineHeight
+        static func withLineHeight(_ font: Font, lineHeight: CGFloat) -> Font {
+            return convertFontWithLineHeight(font, lineHeight: lineHeight)
+        }
+}
+
+extension View {
+    /// Применяет шрифт с заданной высотой строки и центрированием по вертикали
+    func font(_ font: Font, lineHeight: CGFloat) -> some View {
+        let fontSize = font.estimatedSize
+        let extraSpace = lineHeight - fontSize
+        
+        // Центрируем текст по вертикали в строке
+        let baselineOffset = -extraSpace / 4 // Смещаем базовую линию вверх для центрирования
+        let lineSpacing = extraSpace / 2 // Половину пространства используем как line spacing
+        
+        return self
+            .font(font)
+            .lineSpacing(lineSpacing)
+            .baselineOffset(baselineOffset)
+    }
+}
+
+extension Font {
+    /// Приблизительный размер шрифта для расчета lineSpacing
+    var estimatedSize: CGFloat {
+        switch self {
+        case .lynzBold70: return 70
+        case .lynzSemibold33: return 33
+        case .lynzSemibold24: return 24
+        case .lynzMedium20: return 20
+        case .lynzMedium17: return 17
+        case .lynzLight18: return 18
+        case .lynzSemibold15: return 15
+        case .lynzBold16: return 16
+        case .lynzRegular14: return 14
+        default: return 17
+        }
+    }
+}
+
+
+extension UIFont {
+    /// Конвертер из Font в UIFont
+    static func from(font: Font) -> UIFont {
+        // Для SwiftUI Font нужно использовать более сложную логику
+        // Пока используем приблизительное соответствие
+        
+        // Проверяем известные шрифты Lynz
+        switch font {
+        case .lynzBold70:
+            return UIFont.systemFont(ofSize: 70, weight: .bold)
+        case .lynzSemibold33:
+            return UIFont.systemFont(ofSize: 33, weight: .semibold)
+        case .lynzSemibold24:
+            return UIFont.systemFont(ofSize: 24, weight: .semibold)
+        case .lynzMedium20:
+            return UIFont.systemFont(ofSize: 20, weight: .medium)
+        case .lynzMedium17:
+            return UIFont.systemFont(ofSize: 17, weight: .medium)
+        case .lynzLight18:
+            return UIFont.systemFont(ofSize: 18, weight: .light)
+        case .lynzSemibold15:
+            return UIFont.systemFont(ofSize: 15, weight: .semibold)
+        case .lynzBold16:
+            return UIFont.systemFont(ofSize: 16, weight: .bold)
+        case .lynzRegular14:
+            return UIFont.systemFont(ofSize: 14, weight: .regular)
+        default:
+            // Для неизвестных шрифтов возвращаем системный
+            return UIFont.systemFont(ofSize: 17, weight: .regular)
+        }
+    }
+    
+    /// Создает UIFont с заданной высотой строки (через масштабирование)
+      func withLineHeight(_ lineHeight: CGFloat) -> UIFont {
+          // Вычисляем коэффициент масштабирования на основе желаемой высоты строки
+          let currentLineHeight = self.lineHeight
+          let scaleFactor = lineHeight / currentLineHeight
+          
+          // Создаем новый шрифт с масштабированным размером
+          let newSize = self.pointSize * scaleFactor
+          
+          return UIFont(descriptor: self.fontDescriptor, size: newSize)
+      }
 }
 
 // MARK: - Font Modifier Extensions
@@ -161,3 +265,4 @@ extension Font {
     /// Additional text
     static let lynzCaption = LynzFontConstants.Caption.self
 }
+

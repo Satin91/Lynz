@@ -8,14 +8,12 @@
 import SwiftUI
 
 struct LayeredCircleView: View {
-    
     enum CenterContent: Equatable {
         case title(String)
-        case image(name: String)
+        case image(ImageResource)
     }
     
     @State private var circleSize: Double = 0
-    
     private let contentType: CenterContent
     private let maxCircles: Int = 3
     
@@ -23,25 +21,15 @@ struct LayeredCircleView: View {
         self.contentType = contentType
     }
     
-    
-    
     var body: some View {
-        circles
-            .frame(maxWidth: .infinity, maxHeight: circleSize)
-            .background(
-                GeometryReader { proxy in
-                    Color.clear
-                        .onAppear {
-                            circleSize = proxy.size.width
-                        }
-
-                }
-            )
-            .overlay {
-                circlesOverlay
-            }
+        ZStack {
+            circles
+                .frame(maxWidth: .infinity, maxHeight: circleSize)
+                .readSize { circleSize = $0.width }
+            
+            circlesOverlay
+        }
     }
-    
     
     @ViewBuilder
     var circlesOverlay: some View {
@@ -50,9 +38,9 @@ struct LayeredCircleView: View {
             Text(title)
                 .font(.lzHeader)
                 .kerning(-2)
-                .foregroundStyle(.lzYellow)
-        case .image(let imageName):
-            Image(imageName)
+                .foregroundStyle(Color.lzYellowOptimized)
+        case .image(let image):
+            Image(image)
         }
     }
     
@@ -71,7 +59,7 @@ struct LayeredCircleView: View {
     }
     
     private func scale(for index: Int) -> Double {
-        1.0 - 0.15 * Double(index)
+        1.0 - 0.12 * Double(index)
     }
     
     private func color(for index: Int) -> Color {
@@ -83,9 +71,14 @@ struct LayeredCircleView: View {
 #Preview {
     VStack(spacing: 40) {
         LayeredCircleView(contentType: .title("Lynz"))
-        LayeredCircleView(contentType: .image(name: "messages"))
+        LayeredCircleView(contentType: .image(.messages))
     }
     .background(Color("lzWhite"))
     .padding()
 }
 
+
+// Этот цвет нужен для оптимизации анимации текста. Будучи статическим свойством, он применяется мнгновенно, в отличии от цветов из ресурсов, которые вычисляются в просессе отрисовки ( когда анимация была уже запущена ) с помощью foregroundStyle, который имеет более широкие возможности чем просто цвет. Так же решением может послужить вызвать цвет черех .foregroundColor, но он deprecated.
+extension Color {
+    static let lzYellowOptimized = Color.lzYellow
+}

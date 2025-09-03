@@ -12,7 +12,7 @@ struct LynzApp: App {
     var body: some Scene {
         WindowGroup {
             MainView()
-                .preferredColorScheme(.dark)
+                .accentColor(Color.lzWhite)
         }
     }
 }
