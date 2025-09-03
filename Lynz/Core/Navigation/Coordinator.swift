@@ -14,7 +14,7 @@ enum Page: Hashable, Identifiable {
     case allowTrackingView
     case role(CalendarDay)
     case shootPlan(_ plan: Plan)
-    case poseLibrary(pose: PoseCategory)
+    case poseLibrary(pose: Pose)
     case settings
     
     var id: String {

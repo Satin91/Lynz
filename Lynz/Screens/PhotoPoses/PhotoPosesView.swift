@@ -7,115 +7,10 @@
 
 import SwiftUI
 
-enum PoseCategory: CaseIterable, Identifiable {
-    case standing
-    case layingDown
-    case sitting
-    case closeUp
-    
-    var mainPhoto: ImageResource {
-        switch self {
-        case .standing:
-            return .fullLenght
-        case .layingDown:
-            return .threeQuarter
-        case .sitting:
-            return .seatedPose
-        case .closeUp:
-            return .closeUp
-        }
-    }
-    
-    var name: String {
-        switch self {
-        case .standing:
-            "Standing"
-        case .layingDown:
-            "Laying Down"
-        case .sitting:
-            "Sitting"
-        case .closeUp:
-            "Close-Up"
-        }
-    }
-    
-    var id: Self { self }
-}
-
-extension PoseCategory {
-    var photosExmples: [ImageResource] {
-        switch self {
-        case .standing:
-            return [
-                .fullLenght,
-                .fullLenght1,
-                .fullLenght4,
-                .fullLenght5,
-                .fullLenght6,
-                .fullLenght7,
-                .fullLenght8,
-                .fullLenght10
-            ]
-        case .layingDown:
-            return [
-                .threeQuaters7,
-                .threeQuaters9,
-                .threeQuaters10,
-                .threeQuaters11,
-                .threeQuaters12,
-                .threeQuaters13,
-                .threeQuaters14,
-                .threeQuaters15
-            ]
-        case .sitting:
-            return [
-                .sitting1,
-                .sitting2,
-                .sitting3,
-                .sitting4,
-                .sitting5,
-                .sitting6,
-                .sitting7
-            ]
-        case .closeUp:
-            return [
-                .portrait1,
-                .portrait2,
-                .portrait3,
-                .portrait4,
-                .portrait5,
-                .portrait6,
-                .portrait7,
-                .portrait8
-            ]
-        }
-    }
-}
-
-struct PosesState {
-    
-}
-
-enum PosesIntent {
-    case tapPose(category: PoseCategory)
-    case tapSettings
-}
-
-final class PosesViewStore: ViewStore<PosesState, PosesIntent> {
-    
-    override func reduce(state: inout PosesState, intent: PosesIntent) -> Effect<PosesIntent> {
-        switch intent {
-        case .tapPose(let category):
-            return .navigate(.push(.poseLibrary(pose: category)))
-        case .tapSettings:
-            return .navigate(.fullScreenCover(.settings))
-        }
-    }
-}
 
 
 struct PhotoPosesView: View {
-    var poses = PoseCategory.closeUp
+    var poses = Pose.closeUp
     private let navigationTitle = "Photo Poses"
     
     @StateObject var store = PosesViewStore(initialState: .init())
@@ -135,7 +30,7 @@ struct PhotoPosesView: View {
                     .padding(.horizontal, .mediumExt)
                 itemsGrid
             }
-            .padding(.bottom, .medium)
+            .padding(.bottom, .large)
         }
         .frame(maxHeight: .infinity, alignment: .top)
         .padding(.top, 1) // Временный костыль, который отделяет панель навигации от скрола, Т.К. в таб баре панель не накладывает блюр, решается.
@@ -148,7 +43,7 @@ struct PhotoPosesView: View {
             GridItem(.flexible(), spacing: 4),
             GridItem(.flexible(), spacing: 4)
         ], spacing: 4) {
-            ForEach(PoseCategory.allCases) { pose in
+            ForEach(Pose.allCases) { pose in
                 PoseCardView(title: pose.name, image: pose.mainPhoto, onButtonTap: {
                     store.send(.tapPose(category: pose))
                 })

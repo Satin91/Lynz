@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct PoseLibraryView: View {
-    var pose: PoseCategory
+    var pose: Pose
     @State private var currentIndex: Int = 0
     @State private var dragOffset: CGFloat = 0
     @State private var isDragging: Bool = false
