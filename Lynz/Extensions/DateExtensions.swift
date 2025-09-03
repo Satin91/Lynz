@@ -34,7 +34,7 @@ extension Date {
         return formatter.string(from: self)
     }
     
-    func monthName(locale: Locale = Locale(identifier: "ru_RU")) -> String {
+    func monthName(locale: Locale = Locale(identifier: "en_EN")) -> String {
         let formatter = DateFormatter()
         formatter.locale = locale
         formatter.dateFormat = "LLLL"
