@@ -8,7 +8,7 @@
 import Foundation
 
 
-// MARK: - Date Extension
+/// MARK: - Date Extension
 extension Date {
     private static let calendar = Calendar.current
     
@@ -28,6 +28,12 @@ extension Date {
         component(.year)
     }
     
+    var dayMonthYearDots: String {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "dd.MM.yyyy"
+        return formatter.string(from: self)
+    }
+    
     func monthName(locale: Locale = Locale(identifier: "ru_RU")) -> String {
         let formatter = DateFormatter()
         formatter.locale = locale
@@ -39,4 +45,5 @@ extension Date {
         String(year)
     }
 }
+
 

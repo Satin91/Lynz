@@ -22,12 +22,13 @@ struct LayeredCircleView: View {
     }
     
     var body: some View {
-        circles
-            .frame(maxWidth: .infinity, maxHeight: circleSize)
-            .readSize { circleSize = $0.width }
-            .overlay {
-                circlesOverlay
-            }
+        ZStack {
+            circles
+                .frame(maxWidth: .infinity, maxHeight: circleSize)
+                .readSize { circleSize = $0.width }
+            
+            circlesOverlay
+        }
     }
     
     @ViewBuilder
@@ -37,7 +38,7 @@ struct LayeredCircleView: View {
             Text(title)
                 .font(.lzHeader)
                 .kerning(-2)
-                .foregroundStyle(.lzYellow)
+                .foregroundStyle(Color.lzYellowOptimized)
         case .image(let image):
             Image(image)
         }
@@ -58,7 +59,7 @@ struct LayeredCircleView: View {
     }
     
     private func scale(for index: Int) -> Double {
-        1.0 - 0.15 * Double(index)
+        1.0 - 0.12 * Double(index)
     }
     
     private func color(for index: Int) -> Color {
@@ -74,4 +75,10 @@ struct LayeredCircleView: View {
     }
     .background(Color("lzWhite"))
     .padding()
+}
+
+
+// Этот цвет нужен для оптимизации анимации текста. Будучи статическим свойством, он применяется мнгновенно, в отличии от цветов из ресурсов, которые вычисляются в просессе отрисовки ( когда анимация была уже запущена ) с помощью foregroundStyle, который имеет более широкие возможности чем просто цвет. Так же решением может послужить вызвать цвет черех .foregroundColor, но он deprecated.
+extension Color {
+    static let lzYellowOptimized = Color.lzYellow
 }

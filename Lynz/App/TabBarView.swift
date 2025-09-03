@@ -8,22 +8,31 @@
 import SwiftUI
 
 struct TabBarView: View {
-    
     //Можно вынести в Coordinator при необходимост
     @State private var tabIndex: Int = 0
+    
+    var navigationTitle: String {
+        switch tabIndex {
+        case 0: "Calendar"
+        case 1: "Dialogs"
+        case 2: "Photo Poses"
+        default: ""
+        }
+    }
     
     init() {
         setupUITabBarAppearance()
     }
-    
     var body: some View {
-        content
+            content
+            .navigationTitle(navigationTitle)
+            .navigationBarTitleDisplayMode(tabIndex == 0 ? .large : .inline)
     }
     
     var content: some View {
         nativeTabBar
             .overlay(alignment: .bottom) {
-                designedTabBar
+                designedOverlay
             }
     }
     
@@ -31,22 +40,16 @@ struct TabBarView: View {
         TabView(selection: $tabIndex) {
             CalendarView()
                 .tag(0)
-            
             MessagesView()
                 .tag(1)
-            
-            Text("Tab Content 2")
+            PhotoPosesView()
                 .tag(2)
-        }
-        .onAppear {
-
         }
     }
     
-    var designedTabBar: some View {
+    var designedOverlay: some View {
         HStack(spacing: 0) {
             Group {
-                
                 TabBarButton(
                     icon: .calendarTab,
                     isSelected: tabIndex == 0
@@ -67,22 +70,22 @@ struct TabBarView: View {
                 ) {
                     tabIndex = 2
                 }
-                
             }
             .frame(maxWidth: .infinity)
         }
         .background(
             backgroundBlurRounded
         )
+        
     }
     
     private var backgroundBlurRounded: some View {
         Rectangle()
             .fill(.ultraThinMaterial) // Более сильный blur эффект
-            .overlay { Color.lzGray.opacity(0.9) }
-            .clipShape(UnevenRoundedRectangle(cornerRadii: .init(topLeading: 30, topTrailing: 30)))
-            .ignoresSafeArea(.all, edges: .bottom)
-            .shadow(color: .black.opacity(0.1), radius: 20)
+            .overlay { Color.lzGray.opacity(0.95) }
+            .clipShape(.rect(cornerRadii: .init(topLeading: 30, topTrailing: 30)))
+            .ignoresSafeArea(edges: .bottom)
+            .shadow(color: .black.opacity(0.3), radius: 20)
     }
     
     private func setupUITabBarAppearance() {
@@ -112,12 +115,12 @@ struct TabBarButton: View {
         Image(icon)
             .resizable()
             .renderingMode(.template)
-            .aspectRatio(contentMode: .fit)
+            .aspectRatio(contentMode: .fill)
             .frame(width: 36, height: 36)
             .foregroundStyle(isSelected ? selectedColor : unselectedColor)
             .onTapGesture(perform: action)
             .padding(.top, .medium)
-            .padding(.bottom, .small)
+            .padding(.bottom, .regular)
     }
 }
 
@@ -127,10 +130,10 @@ struct TabBarButton: View {
 
 // Применение явного размера для TabBar, чтобы у содержащих TabBar'а представлений были правильные нижние отступы.
 extension UITabBar {
-     override open func sizeThatFits(_ size: CGSize) -> CGSize {
-         return CGSize(width: UIScreen.main.bounds.width, height: 88)
-     }
- }
+    override open func sizeThatFits(_ size: CGSize) -> CGSize {
+        return CGSize(width: UIScreen.main.bounds.width, height: 60)
+    }
+}
 
 extension UITabBar {
 }
