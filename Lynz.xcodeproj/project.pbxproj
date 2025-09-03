@@ -51,13 +51,13 @@
 		8E8FFB702E681E6000F20BF0 /* SettingsViewStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E8FFB6F2E681E6000F20BF0 /* SettingsViewStore.swift */; };
 		8E8FFB722E681EBF00F20BF0 /* Pose.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E8FFB712E681EBF00F20BF0 /* Pose.swift */; };
 		8E8FFB742E68202100F20BF0 /* ResignFirstResponder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E8FFB732E68202100F20BF0 /* ResignFirstResponder.swift */; };
+		8E8FFB772E6823B300F20BF0 /* DatePickerViewStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E8FFB762E6823B300F20BF0 /* DatePickerViewStore.swift */; };
 		8E96F8642E66454000D50801 /* PhotoPosesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E96F8632E66454000D50801 /* PhotoPosesView.swift */; };
 		8EB8A3132E66EBDA006AF8B5 /* PoseLibraryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EB8A3122E66EBDA006AF8B5 /* PoseLibraryView.swift */; };
 		8EB8A3152E674DEF006AF8B5 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EB8A3142E674DEF006AF8B5 /* SettingsView.swift */; };
 		8EB8A3172E67564F006AF8B5 /* NavigationButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EB8A3162E67564F006AF8B5 /* NavigationButton.swift */; };
 		8EB8A3192E6764DF006AF8B5 /* PermissionInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EB8A3182E6764DF006AF8B5 /* PermissionInteractor.swift */; };
 		8EB8A31B2E676612006AF8B5 /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EB8A31A2E676612006AF8B5 /* NotificationService.swift */; };
-		8EC5685D2E6307D200414ADD /* LottieView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EC5685C2E6307D200414ADD /* LottieView.swift */; };
 		8EC5685F2E630A0500414ADD /* loading.json in Resources */ = {isa = PBXBuildFile; fileRef = 8EC5685E2E630A0500414ADD /* loading.json */; };
 		8EC568612E630CAA00414ADD /* AppState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EC568602E630CAA00414ADD /* AppState.swift */; };
 		8EC568632E630CDD00414ADD /* LoaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EC568622E630CDD00414ADD /* LoaderView.swift */; };
@@ -119,13 +119,13 @@
 		8E8FFB6F2E681E6000F20BF0 /* SettingsViewStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewStore.swift; sourceTree = "<group>"; };
 		8E8FFB712E681EBF00F20BF0 /* Pose.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Pose.swift; sourceTree = "<group>"; };
 		8E8FFB732E68202100F20BF0 /* ResignFirstResponder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResignFirstResponder.swift; sourceTree = "<group>"; };
+		8E8FFB762E6823B300F20BF0 /* DatePickerViewStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatePickerViewStore.swift; sourceTree = "<group>"; };
 		8E96F8632E66454000D50801 /* PhotoPosesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoPosesView.swift; sourceTree = "<group>"; };
 		8EB8A3122E66EBDA006AF8B5 /* PoseLibraryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PoseLibraryView.swift; sourceTree = "<group>"; };
 		8EB8A3142E674DEF006AF8B5 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		8EB8A3162E67564F006AF8B5 /* NavigationButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationButton.swift; sourceTree = "<group>"; };
 		8EB8A3182E6764DF006AF8B5 /* PermissionInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PermissionInteractor.swift; sourceTree = "<group>"; };
 		8EB8A31A2E676612006AF8B5 /* NotificationService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationService.swift; sourceTree = "<group>"; };
-		8EC5685C2E6307D200414ADD /* LottieView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LottieView.swift; sourceTree = "<group>"; };
 		8EC5685E2E630A0500414ADD /* loading.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = loading.json; sourceTree = "<group>"; };
 		8EC568602E630CAA00414ADD /* AppState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppState.swift; sourceTree = "<group>"; };
 		8EC568622E630CDD00414ADD /* LoaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoaderView.swift; sourceTree = "<group>"; };
@@ -252,10 +252,9 @@
 				8E7860312E64BC4B000C7CB5 /* SelectableListItem.swift */,
 				8E7860352E64DA9D000C7CB5 /* SeparatorView.swift */,
 				8EC568712E6383F800414ADD /* ScreenHeaderView.swift */,
-				8EC568682E634ED200414ADD /* DatePickerView.swift */,
+				8E8FFB752E6823A400F20BF0 /* DatePickerView */,
 				8E2C09742E60DFFD00DBC90C /* MainButtonView.swift */,
 				8E2C09702E60B1A400DBC90C /* LayeredCircleView.swift */,
-				8EC5685C2E6307D200414ADD /* LottieView.swift */,
 				8EC568622E630CDD00414ADD /* LoaderView.swift */,
 				8E7860252E648592000C7CB5 /* EventRoleDescription.swift */,
 				8E7860372E64E39D000C7CB5 /* BackgroundGradient.swift */,
@@ -423,6 +422,15 @@
 			path = Settings;
 			sourceTree = "<group>";
 		};
+		8E8FFB752E6823A400F20BF0 /* DatePickerView */ = {
+			isa = PBXGroup;
+			children = (
+				8EC568682E634ED200414ADD /* DatePickerView.swift */,
+				8E8FFB762E6823B300F20BF0 /* DatePickerViewStore.swift */,
+			);
+			path = DatePickerView;
+			sourceTree = "<group>";
+		};
 		8EC5686A2E63594E00414ADD /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
@@ -548,7 +556,6 @@
 				8E8FFB682E681E3B00F20BF0 /* CalendarViewStore.swift in Sources */,
 				8E8FFB662E681E3200F20BF0 /* MessagesViewStore.swift in Sources */,
 				8E14DC872E609F6D00BB5117 /* ViewStore.swift in Sources */,
-				8EC5685D2E6307D200414ADD /* LottieView.swift in Sources */,
 				8E14DC932E60A94F00BB5117 /* LynzFonts.swift in Sources */,
 				8E39338B2E6224E3003FDE0A /* Coordinator.swift in Sources */,
 				8EC568672E63302B00414ADD /* TransparentBackground.swift in Sources */,
@@ -559,6 +566,7 @@
 				8E78602D2E648F45000C7CB5 /* Role.swift in Sources */,
 				8EE044692E66026A0091B7C7 /* Plan.swift in Sources */,
 				8EC568632E630CDD00414ADD /* LoaderView.swift in Sources */,
+				8E8FFB772E6823B300F20BF0 /* DatePickerViewStore.swift in Sources */,
 				8E8FFB702E681E6000F20BF0 /* SettingsViewStore.swift in Sources */,
 				8E8FFB6C2E681E4F00F20BF0 /* ShootPlanViewStore.swift in Sources */,
 				8EE0446E2E6605260091B7C7 /* LocalDataRepository.swift in Sources */,

@@ -7,11 +7,10 @@
 
 import SwiftUI
 
-
 struct BackgroundGradient: View {
     var body: some View {
         LinearGradient(
-            gradient: Gradient(colors: [Color.lzGraySecondary, Color.lzGrayTertiary]), // замените Color.red и Color.blue на свои цвета
+            gradient: Gradient(colors: [Color.lzGraySecondary, Color.lzGrayTertiary]),
             startPoint: .top,
             endPoint: .bottom
         )

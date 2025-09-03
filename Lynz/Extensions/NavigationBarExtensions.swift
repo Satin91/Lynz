@@ -8,7 +8,7 @@
 import SwiftUI
 
 
-// Модификатор который сохраняет поведение нативного NavBar при этом скрывает
+// Модификатор который сохраняет поведение нативного NavBar при этом скрывает NavighationTitle, как в показано в дизайне
 struct NavigationTitleStyleModifier: ViewModifier {
     let color: Color
     let fontSize: CGFloat

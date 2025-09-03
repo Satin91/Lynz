@@ -8,6 +8,8 @@
 import SwiftUI
 import Lottie
 
+
+// Показывается через fullScreenCover
 struct LoaderView: View {
     
     var body: some View {

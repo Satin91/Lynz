@@ -42,24 +42,20 @@ enum Layout {
 
 
 extension HStack {
-    // Инициализатор с параметрами
     init(alignment: VerticalAlignment = .center, spacing: Layout.Padding, @ViewBuilder content: () -> Content) {
         self.init(alignment: alignment, spacing: spacing.rawValue, content: content)
     }
 
-    // Инициализатор без параметров (чтобы избежать конфликта)
     init(@ViewBuilder content: () -> Content) {
         self.init(alignment: .center, spacing: nil, content: content)
     }
 }
 
 extension VStack {
-    // Инициализатор с параметрами
     init(alignment: HorizontalAlignment = .center, spacing: Layout.Padding, @ViewBuilder content: () -> Content) {
         self.init(alignment: alignment, spacing: spacing.rawValue, content: content)
     }
 
-    // Инициализатор без параметров
     init(@ViewBuilder content: () -> Content) {
         self.init(alignment: .center, spacing: nil, content: content)
     }

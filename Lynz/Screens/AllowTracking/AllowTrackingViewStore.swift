@@ -19,12 +19,15 @@ enum AllowTrackingIntent {
 
 class AllowTrackingViewStore: ViewStore<AllowTrackingState, AllowTrackingIntent> {
     
+    let permissionInteractor = Executor.perissionInteractor
+    
     override func reduce(state: inout AllowTrackingState, intent: AllowTrackingIntent) -> Effect<AllowTrackingIntent> {
         
         switch intent {
         case .showPermissions:
-            return .asyncTask {
-                let status = await Executor.attService.requestPermissions()
+            
+            return .asyncTask { [weak self] in
+                let status = self?.permissionInteractor.requestATTPermissions
                 try! await Task.sleep(nanoseconds: 500_000_000) // чтобы была небольшая задержка для скрытия alert'a
                 return .intent(.toRootView)
             }
