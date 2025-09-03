@@ -14,10 +14,6 @@ class Executor {
         dependencyStore.permissionInteractor
     }
     
-    public static var attService: ATTService {
-        dependencyStore.attService
-    }
-    
     public static var localDataRepository: LocalDataRepository {
         dependencyStore.localDataRepository
     }
